@@ -10,33 +10,39 @@ import { ReactComponent as Carrot } from "./assets/carrot.svg";
 import { ReactComponent as Mushroom } from "./assets/mushroom.svg";
 import { ReactComponent as Monster } from "./assets/monster.svg";
 import { ReactComponent as Wrench } from "./assets/wrench.svg";
+import MarvinFont from "./assets/fonts/MarvinVisionsTrial-Variable.ttf";
 
 const GlobalStyle = createGlobalStyle`
- * {
-  font-family: inherit;
-  font-smoothing: antialiased;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
 }
 
-html {
-  font-size: 62.5%;
-  font-family: 'Lato', sans-serif;
+@font-face {
+  font-family: MyFont;
+  src: url('${MarvinFont}') format('opentype');
 }
+
 
 body {
  background: #1f252d; 
  margin:0;
+ font-family: MyFont;
+ font-weight: 170;
+ font-variation-settings: "opsz" 99;
+ font-feature-settings: "ss02" 0,"ss03" 0,"ss06" 0;
 }
 `;
 
 const App = ({ className }) => {
   const [toggle, setToggle] = useState(false);
-  const [pageIndex, setPageIndex] = useState(3);
+  const [pageIndex, setPageIndex] = useState(4);
 
   return (
     <div className={className}>
-      <div className={`wrapper ${toggle ? "menu-open" : ""}`}>
+      <div className={`sections-wrapper ${toggle ? "menu-open" : ""}`}>
         <h1>Menu</h1>
-        {/* <div className="menu-btn" onClick={handleClick}></div> */}
         <section className={`one ${pageIndex < 0 && "after"}`}>
           <div className="container">
             <h1
@@ -67,7 +73,7 @@ const App = ({ className }) => {
               setToggle(!toggle);
             }}
           >
-            Map
+            Progression
           </h1>
         </section>
         <section className={`three ${pageIndex < 2 && "after"}`}>
@@ -77,7 +83,7 @@ const App = ({ className }) => {
               setToggle(!toggle);
             }}
           >
-            TimeTable
+            Time Table
           </h1>
         </section>
         <section className={`four ${pageIndex < 3 && "after"}`}>
@@ -88,8 +94,22 @@ const App = ({ className }) => {
                 setToggle(!toggle);
               }}
             >
+              Map
+            </h1>
+            <div className="section-content"></div>
+          </div>
+        </section>
+        <section className={`five ${pageIndex < 4 && "after"}`}>
+          <div className="container">
+            <h1
+              onClick={() => {
+                setPageIndex(4);
+                setToggle(!toggle);
+              }}
+            >
               Home
             </h1>
+            <div className="section-content"></div>
           </div>
         </section>
       </div>
@@ -103,7 +123,18 @@ const MainApp = styled(App)`
   flex: 1 1 auto;
   height: 100vh;
 
-  .wrapper .container {
+  .sections-wrapper .container .section-content {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    padding: 8px;
+    p {
+      font-family: helvetica;
+      color: white;
+    }
+  }
+
+  .sections-wrapper .container {
     height: 100%;
     display: flex;
     flex: 1 1 auto;
@@ -111,11 +142,7 @@ const MainApp = styled(App)`
     align-items: center;
     .icons {
       margin-top: 3em;
-      :last-child {
-        svg {
-          margin-right: auto;
-        }
-      }
+
       flex-wrap: wrap;
       justify-content: center;
       display: flex;
@@ -128,30 +155,13 @@ const MainApp = styled(App)`
     }
   }
 
-  .wrapper {
+  .sections-wrapper {
     height: 100%;
     width: 100%;
     background: #2e394b;
     overflow: hidden;
     position: relative;
     margin: 0px auto 0;
-  }
-
-  .menu-btn {
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    height: 70px;
-    width: 54px;
-    cursor: pointer;
-    background: url(https://iamturner.co.uk/codepen/menu-icon.png) no-repeat
-      center;
-    background-size: 44px;
-
-    &:active {
-      opacity: 0.2;
-    }
   }
 
   section {
@@ -163,23 +173,28 @@ const MainApp = styled(App)`
     transition: transform 0.3s;
 
     &.one {
-      background: #f75b5b;
+      background: #330136;
       transition-delay: 0s;
     }
 
     &.two {
-      background: #c84051;
+      background: #5e1742;
       transition-delay: 0.05s;
     }
 
     &.three {
-      background: #4f3462;
+      background: #962e40;
       transition-delay: 0.1s;
     }
 
     &.four {
-      background: #794d9a;
+      background: #c9463d;
       transition-delay: 0.15s;
+    }
+
+    &.five {
+      background: #ff5e35;
+      transition-delay: 0.2s;
     }
 
     &.after {
@@ -196,6 +211,7 @@ const MainApp = styled(App)`
     margin: 0;
     line-height: 70px;
     user-select: none;
+    cursor: pointer;
   }
 
   .menu-open {
@@ -206,7 +222,7 @@ const MainApp = styled(App)`
         transform: translateY(70px);
         transition-delay: 0.15s;
         &:active {
-          background: lighten(#f75b5b, 3%);
+          background: lighten(#330136, 3%);
         }
       }
 
@@ -214,7 +230,7 @@ const MainApp = styled(App)`
         transform: translateY(140px);
         transition-delay: 0.1s;
         &:active {
-          background: lighten(#c84051, 3%);
+          background: lighten(#5e1742, 3%);
         }
       }
 
@@ -222,7 +238,7 @@ const MainApp = styled(App)`
         transform: translateY(210px);
         transition-delay: 0.05s;
         &:active {
-          background: lighten(#4f3462, 3%);
+          background: lighten(#962e40, 3%);
         }
       }
 
@@ -230,7 +246,15 @@ const MainApp = styled(App)`
         transform: translateY(280px);
         transition-delay: 0s;
         &:active {
-          background: lighten(#794d9a, 3%);
+          background: lighten(#c9463d, 3%);
+        }
+      }
+
+      &.five {
+        transform: translateY(350px);
+        transition-delay: 0s;
+        &:active {
+          background: lighten(#ff5e35, 3%);
         }
       }
     }
