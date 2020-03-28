@@ -10,6 +10,7 @@ import { ReactComponent as Carrot } from "../../assets/carrot.svg";
 import { ReactComponent as Mushroom } from "../../assets/mushroom.svg";
 import { ReactComponent as Monster } from "../../assets/monster.svg";
 import { ReactComponent as Wrench } from "../../assets/wrench.svg";
+import Home from "../home/Home";
 
 const StackMenu = ({ className }) => {
   const [toggle, setToggle] = useState(false);
@@ -84,7 +85,9 @@ const StackMenu = ({ className }) => {
             >
               Home
             </h1>
-            <div className="section-content"></div>
+            <div className="section-content">
+              <Home />
+            </div>
           </div>
         </section>
       </div>

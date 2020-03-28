@@ -11,8 +11,10 @@ const THEME = {
     three: "#962e40",
     four: "#c9463d",
     five: "#ff5e35",
-    background: "#2e394b"
-  }
+    background: "#2e394b",
+    text: "#FFF"
+  },
+  space: [0, 4, 8, 16, 32, 64, 128, 256, 512]
 };
 
 const GlobalStyle = createGlobalStyle`
