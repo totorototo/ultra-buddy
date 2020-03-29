@@ -11,6 +11,7 @@ import { ReactComponent as Mushroom } from "../../assets/mushroom.svg";
 import { ReactComponent as Monster } from "../../assets/monster.svg";
 import { ReactComponent as Wrench } from "../../assets/wrench.svg";
 import Home from "../home/Home";
+import Map from "../map/Map";
 
 const StackMenu = ({ className }) => {
   const [toggle, setToggle] = useState(false);
@@ -72,7 +73,9 @@ const StackMenu = ({ className }) => {
             >
               Map
             </h1>
-            <div className="section-content"></div>
+            <div className="section-content">
+              <Map />
+            </div>
           </div>
         </section>
         <section className={`five ${pageIndex < 4 && "after"}`}>
