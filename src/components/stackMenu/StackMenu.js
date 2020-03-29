@@ -12,6 +12,7 @@ import { ReactComponent as Monster } from "../../assets/monster.svg";
 import { ReactComponent as Wrench } from "../../assets/wrench.svg";
 import Home from "../home/Home";
 import Map from "../map/Map";
+import Options from "../options/Options";
 
 const StackMenu = ({ className }) => {
   const [toggle, setToggle] = useState(false);
@@ -30,16 +31,8 @@ const StackMenu = ({ className }) => {
             >
               Options
             </h1>
-            <div className="icons">
-              <Beer width={80} height={80} />
-              <Chicken width={80} height={80} />
-              <Wine width={80} height={80} />
-              <Hammer width={80} height={80} />
-              <Carrot width={80} height={80} />
-              <Burn width={80} height={80} />
-              <Mushroom width={80} height={80} />
-              <Monster width={80} height={80} />
-              <Wrench width={80} height={80} />
+            <div className="section-content">
+              <Options />
             </div>
           </div>
         </section>
