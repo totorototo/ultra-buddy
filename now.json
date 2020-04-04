@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "name": "stack-menu",
+  "alias": "stack-menu.now.sh",
+  "build": {
+    "env": {
+      "REACT_APP_MAPBOX_KEY": "@mapbox-key"
+    }
+  },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": { "distDir": "./dist" }
+    }
+  ],
+  "public": false,
+  "regions": ["cdg1", "bru1"]
+}
