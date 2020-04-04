@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default Component => styled(Component)`
+export default (Component) => styled(Component)`
   display: flex;
   flex: 1 1 auto;
   height: 100vh;
@@ -40,7 +40,7 @@ export default Component => styled(Component)`
   .sections-wrapper {
     height: 100%;
     width: 100%;
-    background: ${props => props.theme.colors.background};
+    background: ${(props) => props.theme.colors.background};
     overflow: hidden;
     position: relative;
     margin: 0px auto 0;
@@ -55,27 +55,27 @@ export default Component => styled(Component)`
     transition: transform 0.3s;
 
     &.one {
-      background: ${props => props.theme.colors.one};
+      background: ${(props) => props.theme.colors.one};
       transition-delay: 0s;
     }
 
     &.two {
-      background: ${props => props.theme.colors.two};
+      background: ${(props) => props.theme.colors.two};
       transition-delay: 0.05s;
     }
 
     &.three {
-      background: ${props => props.theme.colors.three};
+      background: ${(props) => props.theme.colors.three};
       transition-delay: 0.1s;
     }
 
     &.four {
-      background: ${props => props.theme.colors.four};
+      background: ${(props) => props.theme.colors.four};
       transition-delay: 0.15s;
     }
 
     &.five {
-      background: ${props => props.theme.colors.five};
+      background: ${(props) => props.theme.colors.five};
       transition-delay: 0.2s;
     }
 
@@ -85,7 +85,7 @@ export default Component => styled(Component)`
   }
 
   h1 {
-    color: white;
+    color: ${(props) => props.theme.colors.text};
     width: 100%;
     font-weight: 500;
     font-size: 2rem;
@@ -104,7 +104,7 @@ export default Component => styled(Component)`
         transform: translateY(70px);
         transition-delay: 0.15s;
         &:active {
-          background: lighten(${props => props.theme.colors.one}, 3%);
+          background: lighten(${(props) => props.theme.colors.one}, 3%);
         }
       }
 
@@ -112,7 +112,7 @@ export default Component => styled(Component)`
         transform: translateY(140px);
         transition-delay: 0.1s;
         &:active {
-          background: lighten(${props => props.theme.colors.two}, 3%);
+          background: lighten(${(props) => props.theme.colors.two}, 3%);
         }
       }
 
@@ -120,7 +120,7 @@ export default Component => styled(Component)`
         transform: translateY(210px);
         transition-delay: 0.05s;
         &:active {
-          background: lighten(${props => props.theme.colors.three}, 3%);
+          background: lighten(${(props) => props.theme.colors.three}, 3%);
         }
       }
 
@@ -128,7 +128,7 @@ export default Component => styled(Component)`
         transform: translateY(280px);
         transition-delay: 0s;
         &:active {
-          background: lighten(${props => props.theme.colors.four}, 3%);
+          background: lighten(${(props) => props.theme.colors.four}, 3%);
         }
       }
 
@@ -136,7 +136,7 @@ export default Component => styled(Component)`
         transform: translateY(350px);
         transition-delay: 0s;
         &:active {
-          background: lighten(${props => props.theme.colors.five}, 3%);
+          background: lighten(${(props) => props.theme.colors.five}, 3%);
         }
       }
     }

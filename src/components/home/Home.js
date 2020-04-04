@@ -6,11 +6,11 @@ const Home = ({ className }) => {
   return (
     <div className={className}>
       <div className="carousel x-mandatory x-scroll">
-        <div class="wrapper">
-          <div class="element">1</div>
-          <div class="element">2</div>
-          <div class="element">3</div>
-          <div class="element">4</div>
+        <div className="wrapper">
+          <div className="element">1</div>
+          <div className="element">2</div>
+          <div className="element">3</div>
+          <div className="element">4</div>
         </div>
       </div>
       <div className="commands">
