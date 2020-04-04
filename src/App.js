@@ -12,9 +12,9 @@ const THEME = {
     four: "#4f4537",
     five: "#cc9612",
     background: "#2e394b",
-    text: "#FFF"
+    text: "#FFF",
   },
-  space: [0, 4, 8, 16, 32, 64, 128, 256, 512]
+  space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
 };
 
 const GlobalStyle = createGlobalStyle`
