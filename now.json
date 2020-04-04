@@ -14,6 +14,5 @@
       "config": { "distDir": "./dist" }
     }
   ],
-  "public": false,
-  "regions": ["cdg1", "bru1"]
+  "public": false
 }
