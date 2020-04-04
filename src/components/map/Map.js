@@ -3,6 +3,8 @@ import MapGL from "react-map-gl";
 
 import styled from "./style";
 
+console.log(process.env.REACT_APP_MAPBOX_KEY);
+
 const Map = ({ className }) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
