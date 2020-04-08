@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import MapGL from "react-map-gl";
+import MapGL, { Source, Layer } from "react-map-gl";
 
 import styled from "./style";
 
-const Map = ({ className }) => {
+const Map = ({ className, route }) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
     longitude: 0.32715,
@@ -21,7 +21,25 @@ const Map = ({ className }) => {
         mapStyle="mapbox://styles/totorototo/ck8j8jlie0yft1iqvbddr5swm"
         onViewportChange={setViewport}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
-      />
+      >
+        {route && (
+          <Source id="my-data" type="geojson" data={route}>
+            <Layer
+              id="route"
+              type="line"
+              source="route"
+              layout={{
+                "line-join": "round",
+                "line-cap": "round",
+              }}
+              paint={{
+                "line-color": "#ebb11a",
+                "line-width": 2,
+              }}
+            />
+          </Source>
+        )}
+      </MapGL>
     </div>
   );
 };

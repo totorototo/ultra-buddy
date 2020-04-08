@@ -8,6 +8,7 @@ import Options from "../options/Options";
 const StackMenu = ({ className }) => {
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
+  const [geoJSON, setGeoJSON] = useState();
   return (
     <div className={className}>
       <div className={`sections-wrapper ${toggle ? "menu-open" : ""}`}>
@@ -58,7 +59,7 @@ const StackMenu = ({ className }) => {
               Map
             </h1>
             <div className="section-content">
-              <Map />
+              <Map route={geoJSON} />
             </div>
           </div>
         </section>
@@ -73,7 +74,7 @@ const StackMenu = ({ className }) => {
               Home
             </h1>
             <div className="section-content">
-              <Home />
+              <Home setRoute={setGeoJSON} />
             </div>
           </div>
         </section>

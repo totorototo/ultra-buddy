@@ -1,8 +1,24 @@
 import React from "react";
+import xmldom from "xmldom";
+import { gpx } from "@mapbox/togeojson";
 
 import styled from "./style";
+import FileUpload from "../fileUpload/FileUpload";
+import { fileType } from "../fileReader/FileReader";
 
-const Home = ({ className }) => {
+const Home = ({ className, setRoute }) => {
+  const CONFIGURATION = {
+    extension: "gpx",
+    type: fileType.text,
+    handleFileRead: (_, data) => {
+      const xml = new xmldom.DOMParser().parseFromString(data);
+      const geoJSON = gpx(xml);
+      debugger;
+      setRoute(geoJSON);
+    },
+    parameters: ["utf8"],
+  };
+
   return (
     <div className={className}>
       <div className="carousel x-mandatory x-scroll">
@@ -14,7 +30,14 @@ const Home = ({ className }) => {
         </div>
       </div>
       <div className="commands">
-        <h1>Load Trace</h1>
+        <FileUpload
+          name="valid_id"
+          text="Load Data"
+          configuration={CONFIGURATION}
+        >
+          <h1>Load Trace</h1>
+        </FileUpload>
+
         <h1>Get Roadbook</h1>
       </div>
     </div>
