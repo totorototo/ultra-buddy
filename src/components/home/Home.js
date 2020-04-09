@@ -13,7 +13,6 @@ const Home = ({ className, setRoute }) => {
     handleFileRead: (_, data) => {
       const xml = new xmldom.DOMParser().parseFromString(data);
       const geoJSON = gpx(xml);
-      debugger;
       setRoute(geoJSON);
     },
     parameters: ["utf8"],
