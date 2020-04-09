@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import MapGL, { Source, Layer } from "react-map-gl";
 
 import styled from "./style";
+import mapStyle from "./style.json";
 
 const Map = ({ className, route }) => {
   const [viewport, setViewport] = useState({
@@ -18,7 +19,7 @@ const Map = ({ className, route }) => {
         {...viewport}
         width="100%"
         height="100%"
-        mapStyle="mapbox://styles/totorototo/ck8j8jlie0yft1iqvbddr5swm"
+        mapStyle={mapStyle}
         onViewportChange={setViewport}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
       >

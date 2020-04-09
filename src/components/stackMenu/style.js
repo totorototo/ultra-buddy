@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+const OFFSET = "70";
+
 export default (Component) => styled(Component)`
   display: flex;
   flex: 1 1 auto;
@@ -9,7 +11,8 @@ export default (Component) => styled(Component)`
     display: flex;
     flex: 1 1 auto;
     width: 100%;
-    padding-top: 8px;
+    // padding: 8px;
+
     p {
       font-family: helvetica;
       color: white;
@@ -91,7 +94,7 @@ export default (Component) => styled(Component)`
     font-size: 2rem;
     text-align: center;
     margin: 0;
-    line-height: 70px;
+    line-height: ${OFFSET}px;
     user-select: none;
     cursor: pointer;
   }

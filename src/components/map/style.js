@@ -10,9 +10,9 @@ export default (Component) => styled(Component)`
     // border-radius: ${(props) => props.theme.space[2]}px;
   }
   .mapboxgl-ctrl-bottom-right {
-    // display: none;
+     display: none;
   }
   .mapboxgl-ctrl-bottom-left {
-    display: none;
+     display: none;
   }
 `;
