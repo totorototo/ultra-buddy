@@ -18,6 +18,7 @@ export default (Component) => styled(Component)`
     margin-left: auto;
     margin-right: auto;
     padding: 10px;
+    margin-top: 40px;
     margin-bottom: 10px;
     overflow: scroll;
     position: relative;

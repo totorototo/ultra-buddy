@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const OFFSET = "70";
+const OFFSET = "45";
 
 export default (Component) => styled(Component)`
   display: flex;
@@ -90,8 +90,8 @@ export default (Component) => styled(Component)`
   h1 {
     color: ${(props) => props.theme.colors.text};
     width: 100%;
-    font-weight: 500;
-    font-size: 2rem;
+    font-weight: 400;
+    font-size: 1.6rem;
     text-align: center;
     margin: 0;
     line-height: ${OFFSET}px;
@@ -104,7 +104,7 @@ export default (Component) => styled(Component)`
       cursor: pointer;
 
       &.one {
-        transform: translateY(70px);
+        transform: translateY(${OFFSET}px);
         transition-delay: 0.15s;
         &:active {
           background: lighten(${(props) => props.theme.colors.one}, 3%);
@@ -112,7 +112,7 @@ export default (Component) => styled(Component)`
       }
 
       &.two {
-        transform: translateY(140px);
+        transform: translateY(${OFFSET * 2}px);
         transition-delay: 0.1s;
         &:active {
           background: lighten(${(props) => props.theme.colors.two}, 3%);
@@ -120,7 +120,7 @@ export default (Component) => styled(Component)`
       }
 
       &.three {
-        transform: translateY(210px);
+        transform: translateY(${OFFSET * 3}px);
         transition-delay: 0.05s;
         &:active {
           background: lighten(${(props) => props.theme.colors.three}, 3%);
@@ -128,7 +128,7 @@ export default (Component) => styled(Component)`
       }
 
       &.four {
-        transform: translateY(280px);
+        transform: translateY(${OFFSET * 4}px);
         transition-delay: 0s;
         &:active {
           background: lighten(${(props) => props.theme.colors.four}, 3%);
@@ -136,7 +136,7 @@ export default (Component) => styled(Component)`
       }
 
       &.five {
-        transform: translateY(350px);
+        transform: translateY(${OFFSET * 5}px);
         transition-delay: 0s;
         &:active {
           background: lighten(${(props) => props.theme.colors.five}, 3%);
