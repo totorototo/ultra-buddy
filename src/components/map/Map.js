@@ -1,3 +1,4 @@
+import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useState, useEffect } from "react";
 import MapGL, { Source, Layer } from "react-map-gl";
 import DeckGL, { IconLayer } from "deck.gl";
