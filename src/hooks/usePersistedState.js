@@ -6,7 +6,11 @@ const usePresistedState = (key, defaultValue) => {
   );
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(state));
+    try {
+      localStorage.setItem(key, JSON.stringify(state));
+    } catch (exception) {
+      alert(exception);
+    }
   }, [key, state]);
 
   return [state, setState];
