@@ -6,14 +6,14 @@ import styled from "./style";
 import FileUpload from "../fileUpload/FileUpload";
 import { fileType } from "../fileReader/FileReader";
 
-const Home = ({ className, setRoute }) => {
+const Home = ({ className, setState }) => {
   const CONFIGURATION = {
     extension: "gpx",
     type: fileType.text,
     handleFileRead: (_, data) => {
       const xml = new xmldom.DOMParser().parseFromString(data);
       const geoJSON = gpx(xml);
-      setRoute(geoJSON);
+      setState(geoJSON);
     },
     parameters: ["utf8"],
   };

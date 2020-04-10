@@ -4,11 +4,13 @@ import styled from "./style";
 import Home from "../home/Home";
 import Map from "../map/Map";
 import Options from "../options/Options";
+import usePresistedState from "../../hooks/usePersistedState";
 
 const StackMenu = ({ className }) => {
+  const [state, setState] = usePresistedState("route", {});
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
-  const [geoJSON, setGeoJSON] = useState();
+
   return (
     <div className={className}>
       <div className={`sections-wrapper ${toggle ? "menu-open" : ""}`}>
@@ -59,7 +61,7 @@ const StackMenu = ({ className }) => {
               Map
             </h1>
             <div className="section-content">
-              <Map route={geoJSON} />
+              <Map route={state} />
             </div>
           </div>
         </section>
@@ -74,7 +76,7 @@ const StackMenu = ({ className }) => {
               Home
             </h1>
             <div className="section-content">
-              <Home setRoute={setGeoJSON} />
+              <Home setState={setState} />
             </div>
           </div>
         </section>
