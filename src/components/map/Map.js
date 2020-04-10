@@ -22,9 +22,8 @@ const Map = ({ className, route }) => {
     if (!route) return;
     const helper = trace(...route.features[0].geometry.coordinates);
     const region = helper.computeRegion();
-    //const res = helper.getLocationAt(10, 20, 30, 40);
-    const peaks = helper.getPeaksLocations();
-    setPeaks(peaks.peaks);
+    const peaksLocations = helper.getPeaksLocations();
+    setPeaks(peaksLocations.peaks);
 
     const latitude = (region.minLatitude + region.maxLatitude) / 2;
     const longitude = (region.minLongitude + region.maxLongitude) / 2;
@@ -84,7 +83,7 @@ const Map = ({ className, route }) => {
               getPosition: (d) => [d.location[0], d.location[1]],
               getIcon: (d) => "marker",
               getSize: (d) => 3,
-              getColor: (d) => [84, 84, 82],
+              getColor: (d) => [187, 52, 57],
             }),
           ]}
         />
