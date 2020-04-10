@@ -8,7 +8,7 @@ import mapStyle from "./style.json";
 import trace from "../../helpers/trace";
 import placeIcon from "../../assets/icon-atlas.png";
 
-const Map = ({ className, route }) => {
+const Map = ({ className, route, checkpoints }) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
     longitude: 0.32715,
@@ -16,14 +16,12 @@ const Map = ({ className, route }) => {
     bearing: 0,
     pitch: 0,
   });
-  const [peaks, setPeaks] = useState([]);
+  const [checkpointsLocations, setCheckpointsLocations] = useState([]);
 
   useEffect(() => {
     if (!route) return;
     const helper = trace(...route.features[0].geometry.coordinates);
     const region = helper.computeRegion();
-    const peaksLocations = helper.getPeaksLocations();
-    setPeaks(peaksLocations.peaks);
 
     const latitude = (region.minLatitude + region.maxLatitude) / 2;
     const longitude = (region.minLongitude + region.maxLongitude) / 2;
@@ -33,6 +31,14 @@ const Map = ({ className, route }) => {
       longitude: longitude,
     }));
   }, [route]);
+
+  useEffect(() => {
+    if (!checkpoints || !route) return;
+    const helper = trace(...route.features[0].geometry.coordinates);
+    const distances = checkpoints.map((checkpoint) => checkpoint.distance);
+    const locations = helper.getLocationAt(...distances);
+    setCheckpointsLocations(locations);
+  }, [checkpoints, route]);
 
   return (
     <div className={className}>
@@ -66,7 +72,7 @@ const Map = ({ className, route }) => {
           layers={[
             new IconLayer({
               id: "icon-layer",
-              data: peaks,
+              data: checkpointsLocations,
               pickable: true,
               iconAtlas: placeIcon,
               iconMapping: {
@@ -80,7 +86,7 @@ const Map = ({ className, route }) => {
                 },
               },
               sizeScale: 10,
-              getPosition: (d) => [d.location[0], d.location[1]],
+              getPosition: (d) => [d[0], d[1]],
               getIcon: (d) => "marker",
               getSize: (d) => 3,
               getColor: (d) => [187, 52, 57],

@@ -7,7 +7,8 @@ import Options from "../options/Options";
 import usePresistedState from "../../hooks/usePersistedState";
 
 const StackMenu = ({ className }) => {
-  const [state, setState] = usePresistedState("route", null);
+  const [route, setRoute] = usePresistedState("route", null);
+  const [checkpoints, setCheckpoints] = usePresistedState("checkpoints", null);
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
 
@@ -61,7 +62,7 @@ const StackMenu = ({ className }) => {
               Map
             </h1>
             <div className="section-content">
-              <Map route={state} />
+              <Map route={route} checkpoints={checkpoints} />
             </div>
           </div>
         </section>
@@ -76,7 +77,7 @@ const StackMenu = ({ className }) => {
               Home
             </h1>
             <div className="section-content">
-              <Home setState={setState} />
+              <Home setRoute={setRoute} setCheckpoints={setCheckpoints} />
             </div>
           </div>
         </section>
