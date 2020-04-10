@@ -138,7 +138,7 @@ const trace = (...locations) => {
   const getPeaksLocations = () =>
     locations.reduce(
       (accu, location, index, array) => {
-        if (index > 0) {
+        if (index > 0 && index + 1 < array.length) {
           if (
             (location[2] > array[index - 1][2] &&
               location[2] > array[index + 1][2]) ||
