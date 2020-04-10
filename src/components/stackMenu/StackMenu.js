@@ -7,7 +7,7 @@ import Options from "../options/Options";
 import usePresistedState from "../../hooks/usePersistedState";
 
 const StackMenu = ({ className }) => {
-  const [state, setState] = usePresistedState("route", {});
+  const [state, setState] = usePresistedState("route", null);
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
 
