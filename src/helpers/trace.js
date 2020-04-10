@@ -78,6 +78,7 @@ const trace = (...locations) => {
       { positive: 0, negative: 0 }
     );
   };
+
   const computeRegion = () =>
     locations.reduce(
       (region, location) => ({
@@ -98,7 +99,82 @@ const trace = (...locations) => {
       }
     );
 
-  return { computeDistance, computeElevation, computeRegion };
+  const mapLocationToDistance = () =>
+    locations.reduce(
+      (accu, location, index, array) => {
+        if (index < array.length - 1) {
+          const distance = computeDistanceBetweenLocations(
+            {
+              longitude: location[0],
+              latitude: location[1],
+            },
+            {
+              longitude: array[index + 1][0],
+              latitude: array[index + 1][1],
+            }
+          );
+          const totalDistance = accu.distance + distance;
+          return {
+            ...accu,
+            distance: totalDistance,
+            map: [...accu.map, [index, totalDistance]],
+          };
+        }
+        return accu;
+      },
+      { distance: 0, map: [] }
+    );
+
+  const getLocationAt = (...distances) => {
+    const enhancedLocations = mapLocationToDistance();
+    return distances.map((distance) => {
+      const sortedLocations = enhancedLocations.map.sort(
+        (a, b) => Math.abs(distance - a[1]) - Math.abs(distance - b[1])
+      );
+      return locations[sortedLocations[0][0]];
+    });
+  };
+
+  const getPeaksLocations = () =>
+    locations.reduce(
+      (accu, location, index, array) => {
+        if (index > 0) {
+          if (
+            (location[2] > array[index - 1][2] &&
+              location[2] > array[index + 1][2]) ||
+            (location[2] > array[index - 1][2] &&
+              location[2] === array[index + 1][2] &&
+              array.slice(index).find((item) => item !== location[2]) <
+                location[2])
+          ) {
+            const peak = { index, location };
+            const treshold = Math.abs(
+              location[2] - array[accu.lastPeakIndex][2]
+            );
+            return treshold > 250
+              ? {
+                  ...accu,
+                  peaks: [...accu.peaks, peak],
+                  lastPeakIndex: index,
+                }
+              : accu;
+          }
+        }
+        return accu;
+      },
+      {
+        peaks: [],
+        lastPeakIndex: 0,
+      }
+    );
+
+  return {
+    computeDistance,
+    computeElevation,
+    computeRegion,
+    getLocationAt,
+    getPeaksLocations,
+  };
 };
 
 export default trace;

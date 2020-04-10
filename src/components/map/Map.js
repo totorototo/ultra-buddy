@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import MapGL, { Source, Layer } from "react-map-gl";
+import DeckGL, { IconLayer } from "deck.gl";
 
 import styled from "./style";
 import mapStyle from "./style.json";
 import trace from "../../helpers/trace";
+import placeIcon from "../../assets/icon-atlas.png";
 
 const Map = ({ className, route }) => {
   const [viewport, setViewport] = useState({
@@ -13,12 +15,16 @@ const Map = ({ className, route }) => {
     bearing: 0,
     pitch: 0,
   });
+  const [peaks, setPeaks] = useState([]);
 
   useEffect(() => {
     if (!route) return;
-    const region = trace(
-      ...route.features[0].geometry.coordinates
-    ).computeRegion();
+    const helper = trace(...route.features[0].geometry.coordinates);
+    const region = helper.computeRegion();
+    //const res = helper.getLocationAt(10, 20, 30, 40);
+    const peaks = helper.getPeaksLocations();
+    setPeaks(peaks.peaks);
+
     const latitude = (region.minLatitude + region.maxLatitude) / 2;
     const longitude = (region.minLongitude + region.maxLongitude) / 2;
     setViewport((viewport) => ({
@@ -55,6 +61,32 @@ const Map = ({ className, route }) => {
             />
           </Source>
         )}
+        <DeckGL
+          viewState={viewport}
+          layers={[
+            new IconLayer({
+              id: "icon-layer",
+              data: peaks,
+              pickable: true,
+              iconAtlas: placeIcon,
+              iconMapping: {
+                marker: {
+                  x: 0,
+                  y: 0,
+                  width: 128,
+                  height: 128,
+                  anchorY: 128,
+                  mask: true,
+                },
+              },
+              sizeScale: 10,
+              getPosition: (d) => [d.location[0], d.location[1]],
+              getIcon: (d) => "marker",
+              getSize: (d) => 3,
+              getColor: (d) => [84, 84, 82],
+            }),
+          ]}
+        />
       </MapGL>
     </div>
   );
