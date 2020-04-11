@@ -102,15 +102,15 @@ const trace = (...locations) => {
   const mapLocationToDistance = () =>
     locations.reduce(
       (accu, location, index, array) => {
-        if (index < array.length - 1) {
+        if (index > 0) {
           const distance = computeDistanceBetweenLocations(
+            {
+              longitude: array[index - 1][0],
+              latitude: array[index - 1][1],
+            },
             {
               longitude: location[0],
               latitude: location[1],
-            },
-            {
-              longitude: array[index + 1][0],
-              latitude: array[index + 1][1],
             }
           );
           const totalDistance = accu.distance + distance;
@@ -119,8 +119,13 @@ const trace = (...locations) => {
             distance: totalDistance,
             map: [...accu.map, [index, totalDistance]],
           };
+        } else {
+          return {
+            ...accu,
+            distance: 0,
+            map: [...accu.map, [index, 0]],
+          };
         }
-        return accu;
       },
       { distance: 0, map: [] }
     );
@@ -132,6 +137,16 @@ const trace = (...locations) => {
         (a, b) => Math.abs(distance - a[1]) - Math.abs(distance - b[1])
       );
       return locations[sortedLocations[0][0]];
+    });
+  };
+
+  const getLocationIndexAt = (...distances) => {
+    const enhancedLocations = mapLocationToDistance();
+    return distances.map((distance) => {
+      const sortedLocations = enhancedLocations.map.sort(
+        (a, b) => Math.abs(distance - a[1]) - Math.abs(distance - b[1])
+      );
+      return sortedLocations[0][0];
     });
   };
 
@@ -168,12 +183,24 @@ const trace = (...locations) => {
       }
     );
 
+  const splitTrace = (start = 0, end = 0) => {
+    const locationsIndices = getLocationIndexAt(start, end);
+    const splitTrace = locations.slice(
+      locationsIndices[0],
+      locationsIndices[1]
+    );
+
+    return splitTrace;
+  };
+
   return {
     computeDistance,
     computeElevation,
     computeRegion,
     getLocationAt,
+    getLocationIndexAt,
     getPeaksLocations,
+    splitTrace,
   };
 };
 
