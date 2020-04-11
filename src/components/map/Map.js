@@ -22,7 +22,6 @@ const Map = ({ className, route, checkpoints }) => {
     if (!route) return;
     const helper = trace(...route.features[0].geometry.coordinates);
     const region = helper.computeRegion();
-
     const latitude = (region.minLatitude + region.maxLatitude) / 2;
     const longitude = (region.minLongitude + region.maxLongitude) / 2;
     setViewport((viewport) => ({
@@ -33,7 +32,10 @@ const Map = ({ className, route, checkpoints }) => {
   }, [route]);
 
   useEffect(() => {
-    if (!checkpoints || !route) return;
+    if (!checkpoints || !route) {
+      setCheckpointsLocations([]);
+      return;
+    }
     const helper = trace(...route.features[0].geometry.coordinates);
     const distances = checkpoints.map((checkpoint) => checkpoint.distance);
     const locations = helper.getLocationAt(...distances);
