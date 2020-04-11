@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { differenceInMilliseconds } from "date-fns";
 
 import styled from "./style";
 import Home from "../home/Home";
@@ -27,15 +28,18 @@ const StackMenu = ({ className }) => {
       },
       []
     );
-    const sections = sectionsIndices.reduce((accu, sectionIndices) => {
-      const section = route.features[0].geometry.coordinates.slice(
-        sectionIndices[0],
-        sectionIndices[1]
-      );
-      return [...accu, section];
-    }, []);
+    const sectionsCoordinates = sectionsIndices.reduce(
+      (accu, sectionIndices) => {
+        const section = route.features[0].geometry.coordinates.slice(
+          sectionIndices[0],
+          sectionIndices[1]
+        );
+        return [...accu, section];
+      },
+      []
+    );
 
-    const sectionsDetails = sections.map((section) => {
+    const sectionsStats = sectionsCoordinates.map((section) => {
       const helper = trace(...section);
       return {
         distance: helper.computeDistance(),
@@ -44,6 +48,27 @@ const StackMenu = ({ className }) => {
       };
     });
 
+    const sectionsDetails = checkpoints.reduce(
+      (accu, checkpoint, index, array) => {
+        if (index > 0) {
+          const label = `${array[index - 1].location} - ${checkpoint.location}`;
+          const endingDate = new Date(checkpoint.timeBarrier);
+          const startingDate = new Date(array[index - 1].timeBarrier);
+          const duration = differenceInMilliseconds(endingDate, startingDate);
+          return [
+            ...accu,
+            {
+              label,
+              duration,
+              timeBarrier: checkpoint.timeBarrier,
+              ...sectionsStats[index - 1],
+            },
+          ];
+        }
+        return accu;
+      },
+      []
+    );
     setSections(sectionsDetails);
   }, [checkpoints, route, setSections]);
 
@@ -85,6 +110,7 @@ const StackMenu = ({ className }) => {
           >
             Time Table
           </h1>
+          <div className="section-content"></div>
         </section>
         <section className={`four ${pageIndex < 3 && "after"}`}>
           <div className="container">
