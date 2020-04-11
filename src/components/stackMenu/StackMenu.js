@@ -138,7 +138,11 @@ const StackMenu = ({ className }) => {
               Home
             </h1>
             <div className="section-content">
-              <Home setRoute={setRoute} setCheckpoints={setCheckpoints} />
+              <Home
+                setRoute={setRoute}
+                setCheckpoints={setCheckpoints}
+                setSections={setSections}
+              />
             </div>
           </div>
         </section>

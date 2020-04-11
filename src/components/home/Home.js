@@ -15,6 +15,7 @@ const Home = ({ className, setRoute, setCheckpoints, setSections }) => {
       const xml = new xmldom.DOMParser().parseFromString(data);
       const geoJSON = gpx(xml);
       setCheckpoints(null);
+      setSections(null);
       setRoute(geoJSON);
     },
     parameters: ["utf8"],
