@@ -1,16 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import styled from "./style";
 import Home from "../home/Home";
 import Map from "../map/Map";
 import Options from "../options/Options";
 import usePresistedState from "../../hooks/usePersistedState";
+import trace from "../../helpers/trace";
 
 const StackMenu = ({ className }) => {
   const [route, setRoute] = usePresistedState("route", null);
   const [checkpoints, setCheckpoints] = usePresistedState("checkpoints", null);
+  const [sections, setSections] = usePresistedState("sections", null);
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
+
+  useEffect(() => {
+    if (!checkpoints || !route) return;
+    const helper = trace(...route.features[0].geometry.coordinates);
+    const distances = checkpoints.map((checkpoint) => checkpoint.distance);
+    const locationsIndices = helper.getLocationIndexAt(...distances);
+    const sectionsIndices = locationsIndices.reduce(
+      (accu, locationIndex, index, array) => {
+        if (index > 0) {
+          return [...accu, [array[index - 1], locationIndex]];
+        } else return accu;
+      },
+      []
+    );
+    const sections = sectionsIndices.reduce((accu, sectionIndices) => {
+      const section = route.features[0].geometry.coordinates.slice(
+        sectionIndices[0],
+        sectionIndices[1]
+      );
+      return [...accu, section];
+    }, []);
+
+    const sectionsDetails = sections.map((section) => {
+      const helper = trace(...section);
+      return {
+        distance: helper.computeDistance(),
+        elevation: helper.computeElevation(),
+        coordinates: section,
+      };
+    });
+
+    setSections(sectionsDetails);
+  }, [checkpoints, route, setSections]);
 
   return (
     <div className={className}>

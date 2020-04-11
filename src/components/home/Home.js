@@ -7,7 +7,7 @@ import styled from "./style";
 import FileUpload from "../fileUpload/FileUpload";
 import { fileType } from "../fileReader/FileReader";
 
-const Home = ({ className, setRoute, setCheckpoints }) => {
+const Home = ({ className, setRoute, setCheckpoints, setSections }) => {
   const GPX_CONFIGURATION = {
     extension: "gpx",
     type: fileType.text,
