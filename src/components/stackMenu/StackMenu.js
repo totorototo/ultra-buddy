@@ -6,6 +6,7 @@ import Home from "../home/Home";
 import Map from "../map/Map";
 import Options from "../options/Options";
 import Sections from "../sections/Sections";
+import Profile from "../profile/Profile";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
 
@@ -63,6 +64,7 @@ const StackMenu = ({ className }) => {
               duration,
               timeBarrier: checkpoint.timeBarrier,
               ...sectionsStats[index - 1],
+              indices: sectionsIndices[index - 1],
             },
           ];
         }
@@ -117,6 +119,7 @@ const StackMenu = ({ className }) => {
                 sections={sections}
                 data={route.features[0].geometry.coordinates}
               />
+              {/* <Profile data={route.features[0].geometry.coordinates} /> */}
             </div>
           </div>
         </section>

@@ -36,7 +36,7 @@ const Graph = ({ className, width, height, data = [] }) => {
     setScales({ x, y });
     const area = getArea(data, x, y, lowerFullHundred);
     setShape(area);
-  }, [width, height, data.length]);
+  }, [width, height, data.length]); // TODO: fix dependency issue
 
   return data.length > 0 && shape ? (
     <svg height={height} width={width} className={className}>
@@ -45,7 +45,7 @@ const Graph = ({ className, width, height, data = [] }) => {
         d={shape.path}
         stroke="#AA2211"
         strokeWidth="1"
-        fill="#AA2211"
+        fill="white"
         fillOpacity="1"
       />
     </svg>
