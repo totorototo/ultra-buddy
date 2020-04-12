@@ -5,6 +5,7 @@ import styled from "./style";
 import Home from "../home/Home";
 import Map from "../map/Map";
 import Options from "../options/Options";
+import Sections from "../sections/Sections";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
 
@@ -102,15 +103,19 @@ const StackMenu = ({ className }) => {
           </h1>
         </section>
         <section className={`three ${pageIndex < 2 && "after"}`}>
-          <h1
-            onClick={() => {
-              setPageIndex(2);
-              setToggle(!toggle);
-            }}
-          >
-            Time Table
-          </h1>
-          <div className="section-content"></div>
+          <div className="container">
+            <h1
+              onClick={() => {
+                setPageIndex(2);
+                setToggle(!toggle);
+              }}
+            >
+              Sections
+            </h1>
+            <div className="section-content">
+              <Sections sections={sections} />
+            </div>
+          </div>
         </section>
         <section className={`four ${pageIndex < 3 && "after"}`}>
           <div className="container">
