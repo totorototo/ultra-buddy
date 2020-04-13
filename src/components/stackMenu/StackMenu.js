@@ -115,10 +115,13 @@ const StackMenu = ({ className }) => {
               Sections
             </h1>
             <div className="section-content">
-              <Sections
-                sections={sections}
-                data={route.features[0].geometry.coordinates}
-              />
+              {route && sections && (
+                <Sections
+                  sections={sections}
+                  data={route.features[0].geometry.coordinates}
+                />
+              )}
+
               {/* <Profile data={route.features[0].geometry.coordinates} /> */}
             </div>
           </div>
