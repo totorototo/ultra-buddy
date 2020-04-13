@@ -2,7 +2,7 @@ import React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
 import MarvinFont from "./assets/fonts/MarvinVisionsTrial-Variable.ttf";
-import StackMenu from "./components/stackMenu/StackMenu";
+import Main from "./components/main/Main";
 
 const THEME = {
   colors: {
@@ -48,7 +48,7 @@ body {
 const App = () => {
   return (
     <ThemeProvider theme={THEME}>
-      <StackMenu />
+      <Main />
       <GlobalStyle />
     </ThemeProvider>
   );

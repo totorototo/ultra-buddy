@@ -10,7 +10,7 @@ import Sections from "../sections/Sections";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
 
-const StackMenu = ({ className }) => {
+const Main = ({ className }) => {
   const [route, setRoute] = usePresistedState("route", null);
   const [checkpoints, setCheckpoints] = usePresistedState("checkpoints", null);
   const [sections, setSections] = usePresistedState("sections", null);
@@ -164,4 +164,4 @@ const StackMenu = ({ className }) => {
   );
 };
 
-export default styled(StackMenu);
+export default styled(Main);
