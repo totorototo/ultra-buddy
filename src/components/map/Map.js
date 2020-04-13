@@ -87,7 +87,7 @@ const Map = ({ className, route, checkpoints }) => {
                   mask: true,
                 },
               },
-              sizeScale: 10,
+              sizeScale: 8,
               getPosition: (d) => [d[0], d[1]],
               getIcon: (d) => "marker",
               getSize: (d) => 3,

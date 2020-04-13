@@ -5,14 +5,15 @@ export default (Component) => styled(Component)`
   display: flex;
   flex: 1 1 auto;
   height: 100%;
-  // border-radius: ${(props) => props.theme.space[2]}px;
+  padding: ${(props) => props.theme.space[2]}px;
+  border-radius: ${(props) => props.theme.space[2]}px;
   .mapboxgl-map {
-    // border-radius: ${(props) => props.theme.space[2]}px;
+    border-radius: ${(props) => props.theme.space[2]}px;
   }
   .mapboxgl-ctrl-bottom-right {
-     display: none;
+    display: none;
   }
   .mapboxgl-ctrl-bottom-left {
-     display: none;
+    display: none;
   }
 `;

@@ -7,11 +7,11 @@ import StackMenu from "./components/stackMenu/StackMenu";
 const THEME = {
   colors: {
     background: "#292929",
-    one: "#330136",
-    two: "#5E1742",
-    three: "#962E40",
-    four: "#C9463D",
-    five: "#FF5E35",
+    one: "#323232",
+    two: "#383838",
+    three: "#3e3e3e",
+    four: "#444444",
+    five: "#555555",
     text: "#E0E2DB",
     mustard: "#D5A021",
     dark: "#313131",

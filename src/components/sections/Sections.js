@@ -21,8 +21,9 @@ const Sections = ({ className, sections, data }) => {
   }, [data]);
   return (
     <div className={className}>
-      {sections.map((section) => (
+      {sections.map((section, index) => (
         <Section
+          key={index}
           data={section.coordinates}
           width={100}
           height={200}
