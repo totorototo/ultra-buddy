@@ -7,6 +7,7 @@ import styled from "./style";
 import mapStyle from "./style.json";
 import trace from "../../helpers/trace";
 import placeIcon from "../../assets/icon-atlas.png";
+import useWatchPosition from "../../hooks/useWatchPosition";
 
 const Map = ({ className, route, checkpoints, currentSection }) => {
   const [viewport, setViewport] = useState({
@@ -16,6 +17,21 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
     bearing: 0,
     pitch: 0,
   });
+
+  const [currentUserPositions, setCurrentUserPositions] = useState([
+    [0.32715, 42.82985],
+  ]);
+
+  const [position, _] = useWatchPosition();
+
+  useEffect(() => {
+    if (!position) return;
+    setCurrentUserPositions((currentUserPositions) => [
+      ...currentUserPositions,
+      [position.coords.longitude, position.coords.latitude],
+    ]);
+  }, [position, setCurrentUserPositions]);
+
   const [checkpointsLocations, setCheckpointsLocations] = useState([]);
 
   useEffect(() => {
@@ -77,7 +93,7 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
             viewState={viewport}
             layers={[
               new IconLayer({
-                id: "icon-layer",
+                id: "route-layer",
                 data: checkpointsLocations,
                 pickable: true,
                 iconAtlas: placeIcon,
@@ -93,6 +109,27 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
                 },
                 sizeScale: 8,
                 getPosition: (d) => [d[0], d[1]],
+                getIcon: (d) => "marker",
+                getSize: (d) => 3,
+                getColor: (d) => [187, 52, 57],
+              }),
+              new IconLayer({
+                id: "user-layer",
+                data: currentUserPositions,
+                pickable: true,
+                iconAtlas: placeIcon,
+                iconMapping: {
+                  marker: {
+                    x: 0,
+                    y: 0,
+                    width: 128,
+                    height: 128,
+                    anchorY: 128,
+                    mask: true,
+                  },
+                },
+                sizeScale: 8,
+                getPosition: (d) => d,
                 getIcon: (d) => "marker",
                 getSize: (d) => 3,
                 getColor: (d) => [187, 52, 57],
