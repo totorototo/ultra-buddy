@@ -14,6 +14,10 @@ const Main = ({ className }) => {
   const [route, setRoute] = usePresistedState("route", null);
   const [checkpoints, setCheckpoints] = usePresistedState("checkpoints", null);
   const [sections, setSections] = usePresistedState("sections", null);
+  const [currentSection, setCurrentSection] = usePresistedState(
+    "current-section",
+    null
+  );
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
 
@@ -73,7 +77,8 @@ const Main = ({ className }) => {
       []
     );
     setSections(sectionsDetails);
-  }, [checkpoints, route, setSections]);
+    setCurrentSection(sectionsDetails[0]);
+  }, [checkpoints, route, setSections, setCurrentSection]);
 
   return (
     <div className={className}>
@@ -136,7 +141,11 @@ const Main = ({ className }) => {
               Map
             </h1>
             <div className="section-content">
-              <Map route={route} checkpoints={checkpoints} />
+              <Map
+                currentSection={currentSection}
+                route={route}
+                checkpoints={checkpoints}
+              />
             </div>
           </div>
         </section>
