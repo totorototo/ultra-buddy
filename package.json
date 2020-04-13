@@ -21,6 +21,7 @@
     "react-dom": "^16.13.0",
     "react-map-gl": "^5.2.3",
     "react-scripts": "3.4.0",
+    "source-map-explorer": "^2.4.2",
     "styled-components": "^5.0.1",
     "styled-icons": "^10.2.1",
     "xmldom": "^0.3.0"
@@ -29,7 +30,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": "react-app"
