@@ -21,7 +21,6 @@ const Sections = ({ className, sections, data }) => {
   }, [data]);
   return (
     <div className={className}>
-      <div className={"toto"}></div>
       {sections.map((section) => (
         <Section
           data={section.coordinates}
