@@ -121,8 +121,6 @@ const StackMenu = ({ className }) => {
                   data={route.features[0].geometry.coordinates}
                 />
               )}
-
-              {/* <Profile data={route.features[0].geometry.coordinates} /> */}
             </div>
           </div>
         </section>

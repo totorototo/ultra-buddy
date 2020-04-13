@@ -10,4 +10,8 @@ export default (Component) => styled(Component)`
   position: relative;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  scroll-snap-align: center;
+  flex: none;
+  width: 100px;
+  height: 200px;
 `;
