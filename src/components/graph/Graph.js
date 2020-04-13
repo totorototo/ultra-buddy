@@ -10,7 +10,7 @@ const Gradient = ({ from = "#398AB8", to = "#FFFFFF00", ...restProps }) => {
 };
 
 const Graph = ({ className, width, height, data = [] }) => {
-  const [scales, setScales] = useState({});
+  // const [scales, setScales] = useState({});
   const [shape, setShape] = useState();
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const Graph = ({ className, width, height, data = [] }) => {
       { min: lowerFullHundred, max: extentY[1] + extentY[1] * 0.1 },
       { min: 0, max: height }
     );
-    setScales({ x, y });
+    // setScales({ x, y });
     const area = getArea(data, x, y, lowerFullHundred);
     setShape(area);
-  }, [width, height, data.length]); // TODO: fix dependency issue
+  }, [width, height, data]); // TODO: fix dependency issue
 
   return data.length > 0 && shape ? (
     <svg height={height} width={width} className={className}>
