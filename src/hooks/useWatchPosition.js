@@ -9,13 +9,13 @@ const useWatchPosition = ({
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const watch = navigator.geolocation.watchPosition(setPosition, setError, {
+    const id = navigator.geolocation.watchPosition(setPosition, setError, {
       enableHighAccuracy,
       timeout,
       maximumAge,
     });
 
-    return () => navigator.geolocation.clearWatch(watch);
+    return () => navigator.geolocation.clearWatch(id);
   }, [enableHighAccuracy, timeout, maximumAge]);
 
   return [position, error];

@@ -12,24 +12,27 @@ export default (Component) => styled(Component)`
     display: flex;
     flex: 1 1 auto;
     height: 100%;
-    border-radius: ${(props) => props.theme.space[2]}px;
+    border-radius: ${(props) => props.theme.space[3]}px;
     background-color: #ffffff94;
   }
 
   .current-section {
-    width: 50px;
+    width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: roboto;
     writing-mode: vertical-rl;
     text-orientation: sideways;
-    border-top-left-radius: ${(props) => props.theme.space[2]}px;
-    border-bottom-left-radius: ${(props) => props.theme.space[2]}px;
+    border-top-left-radius: ${(props) => props.theme.space[3]}px;
+    border-bottom-left-radius: ${(props) => props.theme.space[3]}px;
+    > div {
+      transform: rotate(0.5turn);
+    }
   }
 
   .mapboxgl-map {
-    border-radius: ${(props) => props.theme.space[2]}px;
+    border-radius: ${(props) => props.theme.space[3]}px;
   }
   .mapboxgl-ctrl-bottom-right {
     display: none;

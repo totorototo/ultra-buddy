@@ -62,7 +62,9 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
     <div className={className}>
       <div className="wrapper">
         {currentSection && (
-          <div className="current-section">{currentSection.label}</div>
+          <div className="current-section">
+            <div>{currentSection.label}</div>
+          </div>
         )}
         <MapGL
           {...viewport}
