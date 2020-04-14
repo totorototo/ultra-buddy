@@ -27,7 +27,15 @@ export default (Component) => styled(Component)`
     border-top-left-radius: ${(props) => props.theme.space[3]}px;
     border-bottom-left-radius: ${(props) => props.theme.space[3]}px;
     > div {
-      transform: rotate(0.5turn);
+      &.departure {
+        margin-top: auto;
+        transform: rotate(0.5turn);
+        margin-bottom: ${(props) => props.theme.space[5]}px;
+      }
+      &.arrival {
+        transform: rotate(0.5turn);
+        margin-top: ${(props) => props.theme.space[5]}px;
+      }
     }
   }
 

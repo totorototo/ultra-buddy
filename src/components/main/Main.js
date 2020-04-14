@@ -57,14 +57,16 @@ const Main = ({ className }) => {
     const sectionsDetails = checkpoints.reduce(
       (accu, checkpoint, index, array) => {
         if (index > 0) {
-          const label = `${array[index - 1].location} - ${checkpoint.location}`;
           const endingDate = new Date(checkpoint.timeBarrier);
           const startingDate = new Date(array[index - 1].timeBarrier);
           const duration = differenceInMilliseconds(endingDate, startingDate);
           return [
             ...accu,
             {
-              label,
+              startingDate,
+              endingDate,
+              depatureLocation: array[index - 1].location,
+              arrivalLocation: checkpoint.location,
               duration,
               timeBarrier: checkpoint.timeBarrier,
               ...sectionsStats[index - 1],

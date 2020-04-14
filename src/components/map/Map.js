@@ -22,15 +22,15 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
     [0.32715, 42.82985],
   ]);
 
-  const [position, _] = useWatchPosition();
+  // const [position, _] = useWatchPosition();
 
-  useEffect(() => {
-    if (!position) return;
-    setCurrentUserPositions((currentUserPositions) => [
-      ...currentUserPositions,
-      [position.coords.longitude, position.coords.latitude],
-    ]);
-  }, [position, setCurrentUserPositions]);
+  // useEffect(() => {
+  //   if (!position) return;
+  //   setCurrentUserPositions((currentUserPositions) => [
+  //     ...currentUserPositions,
+  //     [position.coords.longitude, position.coords.latitude],
+  //   ]);
+  // }, [position, setCurrentUserPositions]);
 
   const [checkpointsLocations, setCheckpointsLocations] = useState([]);
 
@@ -63,7 +63,9 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
       <div className="wrapper">
         {currentSection && (
           <div className="current-section">
-            <div>{currentSection.label}</div>
+            <div className="arrival">{currentSection.arrivalLocation}</div>
+            <div className="divider" />
+            <div className="departure">{currentSection.depatureLocation}</div>
           </div>
         )}
         <MapGL
