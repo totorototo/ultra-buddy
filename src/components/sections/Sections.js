@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import * as d3Array from "d3-array";
 
 import styled from "./style";
-import Section from "../sections/section/Section";
 import useResizeObserver from "../../hooks/useResizeObserver";
 import useIntersect from "../../hooks/useIntersect";
 import Graph from "../graph/Graph";
@@ -21,7 +20,7 @@ const Container = customStyled.div`
   flex: none;
 `;
 
-const IntersectBox = ({ root, setCurrentSection, name, ...rest }) => {
+const IntersectSection = ({ root, setCurrentSection, id, ...rest }) => {
   const [ref, entry] = useIntersect({
     threshold: 0.5,
     root: root.current,
@@ -29,15 +28,11 @@ const IntersectBox = ({ root, setCurrentSection, name, ...rest }) => {
   });
 
   useEffect(() => {
-    if (entry.intersectionRatio > 0.5) setCurrentSection(name);
-  }, [entry.intersectionRatio, setCurrentSection, name]);
+    if (entry.intersectionRatio > 0.5) setCurrentSection(id);
+  }, [entry.intersectionRatio, setCurrentSection, id]);
 
   return (
-    <Container
-      ratio={entry.intersectionRatio}
-      ref={ref}
-      className={entry.intersectionRatio > 0.6 && "active"}
-    >
+    <Container ref={ref}>
       <Graph {...rest} />
     </Container>
   );
@@ -78,7 +73,7 @@ const Sections = ({ className, sections, data }) => {
       <div className="analytics">
         {/* <div className="row">current section analytics</div>
         <div className="row">to be displayed</div> */}
-        {currentSection}
+        {currentSection + 1}
       </div>
       <div className="profile">
         <Graph
@@ -92,9 +87,9 @@ const Sections = ({ className, sections, data }) => {
 
       <div ref={root} className="section">
         {sections.map((section, index) => (
-          <IntersectBox
+          <IntersectSection
             setCurrentSection={setCurrentSection}
-            name={index}
+            id={index}
             root={root}
             key={index}
             data={section.coordinates}
