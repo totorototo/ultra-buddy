@@ -9,7 +9,7 @@ export default (Component) => styled(Component)`
   height: 100%;
   flex: 1 1 auto;
   width: 100%;
-  font-family: roboto;
+  // font-family: roboto;
   position: relative;
   color: #ffffff94;
 
@@ -50,6 +50,11 @@ export default (Component) => styled(Component)`
     flex-direction: column;
     width: 100%;
     margin-bottom: auto;
+
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 150px;
 
     .row {
       display: flex;
