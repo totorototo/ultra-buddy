@@ -3,10 +3,24 @@ import React from "react";
 import styled from "./style";
 import Graph from "../../graph/Graph";
 
-const Section = ({ className, data, width, height, domain }) => {
+const Section = ({
+  className,
+  data,
+  width,
+  height,
+  domain,
+  color,
+  ...rest
+}) => {
   return (
     <div className={className}>
-      <Graph data={data} width={width} height={height} domain={domain} />
+      <Graph
+        color={color}
+        data={data}
+        width={width}
+        height={height}
+        domain={domain}
+      />
     </div>
   );
 };

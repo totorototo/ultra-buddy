@@ -7,7 +7,7 @@ import styled from "./style";
 import mapStyle from "./style.json";
 import trace from "../../helpers/trace";
 import placeIcon from "../../assets/icon-atlas.png";
-import useWatchPosition from "../../hooks/useWatchPosition";
+// import useWatchPosition from "../../hooks/useWatchPosition";
 
 const Map = ({ className, route, checkpoints, currentSection }) => {
   const [viewport, setViewport] = useState({
@@ -18,9 +18,7 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
     pitch: 0,
   });
 
-  const [currentUserPositions, setCurrentUserPositions] = useState([
-    [0.32715, 42.82985],
-  ]);
+  const [currentUserPositions, setCurrentUserPositions] = useState([]);
 
   // const [position, _] = useWatchPosition();
 

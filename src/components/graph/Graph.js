@@ -8,7 +8,7 @@ const Gradient = ({ from = "#398AB8", to = "#FFFFFF00", ...restProps }) => {
   return <LinearGradient from={from} to={to} {...restProps} />;
 };
 
-const Graph = ({ className, width, height, data = [], domain }) => {
+const Graph = ({ className, width, height, data = [], domain, color }) => {
   const [shape, setShape] = useState();
 
   useEffect(() => {
@@ -31,16 +31,17 @@ const Graph = ({ className, width, height, data = [], domain }) => {
   }, [width, height, data, domain]); // TODO: fix dependency issue
 
   return data.length > 0 && shape ? (
-    <svg height={height} width={width} className={className}>
-      <Gradient id="gradient" />
-      <path
-        d={shape.path}
-        stroke="white"
-        strokeWidth="1"
-        fill="white"
-        fillOpacity="1"
-      />
-    </svg>
+    <div className={className} style={{ width, height }}>
+      <svg height={height} width={width}>
+        <Gradient id="gradient" />
+        <path
+          d={shape.path}
+          stroke={color ? color : "#ffffff94"}
+          strokeWidth="0"
+          fill={color ? color : "#ffffff94"}
+        />
+      </svg>
+    </div>
   ) : (
     <div>loading</div>
   );
