@@ -41,6 +41,7 @@ export default (Component) => styled(Component)`
   }
 
   .sections-wrapper {
+    -webkit-tap-highlight-color: transparent;
     height: 100%;
     width: 100%;
     background: ${(props) => props.theme.colors.background};

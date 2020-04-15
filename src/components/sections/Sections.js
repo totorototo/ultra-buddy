@@ -40,7 +40,7 @@ const Sections = ({ className, sections, data }) => {
       </div>
       <div className="profile">
         <Graph
-          width={getContentRect("width")}
+          width={getContentRect("width") || 200}
           height={120}
           data={data}
           domain={domain}
@@ -53,7 +53,7 @@ const Sections = ({ className, sections, data }) => {
           <Section
             key={index}
             data={section.coordinates}
-            width={getContentRect("width")}
+            width={getContentRect("width") || 200}
             height={200}
             domain={domain}
             color="#D5A021"
