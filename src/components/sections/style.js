@@ -9,7 +9,6 @@ export default (Component) => styled(Component)`
   height: 100%;
   flex: 1 1 auto;
   width: 100%;
-  // font-family: roboto;
   position: relative;
   color: #ffffff94;
 
@@ -26,7 +25,7 @@ export default (Component) => styled(Component)`
     flex-flow: row nowrap;
     scroll-snap-type: x mandatory;
 
-    > ${Section} {
+    ${Section} {
       scroll-snap-align: center;
       width: 100%;
     }
@@ -50,11 +49,34 @@ export default (Component) => styled(Component)`
     flex-direction: column;
     width: 100%;
     margin-bottom: auto;
-
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 150px;
+
+    .data {
+      display: flex;
+
+      .index {
+        color: white;
+        font-size: 150px;
+        margin-right: ${(props) => props.theme.space[2]}px;
+      }
+      .stats {
+        display: flex;
+        flex-direction: column;
+        font-family: roboto;
+        font-size: 12px;
+        margin-left: ${(props) => props.theme.space[2]}px;
+
+        .title {
+          font-weight: bolder;
+        }
+        .item {
+          margin-top: ${(props) => props.theme.space[2]}px;
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
 
     .row {
       display: flex;

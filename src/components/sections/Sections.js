@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import * as d3Array from "d3-array";
+import { formatDistance, format } from "date-fns";
 
 import styled from "./style";
 import useResizeObserver from "../../hooks/useResizeObserver";
@@ -73,7 +74,45 @@ const Sections = ({ className, sections, data }) => {
       <div className="analytics">
         {/* <div className="row">current section analytics</div>
         <div className="row">to be displayed</div> */}
-        {currentSection + 1}
+        <div className="data">
+          <div className="index">{currentSection + 1}</div>
+          <div className="stats">
+            <div className="title">
+              {`${sections[currentSection].depatureLocation} - ${sections[currentSection].arrivalLocation}`}
+            </div>
+            <div className="item">
+              <div>{sections[currentSection].distance.toFixed(2)} km</div>
+              <div>distance</div>
+            </div>
+            <div className="item">
+              <div>
+                {`${sections[currentSection].elevation.positive.toFixed(
+                  0
+                )} m - ${sections[currentSection].elevation.negative.toFixed(
+                  0
+                )} m`}
+              </div>
+              <div>elevation D+/D-</div>
+            </div>
+            <div className="item">
+              <div>
+                {formatDistance(0, sections[currentSection].duration, {
+                  includeSeconds: true,
+                })}
+              </div>
+              <div>duration</div>
+            </div>
+            <div className="item">
+              <div>
+                {format(
+                  new Date(sections[currentSection].timeBarrier),
+                  "dd-MM HH:mm"
+                )}
+              </div>
+              <div>time barrier</div>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="profile">
         <Graph

@@ -5,15 +5,13 @@ export default (Component) => styled(Component)`
   display: flex;
   flex: 1 1 auto;
   height: 100%;
-  padding: ${(props) => props.theme.space[2]}px;
 
   .wrapper {
     align-self: center;
     display: flex;
     flex: 1 1 auto;
     height: 100%;
-    border-radius: ${(props) => props.theme.space[3]}px;
-    background-color: #ffffff94;
+    color: #ffffff94;
   }
 
   .current-section {
@@ -24,8 +22,6 @@ export default (Component) => styled(Component)`
     font-family: roboto;
     writing-mode: vertical-rl;
     text-orientation: sideways;
-    border-top-left-radius: ${(props) => props.theme.space[3]}px;
-    border-bottom-left-radius: ${(props) => props.theme.space[3]}px;
     > div {
       &.departure {
         margin-top: auto;
@@ -40,7 +36,7 @@ export default (Component) => styled(Component)`
   }
 
   .mapboxgl-map {
-    border-radius: ${(props) => props.theme.space[3]}px;
+    border-top-left-radius: ${(props) => props.theme.space[2]}px;
   }
   .mapboxgl-ctrl-bottom-right {
     display: none;

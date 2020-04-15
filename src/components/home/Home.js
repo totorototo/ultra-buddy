@@ -42,14 +42,6 @@ const Home = ({ className, setRoute, setCheckpoints, setSections }) => {
 
   return (
     <div className={className}>
-      <div className="carousel x-mandatory x-scroll">
-        <div className="wrapper">
-          <div className="element">1</div>
-          <div className="element">2</div>
-          <div className="element">3</div>
-          <div className="element">4</div>
-        </div>
-      </div>
       <div className="commands">
         <FileUpload
           name="gpx"
