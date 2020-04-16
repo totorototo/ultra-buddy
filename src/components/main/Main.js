@@ -97,7 +97,7 @@ const Main = ({ className }) => {
               Options
             </h1>
             <div className="section-content">
-              <Options />
+              <Options setRoute={setRoute} setCheckpoints={setCheckpoints} />
             </div>
           </div>
         </section>
