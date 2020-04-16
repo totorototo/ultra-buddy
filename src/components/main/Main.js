@@ -163,6 +163,8 @@ const Main = ({ className }) => {
             </h1>
             <div className="section-content">
               <Home
+                route={route}
+                checkpoints={checkpoints}
                 setRoute={setRoute}
                 setCheckpoints={setCheckpoints}
                 setSections={setSections}

@@ -11,12 +11,6 @@ export default (Component) => styled(Component)`
     display: flex;
     flex: 1 1 auto;
     width: 100%;
-    // padding: 8px;
-
-    p {
-      font-family: helvetica;
-      color: white;
-    }
   }
 
   .sections-wrapper .container {

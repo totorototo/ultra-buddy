@@ -2,12 +2,96 @@ import styled from "styled-components";
 
 export default (Component) => styled(Component)`
   display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   height: 100%;
-  flex-direction: column;
+  font-family: roboto;
+  padding: ${(props) => props.theme.space[3]}px;
+  justify-content: space-around;
 
-  .commands {
-    padding: ${(props) => props.theme.space[5]}px;
-    display: inline-block;
+  .steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-direction: column;
+      font-size: 24px;
+      color: ${(props) => props.theme.colors.text};
+
+      &.done {
+        filter: brightness(50%);
+      }
+
+      &.current {
+        filter: brightness(50%);
+      }
+
+      .index {
+        border-radius: 50%;
+        border: 1px solid;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .label {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .content {
+    color: #ffffff94;
+    display: flex;
+    border: 1px dashed ${(props) => props.theme.colors.text};
+    border-radius: ${(props) => props.theme.space[2]}px;
+    width: 100%;
+    height: 50%;
+
+    .commands {
+      font-family: roboto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+
+      p {
+        text-align: center;
+        color: #ffffff94;
+      }
+
+      .file-upload {
+        border: 1px solid #ffffff94;
+        padding: ${(props) => props.theme.space[1]}px;
+        border-radius: ${(props) => props.theme.space[1]}px;
+      }
+    }
+  }
+
+  .summary {
+    color: #ffffff94;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50%;
+    font-size: 40px;
+
+    .flush {
+      font-size: 16px;
+      border: 1px solid #ffffff94;
+      padding: ${(props) => props.theme.space[1]}px;
+      border-radius: ${(props) => props.theme.space[1]}px;
+    }
   }
 `;
