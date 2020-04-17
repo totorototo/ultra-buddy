@@ -2,23 +2,23 @@ import styled from "styled-components";
 
 export default (Component) => styled(Component)`
   display: flex;
+  position: relative;
   flex-direction: column;
   flex: 1 1 auto;
   height: 100%;
-  font-family: roboto;
   padding: ${(props) => props.theme.space[3]}px;
-  justify-content: space-around;
+  justify-content: center;
 
   .steps {
+    font-family: roboto;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-around;
 
     .item {
       display: flex;
       align-items: center;
       justify-content: center;
-
       flex-direction: column;
       font-size: 24px;
       color: ${(props) => props.theme.colors.text};
@@ -36,8 +36,8 @@ export default (Component) => styled(Component)`
         border: 1px solid;
         margin-top: 8px;
         margin-bottom: 8px;
-        width: 32px;
-        height: 32px;
+        width: 44px;
+        height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -49,6 +49,7 @@ export default (Component) => styled(Component)`
   }
 
   .content {
+    margin-top: 40px;
     color: #ffffff94;
     display: flex;
     border: 1px dashed ${(props) => props.theme.colors.text};
