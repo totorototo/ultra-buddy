@@ -54,18 +54,24 @@ export default (Component) => styled(Component)`
 
     .data {
       display: flex;
+      width: 100%;
 
       .index {
         color: white;
         font-size: 150px;
-        margin-right: ${(props) => props.theme.space[2]}px;
+
+        width: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
       }
+
       .stats {
+        width: 60%;
         display: flex;
         flex-direction: column;
         font-family: roboto;
-        font-size: 12px;
-        margin-left: ${(props) => props.theme.space[2]}px;
+        font-size: 14px;
 
         .title {
           font-weight: bolder;

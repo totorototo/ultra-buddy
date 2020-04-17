@@ -72,8 +72,6 @@ const Sections = ({ className, sections, data }) => {
   return (
     <div ref={ref} className={className}>
       <div className="analytics">
-        {/* <div className="row">current section analytics</div>
-        <div className="row">to be displayed</div> */}
         <div className="data">
           <div className="index">{currentSection + 1}</div>
           <div className="stats">
