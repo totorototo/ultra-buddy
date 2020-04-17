@@ -15,8 +15,21 @@ export default (Component) => styled(Component)`
     align-items: center;
     justify-content: space-around;
 
+    .connecting-line {
+      border-bottom: 1px dashed #ffffff94;
+      color: #ffffff94;
+      background: transparent;
+      width: 100%;
+      margin-left: 20px;
+      margin-right: 20px;
+      &.done {
+        filter: brightness(50%);
+      }
+    }
+
     .item {
       display: flex;
+
       align-items: center;
       justify-content: center;
       flex-direction: column;

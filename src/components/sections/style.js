@@ -55,6 +55,7 @@ export default (Component) => styled(Component)`
     .data {
       display: flex;
       width: 100%;
+      align-items: center;
 
       .index {
         color: white;

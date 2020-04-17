@@ -63,11 +63,12 @@ const Home = ({
           <div className="index">{step > 0 ? <Check size="40" /> : "1"}</div>
           <div className="label">trace</div>
         </div>
-
+        <div className={`connecting-line ${step > 0 ? "done" : ""}`} />
         <div className={`item ${step > 1 ? "done" : ""}`}>
           <div className="index">{step > 1 ? <Check size="40" /> : "2"}</div>
           <div className="label">roadbook</div>
         </div>
+        <div className={`connecting-line ${step > 1 ? "done" : ""}`} />
         <div className={`item ${step > 2 ? "done" : ""}`}>
           <div className="index">{step >= 2 ? <Check size="40" /> : "3"}</div>
           <div className="label">summary</div>
@@ -78,7 +79,8 @@ const Home = ({
           <div className="commands">
             <UploadCloud size="48" />
             <p>
-              drag and drop file here <br />
+              {`drag and drop ${CONFIGURATIONS[step].extension} file here`}{" "}
+              <br />
               or
             </p>
             <FileUpload
