@@ -11,7 +11,13 @@ import { ReactComponent as Mushroom } from "../../assets/mushroom.svg";
 import { ReactComponent as Monster } from "../../assets/monster.svg";
 import { ReactComponent as Wrench } from "../../assets/wrench.svg";
 
-const Options = ({ className, setRoute, setCheckpoints }) => {
+const Options = ({
+  className,
+  setRoute,
+  setCheckpoints,
+  setSections,
+  setCurrentSection,
+}) => {
   return (
     <div className={className}>
       <Beer width={80} height={80} />
@@ -25,6 +31,8 @@ const Options = ({ className, setRoute, setCheckpoints }) => {
         onClick={() => {
           setRoute(null);
           setCheckpoints(null);
+          setSections(null);
+          setCurrentSection(null);
         }}
         width={80}
         height={80}

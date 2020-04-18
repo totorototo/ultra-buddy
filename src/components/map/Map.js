@@ -59,13 +59,15 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
   return (
     <div className={className}>
       <div className="wrapper">
-        {currentSection && (
-          <div className="current-section">
-            <div className="arrival">{currentSection.arrivalLocation}</div>
-            <div className="divider" />
-            <div className="departure">{currentSection.depatureLocation}</div>
-          </div>
-        )}
+        <div className="current-section">
+          {currentSection && (
+            <>
+              <div className="arrival">{currentSection.arrivalLocation}</div>
+              <div className="divider" />
+              <div className="departure">{currentSection.depatureLocation}</div>
+            </>
+          )}
+        </div>
         <MapGL
           {...viewport}
           width="100%"
