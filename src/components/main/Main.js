@@ -13,9 +13,9 @@ const Main = ({ className }) => {
   const [route, setRoute] = usePresistedState("route", null);
   const [checkpoints, setCheckpoints] = usePresistedState("checkpoints", null);
   const [sections, setSections] = usePresistedState("sections", null);
-  const [currentSection, setCurrentSection] = usePresistedState(
+  const [currentSectionIndex, setCurrentSectionIndex] = usePresistedState(
     "current-section",
-    null
+    -1
   );
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
@@ -78,7 +78,7 @@ const Main = ({ className }) => {
       []
     );
     setSections(sectionsDetails);
-  }, [checkpoints, route, setSections, setCurrentSection]);
+  }, [checkpoints, route, setSections, setCurrentSectionIndex]);
 
   return (
     <div className={className}>
@@ -99,7 +99,7 @@ const Main = ({ className }) => {
                 setRoute={setRoute}
                 setCheckpoints={setCheckpoints}
                 setSections={setSections}
-                setCurrentSection={setCurrentSection}
+                setCurrentSectionIndex={setCurrentSectionIndex}
               />
             </div>
           </div>
@@ -127,6 +127,7 @@ const Main = ({ className }) => {
             <div className="section-content">
               {route && sections && (
                 <Sections
+                  currentSectionIndex={currentSectionIndex}
                   sections={sections}
                   data={route.features[0].geometry.coordinates}
                 />
@@ -147,8 +148,8 @@ const Main = ({ className }) => {
             <div className="section-content">
               <Map
                 sections={sections}
-                setCurrentSection={setCurrentSection}
-                currentSection={currentSection}
+                setCurrentSectionIndex={setCurrentSectionIndex}
+                currentSectionIndex={currentSectionIndex}
                 route={route}
                 checkpoints={checkpoints}
               />

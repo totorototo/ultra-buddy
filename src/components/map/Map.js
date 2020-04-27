@@ -13,9 +13,9 @@ const Map = ({
   className,
   route,
   checkpoints,
-  currentSection,
+  currentSectionIndex,
   sections,
-  setCurrentSection,
+  setCurrentSectionIndex,
 }) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
@@ -39,10 +39,10 @@ const Map = ({
         // get current section
         const index = helper.getLocationIndex(closestLocation);
         const sectionIndex = sections.findIndex((section) => {
-          return index >= section.indices[0] && index < section.indices[1];
+          return index >= section.indices[0] && index <= section.indices[1];
         });
 
-        if (sectionIndex >= 0) setCurrentSection(sections[sectionIndex]);
+        setCurrentSectionIndex(sectionIndex);
 
         // display map marker
         setClosestPositions((closestPositions) => [
@@ -90,11 +90,15 @@ const Map = ({
     <div className={className}>
       <div className="wrapper">
         <div className="current-section">
-          {currentSection && (
+          {currentSectionIndex >= 0 && (
             <>
-              <div className="arrival">{currentSection.arrivalLocation}</div>
+              <div className="arrival">
+                {sections[currentSectionIndex].arrivalLocation}
+              </div>
               <div className="divider" />
-              <div className="departure">{currentSection.depatureLocation}</div>
+              <div className="departure">
+                {sections[currentSectionIndex].depatureLocation}
+              </div>
             </>
           )}
         </div>

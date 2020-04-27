@@ -21,7 +21,7 @@ const Container = customStyled.div`
   flex: none;
 `;
 
-const IntersectSection = ({ root, setCurrentSection, id, ...rest }) => {
+const IntersectSection = ({ root, setSection, current, id, ...rest }) => {
   const [ref, entry] = useIntersect({
     threshold: 0.5,
     root: root.current,
@@ -29,17 +29,17 @@ const IntersectSection = ({ root, setCurrentSection, id, ...rest }) => {
   });
 
   useEffect(() => {
-    if (entry.intersectionRatio > 0.5) setCurrentSection(id);
-  }, [entry.intersectionRatio, setCurrentSection, id]);
+    if (entry.intersectionRatio > 0.5) setSection(id);
+  }, [entry.intersectionRatio, setSection, id]);
 
   return (
     <Container ref={ref}>
-      <Graph {...rest} />
+      <Graph color={current ? "#D5A021" : "#D5A021"} {...rest} />
     </Container>
   );
 };
 
-const Sections = ({ className, sections, data }) => {
+const Sections = ({ className, sections, currentSectionIndex, data }) => {
   const [domain, setDomain] = useState({
     x: { min: 0, max: 0 },
     y: { min: 0, max: 0 },
@@ -67,34 +67,32 @@ const Sections = ({ className, sections, data }) => {
 
   const root = useRef(null);
 
-  const [currentSection, setCurrentSection] = useState(0);
+  const [section, setSection] = useState(0);
 
   return (
     <div ref={ref} className={className}>
       <div className="analytics">
         <div className="data">
-          <div className="index">{currentSection + 1}</div>
+          <div className="index">{section + 1}</div>
           <div className="stats">
             <div className="title">
-              {`${sections[currentSection].depatureLocation} - ${sections[currentSection].arrivalLocation}`}
+              {`${sections[section].depatureLocation} - ${sections[section].arrivalLocation}`}
             </div>
             <div className="item">
-              <div>{sections[currentSection].distance.toFixed(2)} km</div>
+              <div>{sections[section].distance.toFixed(2)} km</div>
               <div>distance</div>
             </div>
             <div className="item">
               <div>
-                {`${sections[currentSection].elevation.positive.toFixed(
+                {`${sections[section].elevation.positive.toFixed(
                   0
-                )} m - ${sections[currentSection].elevation.negative.toFixed(
-                  0
-                )} m`}
+                )} m - ${sections[section].elevation.negative.toFixed(0)} m`}
               </div>
               <div>elevation D+/D-</div>
             </div>
             <div className="item">
               <div>
-                {formatDistance(0, sections[currentSection].duration, {
+                {formatDistance(0, sections[section].duration, {
                   includeSeconds: true,
                 })}
               </div>
@@ -102,10 +100,7 @@ const Sections = ({ className, sections, data }) => {
             </div>
             <div className="item">
               <div>
-                {format(
-                  new Date(sections[currentSection].timeBarrier),
-                  "dd-MM HH:mm"
-                )}
+                {format(new Date(sections[section].timeBarrier), "dd-MM HH:mm")}
               </div>
               <div>time barrier</div>
             </div>
@@ -125,7 +120,8 @@ const Sections = ({ className, sections, data }) => {
       <div ref={root} className="section">
         {sections.map((section, index) => (
           <IntersectSection
-            setCurrentSection={setCurrentSection}
+            current={currentSectionIndex === index}
+            setSection={setSection}
             id={index}
             root={root}
             key={index}
@@ -133,7 +129,6 @@ const Sections = ({ className, sections, data }) => {
             width={getContentRect("width") || 200}
             height={200}
             domain={domain}
-            color="#D5A021"
           />
         ))}
       </div>
