@@ -173,17 +173,28 @@ const trace = (...locations) => {
 
   const findClosestLocation = (currentLocation) => {
     if (locations.length === 0) return;
-    const delta = locations.reduce((accu, location) => {
-      const distance = computeDistanceBetweenLocations(
-        location,
-        currentLocation
-      );
+    const closestLocation = locations.reduce(
+      (accu, location) => {
+        const distance = computeDistanceBetweenLocations(
+          location,
+          currentLocation
+        );
 
-      accu.push({ location, delta: distance });
-      return accu;
-    }, []);
-    const res = delta.sort((a, b) => a.delta - b.delta);
-    return res[0].location;
+        if (distance < accu.distance) {
+          accu.distance = distance;
+          accu.location = location;
+        }
+        return accu;
+      },
+      {
+        location: locations[0],
+        distance: computeDistanceBetweenLocations(
+          currentLocation,
+          locations[0]
+        ),
+      }
+    );
+    return closestLocation.location;
   };
 
   return {
