@@ -14,6 +14,21 @@ export default (Component) => styled(Component)`
     color: #ffffff94;
   }
 
+  .fab {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff94;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    z-index: 2;
+  }
+
   .current-section {
     width: 40px;
     display: flex;

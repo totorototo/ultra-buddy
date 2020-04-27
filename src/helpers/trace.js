@@ -197,12 +197,21 @@ const trace = (...locations) => {
     return closestLocation.location;
   };
 
+  const getLocationIndex = (location) =>
+    locations.findIndex(
+      (currentLocation) =>
+        currentLocation[0] === location[0] &&
+        currentLocation[1] === location[1] &&
+        currentLocation[2] === location[2]
+    );
+
   return {
     computeDistance,
     computeElevation,
     computeRegion,
     getLocationAt,
     getLocationIndexAt,
+    getLocationIndex,
     getPeaksLocations,
     splitTrace,
     findClosestLocation,

@@ -6,7 +6,6 @@ import Home from "../home/Home";
 import Map from "../map/Map";
 import Options from "../options/Options";
 import Sections from "../sections/Sections";
-// import Profile from "../profile/Profile";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
 
@@ -79,7 +78,6 @@ const Main = ({ className }) => {
       []
     );
     setSections(sectionsDetails);
-    setCurrentSection(sectionsDetails[0]);
   }, [checkpoints, route, setSections, setCurrentSection]);
 
   return (
@@ -132,7 +130,6 @@ const Main = ({ className }) => {
                   sections={sections}
                   data={route.features[0].geometry.coordinates}
                 />
-                // <Profile data={route.features[0].geometry.coordinates} />
               )}
             </div>
           </div>
@@ -149,6 +146,8 @@ const Main = ({ className }) => {
             </h1>
             <div className="section-content">
               <Map
+                sections={sections}
+                setCurrentSection={setCurrentSection}
                 currentSection={currentSection}
                 route={route}
                 checkpoints={checkpoints}

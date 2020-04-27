@@ -2,14 +2,21 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useState, useEffect } from "react";
 import MapGL, { Source, Layer } from "react-map-gl";
 import DeckGL, { IconLayer } from "deck.gl";
+import { Location } from "@styled-icons/octicons";
 
 import styled from "./style";
 import mapStyle from "./style.json";
 import trace from "../../helpers/trace";
 import placeIcon from "../../assets/icon-atlas.png";
-// import useWatchPosition from "../../hooks/useWatchPosition";
 
-const Map = ({ className, route, checkpoints, currentSection }) => {
+const Map = ({
+  className,
+  route,
+  checkpoints,
+  currentSection,
+  sections,
+  setCurrentSection,
+}) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
     longitude: 0.32715,
@@ -18,17 +25,39 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
     pitch: 0,
   });
 
-  const [currentUserPositions, setCurrentUserPositions] = useState([]);
+  const [closestPositions, setClosestPositions] = useState([]);
 
-  // const [position, _] = useWatchPosition();
+  const getCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const helper = trace(...route.features[0].geometry.coordinates);
+        const closestLocation = helper.findClosestLocation([
+          position.coords.longitude,
+          position.coords.latitude,
+        ]);
 
-  // useEffect(() => {
-  //   if (!position) return;
-  //   setCurrentUserPositions((currentUserPositions) => [
-  //     ...currentUserPositions,
-  //     [position.coords.longitude, position.coords.latitude],
-  //   ]);
-  // }, [position, setCurrentUserPositions]);
+        // get current section
+        const index = helper.getLocationIndex(closestLocation);
+        const sectionIndex = sections.findIndex((section) => {
+          return index >= section.indices[0] && index < section.indices[1];
+        });
+
+        if (sectionIndex >= 0) setCurrentSection(sections[sectionIndex]);
+
+        // display map marker
+        setClosestPositions((closestPositions) => [
+          ...closestPositions,
+          closestLocation,
+        ]);
+      },
+      (error) => console.log(error),
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      }
+    );
+  };
 
   const [checkpointsLocations, setCheckpointsLocations] = useState([]);
 
@@ -53,6 +82,7 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
     const helper = trace(...route.features[0].geometry.coordinates);
     const distances = checkpoints.map((checkpoint) => checkpoint.distance);
     const locations = helper.getLocationAt(...distances);
+
     setCheckpointsLocations(locations);
   }, [checkpoints, route]);
 
@@ -76,6 +106,14 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
           onViewportChange={setViewport}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
         >
+          <Location
+            onClick={() => {
+              getCurrentLocation();
+            }}
+            className="fab"
+            size="16"
+            color="#007EA7"
+          />
           {route && (
             <Source id="my-data" type="geojson" data={route}>
               <Layer
@@ -118,8 +156,8 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
                 getColor: (d) => [187, 52, 57],
               }),
               new IconLayer({
-                id: "user-layer",
-                data: currentUserPositions,
+                id: "location-layer",
+                data: closestPositions,
                 pickable: true,
                 iconAtlas: placeIcon,
                 iconMapping: {
@@ -133,10 +171,10 @@ const Map = ({ className, route, checkpoints, currentSection }) => {
                   },
                 },
                 sizeScale: 8,
-                getPosition: (d) => d,
+                getPosition: (d) => [d[0], d[1]],
                 getIcon: (d) => "marker",
                 getSize: (d) => 3,
-                getColor: (d) => [187, 52, 57],
+                getColor: (d) => [0, 126, 167],
               }),
             ]}
           />
