@@ -1,12 +1,11 @@
-const computeDistanceBetweenLocations = (
-  origin = { longitude: 0, latitude: 0 },
-  destination = { longitude: 0, latitude: 0 }
-) => {
+// reminder: location=[longitude, latitude]
+
+const computeDistanceBetweenLocations = (origin, destination) => {
   const R = 6371e3; // metres
-  const φ1 = (origin.latitude * Math.PI) / 180;
-  const φ2 = (destination.latitude * Math.PI) / 180;
-  const Δφ = ((destination.latitude - origin.latitude) * Math.PI) / 180;
-  const Δλ = ((destination.longitude - origin.longitude) * Math.PI) / 180;
+  const φ1 = (origin[1] * Math.PI) / 180;
+  const φ2 = (destination[1] * Math.PI) / 180;
+  const Δφ = ((destination[1] - origin[1]) * Math.PI) / 180;
+  const Δλ = ((destination[0] - origin[0]) * Math.PI) / 180;
 
   const a =
     Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
@@ -22,19 +21,11 @@ const trace = (...locations) => {
       (distance, location, index, array) =>
         index < array.length - 1
           ? distance +
-            computeDistanceBetweenLocations(
-              {
-                longitude: location[0],
-                latitude: location[1],
-              },
-              {
-                longitude: array[index + 1][0],
-                latitude: array[index + 1][1],
-              }
-            )
+            computeDistanceBetweenLocations(location, array[index + 1])
           : distance,
       0
     );
+
   const computeElevation = (smoothingFactor = 5) => {
     const elevations = locations.map((location) => location[2]);
 
@@ -54,9 +45,11 @@ const trace = (...locations) => {
           }, 0);
 
           const averageElevationGain = elevationGain / (smoothingFactor * 2);
-          return [...elevations, averageElevationGain];
+          elevations.push(averageElevationGain);
+          return elevations;
         }
-        return [...elevations, elevation];
+        elevations.push(elevation);
+        return elevations;
       },
       []
     );
@@ -65,13 +58,11 @@ const trace = (...locations) => {
         if (values[index + 1]) {
           const Δφ = values[index + 1] - elevation;
           if (Δφ > 0) {
-            return { ...elevationGain, positive: elevationGain.positive + Δφ };
+            elevationGain.positive = elevationGain.positive + Δφ;
           } else {
-            return {
-              ...elevationGain,
-              negative: elevationGain.negative + Math.abs(Δφ),
-            };
+            elevationGain.negative = elevationGain.negative + Math.abs(Δφ);
           }
+          return elevationGain;
         }
         return elevationGain;
       },
@@ -104,49 +95,38 @@ const trace = (...locations) => {
       (accu, location, index, array) => {
         if (index > 0) {
           const distance = computeDistanceBetweenLocations(
-            {
-              longitude: array[index - 1][0],
-              latitude: array[index - 1][1],
-            },
-            {
-              longitude: location[0],
-              latitude: location[1],
-            }
+            array[index - 1],
+            location
           );
-          const totalDistance = accu.distance + distance;
-          return {
-            ...accu,
-            distance: totalDistance,
-            map: [...accu.map, [index, totalDistance]],
-          };
+          accu.distance += distance;
+          accu.map.push([index, accu.distance]);
+          return accu;
         } else {
-          return {
-            ...accu,
-            distance: 0,
-            map: [...accu.map, [index, 0]],
-          };
+          accu.distance = 0;
+          accu.map.push([index, 0]);
+          return accu;
         }
       },
       { distance: 0, map: [] }
     );
 
-  const getLocationAt = (...distances) => {
-    const enhancedLocations = mapLocationToDistance();
-    return distances.map((distance) => {
-      const sortedLocations = enhancedLocations.map.sort(
-        (a, b) => Math.abs(distance - a[1]) - Math.abs(distance - b[1])
-      );
-      return locations[sortedLocations[0][0]];
-    });
+  const findClosestIndex = (map, distance) => {
+    return map.reduce((accu, item) => {
+      if (accu === null) return item;
+      if (Math.abs(distance - item[1]) > Math.abs(distance - accu[1])) {
+        return accu;
+      }
+      return item;
+    })[0];
   };
+
+  const getLocationAt = (...distances) =>
+    getLocationIndexAt(...distances).map((index) => locations[index]);
 
   const getLocationIndexAt = (...distances) => {
     const enhancedLocations = mapLocationToDistance();
     return distances.map((distance) => {
-      const sortedLocations = enhancedLocations.map.sort(
-        (a, b) => Math.abs(distance - a[1]) - Math.abs(distance - b[1])
-      );
-      return sortedLocations[0][0];
+      return findClosestIndex(enhancedLocations.map, distance);
     });
   };
 
@@ -166,13 +146,11 @@ const trace = (...locations) => {
             const treshold = Math.abs(
               location[2] - array[accu.lastPeakIndex][2]
             );
-            return treshold > 250
-              ? {
-                  ...accu,
-                  peaks: [...accu.peaks, peak],
-                  lastPeakIndex: index,
-                }
-              : accu;
+            if (treshold > 250) {
+              accu.peaks.push(peak);
+              accu.lastPeakIndex = index;
+            }
+            return accu;
           }
         }
         return accu;
@@ -193,6 +171,21 @@ const trace = (...locations) => {
     return splitTrace;
   };
 
+  const findClosestLocation = (currentLocation) => {
+    if (locations.length === 0) return;
+    const delta = locations.reduce((accu, location) => {
+      const distance = computeDistanceBetweenLocations(
+        location,
+        currentLocation
+      );
+
+      accu.push({ location, delta: distance });
+      return accu;
+    }, []);
+    const res = delta.sort((a, b) => a.delta - b.delta);
+    return res[0].location;
+  };
+
   return {
     computeDistance,
     computeElevation,
@@ -201,6 +194,7 @@ const trace = (...locations) => {
     getLocationIndexAt,
     getPeaksLocations,
     splitTrace,
+    findClosestLocation,
   };
 };
 

@@ -99,7 +99,8 @@ export default (Component) => styled(Component)`
     flex-direction: column;
     width: 100%;
     height: 50%;
-    font-size: 40px;
+    font-family: roboto;
+    font-size: ${(props) => props.theme.space[3]}px;
 
     .flush {
       font-size: 16px;
