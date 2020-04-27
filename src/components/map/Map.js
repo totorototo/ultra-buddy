@@ -36,19 +36,20 @@ const Map = ({
           position.coords.latitude,
         ]);
 
-        // get current section
         const index = helper.getLocationIndex(closestLocation);
-        const sectionIndex = sections.findIndex((section) => {
-          return index >= section.indices[0] && index <= section.indices[1];
-        });
-
-        setCurrentSectionIndex(sectionIndex);
-
         // display map marker
         setClosestPositions((closestPositions) => [
           ...closestPositions,
           closestLocation,
         ]);
+
+        // set current sction
+        if (!sections) return;
+        const sectionIndex = sections.findIndex((section) => {
+          return index >= section.indices[0] && index <= section.indices[1];
+        });
+
+        setCurrentSectionIndex(sectionIndex);
       },
       (error) => console.log(error),
       {
