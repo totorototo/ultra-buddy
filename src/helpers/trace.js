@@ -209,7 +209,7 @@ const trace = (...locations) => {
         currentLocation[2] === location[2]
     );
 
-  const getProgession = (index) => {
+  const getProgression = (index) => {
     const mapIndexProgression = mapLocationsToProgression(locations);
     // eslint-disable-next-line no-unused-vars
     const [_, ...rest] = mapIndexProgression.map.find(
@@ -219,7 +219,7 @@ const trace = (...locations) => {
   };
 
   return {
-    getProgession,
+    getProgression,
     computeDistance,
     computeElevation,
     computeRegion,
