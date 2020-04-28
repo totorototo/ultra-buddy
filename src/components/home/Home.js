@@ -72,7 +72,7 @@ const Home = ({
   return (
     <div ref={ref} className={className}>
       {step < 2 ? (
-        <>
+        <div className="wrapper">
           <div className="steps">
             <div className={`item ${step > 0 ? "done" : ""}`}>
               <div className="index">
@@ -113,7 +113,7 @@ const Home = ({
               </FileUpload>
             </div>
           </div>
-        </>
+        </div>
       ) : (
         <div className="summary">
           {checkpoints && checkpoints.length > 0 && data && data.length > 0 && (

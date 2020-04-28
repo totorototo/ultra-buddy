@@ -8,8 +8,15 @@ export default (Component) => styled(Component)`
   height: 100%;
   justify-content: center;
 
-  .steps {
+  .wrapper {
+    display: flex;
+    flex: 1 1 auto;
     padding: ${(props) => props.theme.space[3]}px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .steps {
     font-family: roboto;
     display: flex;
     align-items: center;
