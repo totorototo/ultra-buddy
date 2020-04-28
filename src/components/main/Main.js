@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { differenceInMilliseconds } from "date-fns";
+import * as d3Array from "d3-array";
 
 import styled from "./style";
 import Home from "../home/Home";
@@ -14,6 +15,7 @@ const Main = ({ className }) => {
   const [route, setRoute] = usePresistedState("route", null);
   const [checkpoints, setCheckpoints] = usePresistedState("checkpoints", null);
   const [sections, setSections] = usePresistedState("sections", null);
+  const [locations, setLocations] = usePresistedState("locations", null);
   const [currentSectionIndex, setCurrentSectionIndex] = usePresistedState(
     "current-section",
     -1
@@ -31,6 +33,27 @@ const Main = ({ className }) => {
   const [helper, setHelper] = useState();
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
+  const [domain, setDomain] = useState({
+    x: { min: 0, max: 0 },
+    y: { min: 0, max: 0 },
+  });
+
+  useEffect(() => {
+    if (!route) return;
+    setLocations(route.features[0].geometry.coordinates);
+  }, [route, setLocations]);
+
+  useEffect(() => {
+    if (!locations) return;
+    const altitudes = locations.map((location) => location[2]);
+    const extentY = d3Array.extent(altitudes);
+    const lowerFullHundred = Math.floor(extentY[0] / 100) * 100;
+    setDomain((domain) => ({
+      ...domain,
+      x: { min: 0, max: locations.length },
+      y: { min: lowerFullHundred, max: extentY[1] },
+    }));
+  }, [locations]);
 
   useEffect(() => {
     if (currentLocationIndex === -1 || !helper) return;
@@ -39,13 +62,13 @@ const Main = ({ className }) => {
   }, [currentLocationIndex, helper, setProgression]);
 
   useEffect(() => {
-    if (!route) return;
-    const helper = trace(...route.features[0].geometry.coordinates);
+    if (!locations) return;
+    const helper = trace(...locations);
     setHelper(helper);
-  }, [route]);
+  }, [locations]);
 
   useEffect(() => {
-    if (!checkpoints || !route || !helper) return;
+    if (!checkpoints || !locations || !helper) return;
 
     const distances = checkpoints.map((checkpoint) => checkpoint.distance);
     const locationsIndices = helper.getLocationIndexAt(...distances);
@@ -62,10 +85,7 @@ const Main = ({ className }) => {
 
     // split trace into sections
     const sectionsLocations = sectionsIndices.reduce((accu, sectionIndices) => {
-      const section = route.features[0].geometry.coordinates.slice(
-        sectionIndices[0],
-        sectionIndices[1]
-      );
+      const section = locations.slice(sectionIndices[0], sectionIndices[1]);
       return [...accu, section];
     }, []);
 
@@ -108,7 +128,7 @@ const Main = ({ className }) => {
     );
 
     setSections(sectionsDetails);
-  }, [checkpoints, route, helper, setSections, setCurrentSectionIndex]);
+  }, [checkpoints, locations, helper, setSections, setCurrentSectionIndex]);
 
   return (
     <div className={className}>
@@ -133,6 +153,7 @@ const Main = ({ className }) => {
                 setCurrentLocation={setCurrentLocation}
                 setCurrentLocationIndex={setCurrentLocationIndex}
                 setProgression={setProgression}
+                setLocations={setLocations}
               />
             </div>
           </div>
@@ -167,7 +188,8 @@ const Main = ({ className }) => {
                 <Sections
                   currentSectionIndex={currentSectionIndex}
                   sections={sections}
-                  data={route.features[0].geometry.coordinates}
+                  data={locations}
+                  domain={domain}
                 />
               )}
             </div>
@@ -216,6 +238,8 @@ const Main = ({ className }) => {
                 setRoute={setRoute}
                 setCheckpoints={setCheckpoints}
                 setSections={setSections}
+                domain={domain}
+                data={locations}
               />
             </div>
           </div>

@@ -20,6 +20,7 @@ const Options = ({
   setCurrentLocation,
   setCurrentLocationIndex,
   setProgression,
+  setLocations,
 }) => {
   return (
     <div className={className}>
@@ -39,6 +40,7 @@ const Options = ({
           setCurrentLocationIndex(-1);
           setCurrentLocation(null);
           setProgression(null);
+          setLocations(null);
         }}
         width={80}
         height={80}

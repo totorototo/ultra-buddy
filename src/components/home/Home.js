@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import xmldom from "xmldom";
 import { gpx } from "@mapbox/togeojson";
 import { UploadCloud, Check } from "@styled-icons/feather";
@@ -8,6 +8,8 @@ import { formatDistanceToNow } from "date-fns";
 import styled from "./style";
 import FileUpload from "../fileUpload/FileUpload";
 import { fileType } from "../fileReader/FileReader";
+import useResizeObserver from "../../hooks/useResizeObserver";
+import Graph from "../graph/Graph";
 
 const Home = ({
   className,
@@ -16,8 +18,18 @@ const Home = ({
   setSections,
   route,
   checkpoints,
+  domain,
+  data,
 }) => {
   const [step, setStep] = useState(0);
+  const [ref, { contentRect }] = useResizeObserver();
+
+  const getContentRect = useCallback(
+    (key) => {
+      return contentRect && Math.round(contentRect[key]);
+    },
+    [contentRect]
+  );
 
   const CONFIGURATIONS = [
     {
@@ -58,7 +70,7 @@ const Home = ({
   }, [checkpoints, route, setStep]);
 
   return (
-    <div className={className}>
+    <div ref={ref} className={className}>
       {step < 2 ? (
         <>
           <div className="steps">
@@ -104,12 +116,19 @@ const Home = ({
         </>
       ) : (
         <div className="summary">
-          {checkpoints && checkpoints.length > 0 && (
-            <div>
-              {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
+          {checkpoints && checkpoints.length > 0 && data && data.length > 0 && (
+            <>
+              {/* {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
                 addSuffix: true,
-              })}
-            </div>
+              })} */}
+              <Graph
+                width={getContentRect("width") || 200}
+                height={120}
+                data={data}
+                domain={domain}
+              />
+              <div className="bottom" />
+            </>
           )}
         </div>
       )}

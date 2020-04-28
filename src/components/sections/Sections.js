@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import * as d3Array from "d3-array";
 import { formatDistance, format } from "date-fns";
 
 import styled from "./style";
@@ -39,23 +38,13 @@ const IntersectSection = ({ root, setSection, current, id, ...rest }) => {
   );
 };
 
-const Sections = ({ className, sections, currentSectionIndex, data }) => {
-  const [domain, setDomain] = useState({
-    x: { min: 0, max: 0 },
-    y: { min: 0, max: 0 },
-  });
-
-  useEffect(() => {
-    const altitudes = data.map((location) => location[2]);
-    const extentY = d3Array.extent(altitudes);
-    const lowerFullHundred = Math.floor(extentY[0] / 100) * 100;
-    setDomain((domain) => ({
-      ...domain,
-      x: { min: 0, max: data.length },
-      y: { min: lowerFullHundred, max: extentY[1] },
-    }));
-  }, [data]);
-
+const Sections = ({
+  className,
+  sections,
+  currentSectionIndex,
+  data,
+  domain,
+}) => {
   const [ref, { contentRect }] = useResizeObserver();
 
   const getContentRect = useCallback(

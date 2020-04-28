@@ -6,10 +6,10 @@ export default (Component) => styled(Component)`
   flex-direction: column;
   flex: 1 1 auto;
   height: 100%;
-  padding: ${(props) => props.theme.space[3]}px;
   justify-content: center;
 
   .steps {
+    padding: ${(props) => props.theme.space[3]}px;
     font-family: roboto;
     display: flex;
     align-items: center;
@@ -94,19 +94,18 @@ export default (Component) => styled(Component)`
   .summary {
     color: #ffffff94;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
     width: 100%;
-    height: 50%;
+    height: 100%;
     font-family: roboto;
     font-size: ${(props) => props.theme.space[4]}px;
-
-    .flush {
-      font-size: 16px;
-      border: 1px solid #ffffff94;
-      padding: ${(props) => props.theme.space[1]}px;
-      border-radius: ${(props) => props.theme.space[1]}px;
+    .bottom {
+      height: 150px;
+      width: 100%;
+      background: #ffffff94;
     }
   }
 `;
