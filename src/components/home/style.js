@@ -100,7 +100,7 @@ export default (Component) => styled(Component)`
     width: 100%;
     height: 50%;
     font-family: roboto;
-    font-size: ${(props) => props.theme.space[3]}px;
+    font-size: ${(props) => props.theme.space[4]}px;
 
     .flush {
       font-size: 16px;

@@ -59,40 +59,49 @@ const Home = ({
 
   return (
     <div className={className}>
-      <div className="steps">
-        <div className={`item ${step > 0 ? "done" : ""}`}>
-          <div className="index">{step > 0 ? <Check size="40" /> : "1"}</div>
-          <div className="label">trace</div>
-        </div>
-        <div className={`connecting-line ${step > 0 ? "done" : ""}`} />
-        <div className={`item ${step > 1 ? "done" : ""}`}>
-          <div className="index">{step > 1 ? <Check size="40" /> : "2"}</div>
-          <div className="label">roadbook</div>
-        </div>
-        <div className={`connecting-line ${step > 1 ? "done" : ""}`} />
-        <div className={`item ${step > 2 ? "done" : ""}`}>
-          <div className="index">{step >= 2 ? <Check size="40" /> : "3"}</div>
-          <div className="label">summary</div>
-        </div>
-      </div>
       {step < 2 ? (
-        <div className="content">
-          <div className="commands">
-            <UploadCloud size="48" />
-            <p>
-              {`drag and drop ${CONFIGURATIONS[step].extension} file here`}{" "}
-              <br />
-              or
-            </p>
-            <FileUpload
-              name={CONFIGURATIONS[step].extension}
-              text="Load Data"
-              configuration={CONFIGURATIONS[step]}
-            >
-              <div className="file-upload">browse files</div>
-            </FileUpload>
+        <>
+          <div className="steps">
+            <div className={`item ${step > 0 ? "done" : ""}`}>
+              <div className="index">
+                {step > 0 ? <Check size="40" /> : "1"}
+              </div>
+              <div className="label">trace</div>
+            </div>
+            <div className={`connecting-line ${step > 0 ? "done" : ""}`} />
+            <div className={`item ${step > 1 ? "done" : ""}`}>
+              <div className="index">
+                {step > 1 ? <Check size="40" /> : "2"}
+              </div>
+              <div className="label">roadbook</div>
+            </div>
+            <div className={`connecting-line ${step > 1 ? "done" : ""}`} />
+            <div className={`item ${step > 2 ? "done" : ""}`}>
+              <div className="index">
+                {step >= 2 ? <Check size="40" /> : "3"}
+              </div>
+              <div className="label">summary</div>
+            </div>
           </div>
-        </div>
+
+          <div className="content">
+            <div className="commands">
+              <UploadCloud size="48" />
+              <p>
+                {`drag and drop ${CONFIGURATIONS[step].extension} file here`}{" "}
+                <br />
+                or
+              </p>
+              <FileUpload
+                name={CONFIGURATIONS[step].extension}
+                text="Load Data"
+                configuration={CONFIGURATIONS[step]}
+              >
+                <div className="file-upload">browse files</div>
+              </FileUpload>
+            </div>
+          </div>
+        </>
       ) : (
         <div className="summary">
           {checkpoints && checkpoints.length > 0 && (
