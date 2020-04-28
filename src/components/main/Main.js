@@ -17,14 +17,24 @@ const Main = ({ className }) => {
     "current-section",
     -1
   );
+
+  const [helper, setHelper] = useState();
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
 
   useEffect(() => {
-    if (!checkpoints || !route) return;
+    if (!route) return;
     const helper = trace(...route.features[0].geometry.coordinates);
+    setHelper(helper);
+  }, [route]);
+
+  useEffect(() => {
+    if (!checkpoints || !route || !helper) return;
+
     const distances = checkpoints.map((checkpoint) => checkpoint.distance);
     const locationsIndices = helper.getLocationIndexAt(...distances);
+
+    // compute section indices (start - stop)
     const sectionsIndices = locationsIndices.reduce(
       (accu, locationIndex, index, array) => {
         if (index > 0) {
@@ -33,18 +43,18 @@ const Main = ({ className }) => {
       },
       []
     );
-    const sectionsCoordinates = sectionsIndices.reduce(
-      (accu, sectionIndices) => {
-        const section = route.features[0].geometry.coordinates.slice(
-          sectionIndices[0],
-          sectionIndices[1]
-        );
-        return [...accu, section];
-      },
-      []
-    );
 
-    const sectionsStats = sectionsCoordinates.map((section) => {
+    // split trace into sections
+    const sectionsLocations = sectionsIndices.reduce((accu, sectionIndices) => {
+      const section = route.features[0].geometry.coordinates.slice(
+        sectionIndices[0],
+        sectionIndices[1]
+      );
+      return [...accu, section];
+    }, []);
+
+    // compute section stats
+    const sectionsStats = sectionsLocations.map((section) => {
       const helper = trace(...section);
       return {
         distance: helper.computeDistance(),
@@ -53,6 +63,7 @@ const Main = ({ className }) => {
       };
     });
 
+    // aggregate sections details
     const sectionsDetails = checkpoints.reduce(
       (accu, checkpoint, index, array) => {
         if (index > 0) {
@@ -69,6 +80,8 @@ const Main = ({ className }) => {
               duration,
               timeBarrier: checkpoint.timeBarrier,
               ...sectionsStats[index - 1],
+              fromKm: helper.getProgression(sectionsIndices[index - 1][0])[0],
+              toKm: helper.getProgression(sectionsIndices[index - 1][1])[0],
               indices: sectionsIndices[index - 1],
             },
           ];
@@ -77,8 +90,9 @@ const Main = ({ className }) => {
       },
       []
     );
+
     setSections(sectionsDetails);
-  }, [checkpoints, route, setSections, setCurrentSectionIndex]);
+  }, [checkpoints, route, helper, setSections, setCurrentSectionIndex]);
 
   return (
     <div className={className}>
