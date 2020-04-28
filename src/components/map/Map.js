@@ -17,6 +17,10 @@ const Map = ({
   sections,
   setCurrentSectionIndex,
   enableGPS,
+  currentLocation,
+  setCurrentLocation,
+  setCurrentLocationIndex,
+  currentLocationIndex,
 }) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
@@ -26,9 +30,8 @@ const Map = ({
     pitch: 0,
   });
 
-  const [closestPositions, setClosestPositions] = useState([]);
-
   const getCurrentLocation = () => {
+    if (!route) return;
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const helper = trace(...route.features[0].geometry.coordinates);
@@ -37,14 +40,12 @@ const Map = ({
           position.coords.latitude,
         ]);
 
-        const index = helper.getLocationIndex(closestLocation);
-        // display map marker
-        setClosestPositions((closestPositions) => [
-          ...closestPositions,
-          closestLocation,
-        ]);
+        setCurrentLocation(closestLocation);
 
-        // set current sction
+        const index = helper.getLocationIndex(closestLocation);
+        setCurrentLocationIndex(index);
+
+        // set current section
         if (!sections) return;
         const sectionIndex = sections.findIndex((section) => {
           return index >= section.indices[0] && index <= section.indices[1];
@@ -163,7 +164,7 @@ const Map = ({
               }),
               new IconLayer({
                 id: "location-layer",
-                data: closestPositions,
+                data: [currentLocation],
                 pickable: true,
                 iconAtlas: placeIcon,
                 iconMapping: {

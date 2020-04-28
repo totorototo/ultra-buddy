@@ -17,10 +17,25 @@ const Main = ({ className }) => {
     "current-section",
     -1
   );
+  const [currentLocation, setCurrentLocation] = usePresistedState(
+    "current-location",
+    null
+  );
+  const [currentLocationIndex, setCurrentLocationIndex] = usePresistedState(
+    "current-location-index",
+    -1
+  );
 
   const [helper, setHelper] = useState();
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(4);
+
+  useEffect(() => {
+    if (currentLocationIndex === -1 || !helper) return;
+    const progression = helper.getProgression(currentLocationIndex);
+    console.log(progression);
+    debugger;
+  }, [currentLocationIndex, helper]);
 
   useEffect(() => {
     if (!route) return;
@@ -165,6 +180,10 @@ const Main = ({ className }) => {
                 sections={sections}
                 setCurrentSectionIndex={setCurrentSectionIndex}
                 currentSectionIndex={currentSectionIndex}
+                currentLocation={currentLocation}
+                setCurrentLocation={setCurrentLocation}
+                currentLocationIndex={currentLocationIndex}
+                setCurrentLocationIndex={setCurrentLocationIndex}
                 route={route}
                 checkpoints={checkpoints}
               />
