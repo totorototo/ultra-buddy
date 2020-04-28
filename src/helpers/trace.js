@@ -1,4 +1,4 @@
-// reminder: location=[longitude, latitude]
+// reminder: location is [longitude, latitude, elevation]
 
 const computeDistanceBetweenLocations = (origin, destination) => {
   const R = 6371e3; // metres
@@ -16,6 +16,30 @@ const computeDistanceBetweenLocations = (origin, destination) => {
 };
 
 const trace = (...locations) => {
+  const mapLocationsToProgression = () =>
+    locations.reduce(
+      (accu, location, index, array) => {
+        if (index > 0) {
+          const distance = computeDistanceBetweenLocations(
+            array[index - 1],
+            location
+          );
+          accu.distance += distance;
+          const Δφ = array[index - 1][2] - location[2];
+          if (Δφ > 0) {
+            accu.gain += Δφ;
+          } else {
+            accu.loss += Math.abs(Δφ);
+          }
+          accu.map.push([index, accu.distance, accu.gain, accu.loss]);
+          return accu;
+        } else {
+          return accu;
+        }
+      },
+      { distance: 0, gain: 0, loss: 0, map: [[0, 0, 0, 0]] }
+    );
+
   const computeDistance = () =>
     locations.reduce(
       (distance, location, index, array) =>
@@ -90,26 +114,6 @@ const trace = (...locations) => {
       }
     );
 
-  const mapLocationToDistance = () =>
-    locations.reduce(
-      (accu, location, index, array) => {
-        if (index > 0) {
-          const distance = computeDistanceBetweenLocations(
-            array[index - 1],
-            location
-          );
-          accu.distance += distance;
-          accu.map.push([index, accu.distance]);
-          return accu;
-        } else {
-          accu.distance = 0;
-          accu.map.push([index, 0]);
-          return accu;
-        }
-      },
-      { distance: 0, map: [] }
-    );
-
   const findClosestIndex = (map, distance) => {
     return map.reduce((accu, item) => {
       if (accu === null) return item;
@@ -124,9 +128,9 @@ const trace = (...locations) => {
     getLocationIndexAt(...distances).map((index) => locations[index]);
 
   const getLocationIndexAt = (...distances) => {
-    const enhancedLocations = mapLocationToDistance();
+    const mapIndexProgression = mapLocationsToProgression();
     return distances.map((distance) => {
-      return findClosestIndex(enhancedLocations.map, distance);
+      return findClosestIndex(mapIndexProgression.map, distance);
     });
   };
 
@@ -205,7 +209,17 @@ const trace = (...locations) => {
         currentLocation[2] === location[2]
     );
 
+  const getProgession = (index) => {
+    const mapIndexProgression = mapLocationsToProgression(locations);
+    // eslint-disable-next-line no-unused-vars
+    const [_, ...rest] = mapIndexProgression.map.find(
+      (elem) => elem[0] === index
+    );
+    return rest;
+  };
+
   return {
+    getProgession,
     computeDistance,
     computeElevation,
     computeRegion,
