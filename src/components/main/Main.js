@@ -6,6 +6,7 @@ import Home from "../home/Home";
 import Map from "../map/Map";
 import Options from "../options/Options";
 import Sections from "../sections/Sections";
+import Progression from "../progression/Progression";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
 
@@ -25,6 +26,7 @@ const Main = ({ className }) => {
     "current-location-index",
     -1
   );
+  const [progression, setProgression] = usePresistedState("progression", null);
 
   const [helper, setHelper] = useState();
   const [toggle, setToggle] = useState(false);
@@ -33,9 +35,8 @@ const Main = ({ className }) => {
   useEffect(() => {
     if (currentLocationIndex === -1 || !helper) return;
     const progression = helper.getProgression(currentLocationIndex);
-    console.log(progression);
-    debugger;
-  }, [currentLocationIndex, helper]);
+    setProgression(progression);
+  }, [currentLocationIndex, helper, setProgression]);
 
   useEffect(() => {
     if (!route) return;
@@ -129,19 +130,27 @@ const Main = ({ className }) => {
                 setCheckpoints={setCheckpoints}
                 setSections={setSections}
                 setCurrentSectionIndex={setCurrentSectionIndex}
+                setCurrentLocation={setCurrentLocation}
+                setCurrentLocationIndex={setCurrentLocationIndex}
+                setProgression={setProgression}
               />
             </div>
           </div>
         </section>
         <section className={`two ${pageIndex < 1 && "after"}`}>
-          <h1
-            onClick={() => {
-              setPageIndex(1);
-              setToggle(!toggle);
-            }}
-          >
-            Progression
-          </h1>
+          <div className="container">
+            <h1
+              onClick={() => {
+                setPageIndex(1);
+                setToggle(!toggle);
+              }}
+            >
+              Progression
+            </h1>
+            <div className="section-content">
+              {progression && <Progression progression={progression} />}
+            </div>
+          </div>
         </section>
         <section className={`three ${pageIndex < 2 && "after"}`}>
           <div className="container">

@@ -17,6 +17,9 @@ const Options = ({
   setCheckpoints,
   setSections,
   setCurrentSectionIndex,
+  setCurrentLocation,
+  setCurrentLocationIndex,
+  setProgression,
 }) => {
   return (
     <div className={className}>
@@ -33,6 +36,9 @@ const Options = ({
           setCheckpoints(null);
           setSections(null);
           setCurrentSectionIndex(-1);
+          setCurrentLocationIndex(-1);
+          setCurrentLocation(null);
+          setProgression(null);
         }}
         width={80}
         height={80}

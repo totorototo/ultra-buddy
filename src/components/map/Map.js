@@ -164,7 +164,7 @@ const Map = ({
               }),
               new IconLayer({
                 id: "location-layer",
-                data: [currentLocation],
+                data: currentLocation && [currentLocation],
                 pickable: true,
                 iconAtlas: placeIcon,
                 iconMapping: {
