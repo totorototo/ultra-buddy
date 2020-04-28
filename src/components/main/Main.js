@@ -161,6 +161,7 @@ const Main = ({ className }) => {
             </h1>
             <div className="section-content">
               <Map
+                enableGPS={pageIndex === 3}
                 sections={sections}
                 setCurrentSectionIndex={setCurrentSectionIndex}
                 currentSectionIndex={currentSectionIndex}

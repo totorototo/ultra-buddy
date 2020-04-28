@@ -16,6 +16,7 @@ const Map = ({
   currentSectionIndex,
   sections,
   setCurrentSectionIndex,
+  enableGPS,
 }) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
@@ -115,7 +116,7 @@ const Map = ({
             onClick={() => {
               getCurrentLocation();
             }}
-            className="fab"
+            className={`fab ${enableGPS ? "show" : "hide"}`}
             size="16"
             color="#007EA7"
           />

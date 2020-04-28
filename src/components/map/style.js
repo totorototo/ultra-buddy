@@ -21,12 +21,16 @@ export default (Component) => styled(Component)`
     border-radius: 50px;
     width: 40px;
     height: 40px;
-    background-color: #ffffff94;
+    background-color: #ffffffbb;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 8px;
     z-index: 2;
+
+    &.hide {
+      display: none;
+    }
   }
 
   .current-section {
