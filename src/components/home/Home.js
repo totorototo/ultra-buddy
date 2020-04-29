@@ -118,9 +118,12 @@ const Home = ({
         <div className="summary">
           {checkpoints && checkpoints.length > 0 && data && data.length > 0 && (
             <>
-              {/* {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
-                addSuffix: true,
-              })} */}
+              <div className="details">
+                {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
+                  addSuffix: true,
+                })}
+              </div>
+
               <Graph
                 width={getContentRect("width") || 200}
                 height={120}

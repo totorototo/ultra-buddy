@@ -6,7 +6,17 @@ export default (Component) => styled(Component)`
   flex-direction: column;
   flex: 1 1 auto;
   height: 100%;
+  width: 100%;
   justify-content: center;
+
+  .details {
+    font-size: 120px;
+    font-weight: 800;
+    letter-spacing: -0.17em;
+    line-height: 0.4em;
+    padding: 30px;
+    margin-bottom: -260px;
+  }
 
   .wrapper {
     display: flex;
