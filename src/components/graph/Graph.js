@@ -4,6 +4,25 @@ import { LinearGradient } from "@vx/gradient";
 import styled from "./style";
 import { getArea, createXScale, createYScale } from "../../helpers/d3";
 
+const Marker = ({ width, height, x, y }) => (
+  <svg height={height} viewBox="0 0 512 512" width={width} x={x} y={y - height}>
+    <g>
+      <path
+        fill="#FD003A"
+        d="M256,0C156.698,0,76,80.7,76,180c0,33.6,9.302,66.301,27.001,94.501l140.797,230.414
+	c2.402,3.9,6.002,6.301,10.203,6.901c5.698,0.899,12.001-1.5,15.3-7.2l141.2-232.516C427.299,244.501,436,212.401,436,180
+	C436,80.7,355.302,0,256,0z M256,270c-50.398,0-90-40.8-90-90c0-49.501,40.499-90,90-90s90,40.499,90,90
+	C346,228.9,306.999,270,256,270z"
+      />
+      <path
+        fill="#E50027"
+        d="M256,0v90c49.501,0,90,40.499,90,90c0,48.9-39.001,90-90,90v241.991
+	c5.119,0.119,10.383-2.335,13.3-7.375L410.5,272.1c16.799-27.599,25.5-59.699,25.5-92.1C436,80.7,355.302,0,256,0z"
+      />
+    </g>
+  </svg>
+);
+
 const Gradient = ({ from = "#FFFFFF94", to = "#FFFFFF00", ...restProps }) => {
   return <LinearGradient from={from} to={to} {...restProps} />;
 };
@@ -16,6 +35,7 @@ const Graph = ({
   currentLocationIndex = -1,
   domain,
   color,
+  markers = [],
 }) => {
   const [profile, setProfile] = useState();
   const [progression, setProgression] = useState();
@@ -23,9 +43,7 @@ const Graph = ({
 
   useEffect(() => {
     if (currentLocationIndex === -1 || !scales.x || !scales.y) return;
-
     const locationsVisited = locations.slice(0, currentLocationIndex);
-
     const progress = getArea(
       locationsVisited,
       scales.x,
@@ -50,7 +68,6 @@ const Graph = ({
       { min: 0, max: width }
     );
 
-    // Create our y-scale.
     const y = createYScale(
       { min: domain.y.min, max: domain.y.max },
       { min: 0, max: height }
@@ -74,9 +91,21 @@ const Graph = ({
             d={progression.path}
             // stroke={color ? color : "#ffffff94"}
             strokeWidth="0"
-            fill={color ? color : "url(#gradient)"}
+            fill={color ? "color" : "url(#gradient)"}
           />
         )}
+        {markers &&
+          scales &&
+          markers.length > 0 &&
+          markers.map((marker, index) => (
+            <Marker
+              key={index}
+              x={scales.x(marker.x)}
+              y={scales.y(marker.y)}
+              width="30"
+              height="30"
+            />
+          ))}
       </svg>
     </div>
   ) : (

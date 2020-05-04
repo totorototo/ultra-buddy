@@ -20,12 +20,38 @@ const Container = customStyled.div`
   flex: none;
 `;
 
-const IntersectSection = ({ root, setSection, current, id, ...rest }) => {
+const IntersectSection = ({
+  root,
+  setSection,
+  current,
+  id,
+  section,
+  currentLocationIndex,
+  ...rest
+}) => {
   const [ref, entry] = useIntersect({
     threshold: 0.5,
     root: root.current,
     rootMargin: "10px",
   });
+
+  const [markers, setMarkers] = useState([]);
+
+  useEffect(() => {
+    if (currentLocationIndex === -1) return;
+    if (
+      currentLocationIndex > section.indices[0] &&
+      currentLocationIndex < section.indices[1]
+    ) {
+      const index = currentLocationIndex - section.indices[0];
+      const currentLocation = section.coordinates[index];
+      const marker = { x: index, y: currentLocation[2] };
+
+      setMarkers([marker]);
+    } else {
+      setMarkers([]);
+    }
+  }, [currentLocationIndex, section]);
 
   useEffect(() => {
     if (entry.intersectionRatio > 0.5) setSection(id);
@@ -33,7 +59,11 @@ const IntersectSection = ({ root, setSection, current, id, ...rest }) => {
 
   return (
     <Container ref={ref}>
-      <Graph color={current ? "#D5A021" : "#D5A021"} {...rest} />
+      <Graph
+        markers={markers}
+        color={current ? "#D5A021" : "#D5A021"}
+        {...rest}
+      />
     </Container>
   );
 };
@@ -115,6 +145,8 @@ const Sections = ({
       <div ref={root} className="section">
         {sections.map((section, index) => (
           <IntersectSection
+            section={section}
+            currentLocationIndex={currentLocationIndex}
             current={currentSectionIndex === index}
             setSection={setSection}
             id={index}
