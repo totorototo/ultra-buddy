@@ -187,8 +187,10 @@ const Main = ({ className }) => {
               {route && sections && (
                 <Sections
                   currentSectionIndex={currentSectionIndex}
+                  currentLocation={currentLocation}
+                  currentLocationIndex={currentLocationIndex}
                   sections={sections}
-                  data={locations}
+                  locations={locations}
                   domain={domain}
                 />
               )}
@@ -239,7 +241,7 @@ const Main = ({ className }) => {
                 setCheckpoints={setCheckpoints}
                 setSections={setSections}
                 domain={domain}
-                data={locations}
+                locations={locations}
               />
             </div>
           </div>

@@ -19,7 +19,7 @@ const Home = ({
   route,
   checkpoints,
   domain,
-  data,
+  locations,
 }) => {
   const [step, setStep] = useState(0);
   const [ref, { contentRect }] = useResizeObserver();
@@ -116,23 +116,26 @@ const Home = ({
         </div>
       ) : (
         <div className="summary">
-          {checkpoints && checkpoints.length > 0 && data && data.length > 0 && (
-            <>
-              <div className="details">
-                {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
-                  addSuffix: true,
-                })}
-              </div>
+          {checkpoints &&
+            checkpoints.length > 0 &&
+            locations &&
+            locations.length > 0 && (
+              <>
+                <div className="details">
+                  {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
+                    addSuffix: true,
+                  })}
+                </div>
 
-              <Graph
-                width={getContentRect("width") || 200}
-                height={120}
-                data={data}
-                domain={domain}
-              />
-              <div className="bottom" />
-            </>
-          )}
+                <Graph
+                  width={getContentRect("width") || 200}
+                  height={120}
+                  locations={locations}
+                  domain={domain}
+                />
+                <div className="bottom" />
+              </>
+            )}
         </div>
       )}
     </div>

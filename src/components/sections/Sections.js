@@ -42,7 +42,8 @@ const Sections = ({
   className,
   sections,
   currentSectionIndex,
-  data,
+  currentLocationIndex,
+  locations,
   domain,
 }) => {
   const [ref, { contentRect }] = useResizeObserver();
@@ -104,7 +105,8 @@ const Sections = ({
         <Graph
           width={getContentRect("width") || 200}
           height={120}
-          data={data}
+          locations={locations}
+          currentLocationIndex={currentLocationIndex}
           domain={domain}
         />
         <div className="bottom" />
@@ -118,7 +120,7 @@ const Sections = ({
             id={index}
             root={root}
             key={index}
-            data={section.coordinates}
+            locations={section.coordinates}
             width={getContentRect("width") || 200}
             height={200}
             domain={domain}
