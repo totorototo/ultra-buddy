@@ -186,6 +186,8 @@ const Main = ({ className }) => {
             <div className="section-content">
               {route && sections && (
                 <Sections
+                  setCurrentLocation={setCurrentLocation}
+                  setCurrentLocationIndex={setCurrentLocationIndex}
                   currentSectionIndex={currentSectionIndex}
                   currentLocation={currentLocation}
                   currentLocationIndex={currentLocationIndex}

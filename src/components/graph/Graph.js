@@ -36,10 +36,19 @@ const Graph = ({
   domain,
   color,
   markers = [],
+  setCurrentLocation = () => {},
+  setCurrentLocationIndex = () => {},
 }) => {
   const [profile, setProfile] = useState();
   const [progression, setProgression] = useState();
   const [scales, setScales] = useState({});
+
+  const handleClick = (event) => {
+    if (!scales.x) return;
+    const index = Math.round(scales.x.invert(event.nativeEvent.offsetX));
+    setCurrentLocationIndex(index);
+    setCurrentLocation(locations[index]);
+  };
 
   useEffect(() => {
     if (currentLocationIndex === -1 || !scales.x || !scales.y) return;
@@ -69,7 +78,7 @@ const Graph = ({
     );
 
     const y = createYScale(
-      { min: domain.y.min, max: domain.y.max },
+      { min: domain.y.min, max: domain.y.max * 1.2 },
       { min: 0, max: height }
     );
 
@@ -78,7 +87,7 @@ const Graph = ({
 
   return locations.length > 0 && profile ? (
     <div className={className} style={{ width, height }}>
-      <svg height={height} width={width}>
+      <svg onClick={handleClick} height={height} width={width}>
         <Gradient id="gradient" />
         <path
           d={profile.path}
