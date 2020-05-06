@@ -4,6 +4,8 @@ import { LinearGradient } from "@vx/gradient";
 import styled from "./style";
 import { getArea, createXScale, createYScale } from "../../helpers/d3";
 
+const MARKER_WIDTH = 30;
+
 const Marker = ({ width, height, x, y }) => (
   <svg height={height} viewBox="0 0 512 512" width={width} x={x} y={y - height}>
     <g>
@@ -109,10 +111,10 @@ const Graph = ({
           markers.map((marker, index) => (
             <Marker
               key={index}
-              x={scales.x(marker.x)}
+              x={scales.x(marker.x) - MARKER_WIDTH / 2}
               y={scales.y(marker.y)}
-              width="30"
-              height="30"
+              width={MARKER_WIDTH}
+              height={MARKER_WIDTH}
             />
           ))}
       </svg>

@@ -29,6 +29,10 @@ const Main = ({ className }) => {
     -1
   );
   const [progression, setProgression] = usePresistedState("progression", null);
+  const [routeAnalytics, setRouteAnalytics] = usePresistedState(
+    "route-analytics",
+    null
+  );
 
   const [helper, setHelper] = useState();
   const [toggle, setToggle] = useState(false);
@@ -37,6 +41,13 @@ const Main = ({ className }) => {
     x: { min: 0, max: 0 },
     y: { min: 0, max: 0 },
   });
+
+  useEffect(() => {
+    if (!helper) return;
+    const distance = helper.computeDistance();
+    const elevation = helper.computeElevation();
+    setRouteAnalytics({ distance, elevation });
+  }, [helper, setRouteAnalytics]);
 
   useEffect(() => {
     if (!route) return;
@@ -77,7 +88,7 @@ const Main = ({ className }) => {
     const sectionsIndices = locationsIndices.reduce(
       (accu, locationIndex, index, array) => {
         if (index > 0) {
-          return [...accu, [array[index - 1], locationIndex]];
+          return [...accu, [array[index - 1] - 1, locationIndex]];
         } else return accu;
       },
       []
@@ -169,7 +180,12 @@ const Main = ({ className }) => {
               Progression
             </h1>
             <div className="section-content">
-              {progression && <Progression progression={progression} />}
+              {progression && (
+                <Progression
+                  routeAnalytics={routeAnalytics}
+                  progression={progression}
+                />
+              )}
             </div>
           </div>
         </section>

@@ -25,7 +25,7 @@ const trace = (...locations) => {
             location
           );
           accu.distance += distance;
-          const Δφ = array[index - 1][2] - location[2];
+          const Δφ = location[2] - array[index - 1][2];
           if (Δφ > 0) {
             accu.gain += Δφ;
           } else {
