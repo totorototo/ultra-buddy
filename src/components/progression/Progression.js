@@ -10,7 +10,7 @@ const RadialProgessBar = ({ width = 200, height = 200, data }) => {
   useEffect(() => {
     if (!data) return;
     const enhancedData = data.map((item, index) => {
-      const radius = 950 / 2 - RADIUS_OFFSET * index;
+      const radius = 900 / 2 - RADIUS_OFFSET * index;
       const strokeDasharray = 2 * Math.PI * radius;
       const strokeDashoffset =
         strokeDasharray * (1 - (item.percent * 0.75) / 100);
@@ -27,9 +27,9 @@ const RadialProgessBar = ({ width = 200, height = 200, data }) => {
           <Fragment key={index}>
             <text
               x={500 + 50}
-              y={100 * index + 40}
+              y={100 * index + 50}
               style={{
-                fontSize: 40,
+                fontSize: 60,
                 letterSpacing: 1,
                 fontWeight: "lighter",
                 fill: "white",
@@ -55,8 +55,8 @@ const RadialProgessBar = ({ width = 200, height = 200, data }) => {
               cx={500}
               cy={500}
               r={item.radius}
-              strokeWidth={1000 / 20}
-              stroke="#357597"
+              strokeWidth={1000 / 15}
+              stroke={item.color}
               fill="none"
               strokeDasharray={item.strokeDasharray}
               strokeDashoffset={item.strokeDashoffset}
@@ -64,7 +64,7 @@ const RadialProgessBar = ({ width = 200, height = 200, data }) => {
             <text key={`${index}-text-circle`}>
               <textPath
                 style={{
-                  fontSize: 40,
+                  fontSize: 60,
                   letterSpacing: 1,
                   fontWeight: "lighter",
                   fill: "white",
@@ -90,12 +90,14 @@ const Progression = ({ className, progression, routeAnalytics }) => {
     const updatedData = [
       {
         label: "distance",
+        color: "#42708C",
         total: routeAnalytics.distance,
         progression: progression[0],
         percent: (progression[0] * 100) / routeAnalytics.distance,
       },
       {
         label: " elevation gain",
+        color: "#D9A443",
         total: routeAnalytics.elevation.positive,
         progression: progression[1],
         percent:
@@ -105,6 +107,7 @@ const Progression = ({ className, progression, routeAnalytics }) => {
       },
       {
         label: "elevation loss",
+        color: "#A6813C",
         total: routeAnalytics.elevation.negative,
         progression: progression[2],
         percent:

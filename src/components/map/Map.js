@@ -160,7 +160,7 @@ const Map = ({
                 getPosition: (d) => [d[0], d[1]],
                 getIcon: (d) => "marker",
                 getSize: (d) => 3,
-                getColor: (d) => [187, 52, 57],
+                getColor: (d) => [191, 189, 193],
               }),
               new IconLayer({
                 id: "location-layer",
@@ -181,7 +181,7 @@ const Map = ({
                 getPosition: (d) => [d[0], d[1]],
                 getIcon: (d) => "marker",
                 getSize: (d) => 3,
-                getColor: (d) => [0, 126, 167],
+                getColor: (d) => [187, 52, 57],
               }),
             ]}
           />

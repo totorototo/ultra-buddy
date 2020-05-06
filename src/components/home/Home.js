@@ -3,7 +3,7 @@ import xmldom from "xmldom";
 import { gpx } from "@mapbox/togeojson";
 import { UploadCloud, Check } from "@styled-icons/feather";
 import { csvParse } from "d3-dsv";
-import { formatDistanceToNow } from "date-fns";
+// import { formatDistanceToNow } from "date-fns";
 
 import styled from "./style";
 import FileUpload from "../fileUpload/FileUpload";
@@ -121,11 +121,11 @@ const Home = ({
             locations &&
             locations.length > 0 && (
               <>
-                <div className="details">
+                {/* <div className="details">
                   {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
                     addSuffix: true,
                   })}
-                </div>
+                </div> */}
 
                 <Graph
                   width={getContentRect("width") || 200}
