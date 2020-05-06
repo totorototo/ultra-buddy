@@ -4,7 +4,7 @@ import styled from "./style";
 
 const RADIUS_OFFSET = 100;
 
-const RadialProgessBar = ({ width = 200, height = 200, data }) => {
+const RadialProgessBar = ({ width = 250, height = 250, data }) => {
   const [enhancedData, setEnhancedData] = useState();
 
   useEffect(() => {
