@@ -35,12 +35,6 @@ export default (Component) => styled(Component)`
     display: flex;
     flex-direction: column;
     width: 100%;
-
-    .bottom {
-      height: 200px;
-      width: 100%;
-      background: #ffffff94;
-    }
   }
 
   .analytics {

@@ -63,6 +63,7 @@ const IntersectSection = ({
         markers={markers}
         color={current ? "#D5A021" : "#D5A021"}
         {...rest}
+        offsetMax={500}
       />
     </Container>
   );
@@ -136,12 +137,12 @@ const Sections = ({
         <Graph
           setCurrentLocation={setCurrentLocation}
           width={getContentRect("width") || 200}
-          height={120}
+          height={300}
           locations={locations}
           currentLocationIndex={currentLocationIndex}
           domain={domain}
+          offsetMin={4000}
         />
-        <div className="bottom" />
       </div>
 
       <div ref={root} className="section">

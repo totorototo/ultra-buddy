@@ -107,7 +107,7 @@ const Progression = ({ className, progression, routeAnalytics }) => {
       },
       {
         label: "elevation loss",
-        color: "#A6813C",
+        color: "#DC0073",
         total: routeAnalytics.elevation.negative,
         progression: progression[2],
         percent:

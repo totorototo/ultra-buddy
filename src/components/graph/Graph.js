@@ -25,8 +25,15 @@ const Marker = ({ width, height, x, y }) => (
   </svg>
 );
 
-const Gradient = ({ from = "#FFFFFF94", to = "#FFFFFF00", ...restProps }) => {
-  return <LinearGradient from={from} to={to} {...restProps} />;
+const Gradient = ({
+  from = "#FFFFFF94",
+  to = "#FFFFFF00",
+  toOffset = "60%",
+  ...restProps
+}) => {
+  return (
+    <LinearGradient from={from} to={to} toOffset={toOffset} {...restProps} />
+  );
 };
 
 const Graph = ({
@@ -39,6 +46,8 @@ const Graph = ({
   color,
   markers = [],
   setCurrentLocation = () => {},
+  offsetMin = 0,
+  offsetMax = 0,
 }) => {
   const [profile, setProfile] = useState();
   const [progression, setProgression] = useState();
@@ -57,16 +66,21 @@ const Graph = ({
       locationsVisited,
       scales.x,
       scales.y,
-      domain.y.min
+      domain.y.min - offsetMin
     );
     setProgression(progress);
-  }, [currentLocationIndex, domain, locations, scales]);
+  }, [currentLocationIndex, domain, locations, scales, offsetMin]);
 
   useEffect(() => {
     if (!scales.x || !scales.y) return;
-    const area = getArea(locations, scales.x, scales.y, domain.y.min);
+    const area = getArea(
+      locations,
+      scales.x,
+      scales.y,
+      domain.y.min - offsetMin
+    );
     setProfile(area);
-  }, [scales, locations, domain]);
+  }, [scales, locations, domain, offsetMin]);
 
   useEffect(() => {
     const x = createXScale(
@@ -78,12 +92,12 @@ const Graph = ({
     );
 
     const y = createYScale(
-      { min: domain.y.min, max: domain.y.max * 1.2 },
+      { min: domain.y.min - offsetMin, max: domain.y.max + offsetMax },
       { min: 0, max: height }
     );
 
     setScales({ x, y });
-  }, [width, height, locations, domain]);
+  }, [width, height, locations, domain, offsetMin, offsetMax]);
 
   return locations.length > 0 && profile ? (
     <div className={className} style={{ width, height }}>
