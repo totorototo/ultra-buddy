@@ -74,7 +74,6 @@ const Sections = ({
   currentSectionIndex,
   currentLocationIndex,
   setCurrentLocation,
-  setCurrentLocationIndex,
   locations,
   domain,
 }) => {
@@ -136,7 +135,6 @@ const Sections = ({
       <div className="profile">
         <Graph
           setCurrentLocation={setCurrentLocation}
-          setCurrentLocationIndex={setCurrentLocationIndex}
           width={getContentRect("width") || 200}
           height={120}
           locations={locations}

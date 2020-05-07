@@ -79,6 +79,26 @@ const Main = ({ className }) => {
   }, [locations]);
 
   useEffect(() => {
+    if (!helper) return;
+
+    const index = helper.getLocationIndex(currentLocation);
+    setCurrentLocationIndex(index);
+
+    // set current section
+    if (!sections) return;
+    const sectionIndex = sections.findIndex((section) => {
+      return index >= section.indices[0] && index <= section.indices[1];
+    });
+    setCurrentSectionIndex(sectionIndex);
+  }, [
+    currentLocation,
+    helper,
+    sections,
+    setCurrentLocationIndex,
+    setCurrentSectionIndex,
+  ]);
+
+  useEffect(() => {
     if (!checkpoints || !locations || !helper) return;
 
     const distances = checkpoints.map((checkpoint) => checkpoint.distance);

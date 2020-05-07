@@ -15,12 +15,9 @@ const Map = ({
   checkpoints,
   currentSectionIndex,
   sections,
-  setCurrentSectionIndex,
   enableGPS,
   currentLocation,
   setCurrentLocation,
-  setCurrentLocationIndex,
-  currentLocationIndex,
 }) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
@@ -41,17 +38,6 @@ const Map = ({
         ]);
 
         setCurrentLocation(closestLocation);
-
-        const index = helper.getLocationIndex(closestLocation);
-        setCurrentLocationIndex(index);
-
-        // set current section
-        if (!sections) return;
-        const sectionIndex = sections.findIndex((section) => {
-          return index >= section.indices[0] && index <= section.indices[1];
-        });
-
-        setCurrentSectionIndex(sectionIndex);
       },
       (error) => console.log(error),
       {

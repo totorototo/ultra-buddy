@@ -39,7 +39,6 @@ const Graph = ({
   color,
   markers = [],
   setCurrentLocation = () => {},
-  setCurrentLocationIndex = () => {},
 }) => {
   const [profile, setProfile] = useState();
   const [progression, setProgression] = useState();
@@ -48,7 +47,6 @@ const Graph = ({
   const handleClick = (event) => {
     if (!scales.x) return;
     const index = Math.round(scales.x.invert(event.nativeEvent.offsetX));
-    setCurrentLocationIndex(index);
     setCurrentLocation(locations[index]);
   };
 
