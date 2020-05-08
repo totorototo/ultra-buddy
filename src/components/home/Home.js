@@ -127,22 +127,21 @@ const Home = ({
             locations &&
             locations.length > 0 && (
               <>
-                {/* <div className="details">
+                <p>
+                  {name && name}
+                  <br />
                   {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
                     addSuffix: true,
                   })}
-                </div> */}
+                </p>
 
-                {name && name}
-                <br />
-                {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
-                  addSuffix: true,
-                })}
                 <Graph
                   width={getContentRect("width") || 200}
-                  height={120}
+                  height={200}
                   locations={locations}
                   domain={domain}
+                  offsetMin={3000}
+                  opacity={0.1}
                 />
               </>
             )}

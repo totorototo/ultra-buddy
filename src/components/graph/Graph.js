@@ -48,6 +48,7 @@ const Graph = ({
   setCurrentLocation = () => {},
   offsetMin = 0,
   offsetMax = 0,
+  opacity,
 }) => {
   const [profile, setProfile] = useState();
   const [progression, setProgression] = useState();

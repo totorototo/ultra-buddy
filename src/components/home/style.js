@@ -119,10 +119,17 @@ export default (Component) => styled(Component)`
     height: 100%;
     font-family: roboto;
     font-size: ${(props) => props.theme.space[4]}px;
-    .bottom {
-      height: 150px;
-      width: 100%;
-      background: #ffffff94;
+    > p {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      margin-right: auto;
+      margin-top: auto;
+      margin-bottom: auto;
+      font-size: 32px;
+      font-weight: 100;
+      font-style: normal;
+      letter-spacing: 0.002em;
+      line-height: 0.9;
     }
   }
 `;
