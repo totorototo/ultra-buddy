@@ -3,7 +3,7 @@ import xmldom from "xmldom";
 import { gpx } from "@mapbox/togeojson";
 import { UploadCloud, Check } from "@styled-icons/feather";
 import { csvParse } from "d3-dsv";
-// import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 
 import styled from "./style";
 import FileUpload from "../fileUpload/FileUpload";
@@ -20,6 +20,8 @@ const Home = ({
   checkpoints,
   domain,
   locations,
+  setName,
+  name,
 }) => {
   const [step, setStep] = useState(0);
   const [ref, { contentRect }] = useResizeObserver();
@@ -35,12 +37,16 @@ const Home = ({
     {
       extension: "gpx",
       type: fileType.text,
-      handleFileRead: (_, data) => {
+      handleFileRead: (filename, data) => {
         const xml = new xmldom.DOMParser().parseFromString(data);
         const geoJSON = gpx(xml);
         setCheckpoints(null);
         setSections(null);
         setRoute(geoJSON);
+        const name = filename
+          .substr(0, filename.lastIndexOf("."))
+          .replace(/([-_.*+?^$|(){}[\]])/gm, " ");
+        setName(name);
       },
       parameters: ["utf8"],
     },
@@ -127,13 +133,17 @@ const Home = ({
                   })}
                 </div> */}
 
+                {name && name}
+                <br />
+                {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
+                  addSuffix: true,
+                })}
                 <Graph
                   width={getContentRect("width") || 200}
                   height={120}
                   locations={locations}
                   domain={domain}
                 />
-                <div className="bottom" />
               </>
             )}
         </div>

@@ -141,7 +141,7 @@ const Sections = ({
           locations={locations}
           currentLocationIndex={currentLocationIndex}
           domain={domain}
-          offsetMin={4000}
+          offsetMin={5000}
         />
       </div>
 

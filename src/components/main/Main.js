@@ -13,6 +13,7 @@ import trace from "../../helpers/trace";
 
 const Main = ({ className }) => {
   const [route, setRoute] = usePresistedState("route", null);
+  const [name, setName] = usePresistedState("name", null);
   const [checkpoints, setCheckpoints] = usePresistedState("checkpoints", null);
   const [sections, setSections] = usePresistedState("sections", null);
   const [locations, setLocations] = usePresistedState("locations", null);
@@ -41,6 +42,19 @@ const Main = ({ className }) => {
     x: { min: 0, max: 0 },
     y: { min: 0, max: 0 },
   });
+
+  const clearData = () => {
+    setRoute(null);
+    setCheckpoints(null);
+    setSections(null);
+    setCurrentSectionIndex(-1);
+    setCurrentLocationIndex(-1);
+    setCurrentLocation(null);
+    setProgression(null);
+    setLocations(null);
+    setName(null);
+    setRouteAnalytics(null);
+  };
 
   useEffect(() => {
     if (!helper) return;
@@ -79,7 +93,7 @@ const Main = ({ className }) => {
   }, [locations]);
 
   useEffect(() => {
-    if (!helper) return;
+    if (!helper || !currentLocation) return;
 
     const index = helper.getLocationIndex(currentLocation);
     setCurrentLocationIndex(index);
@@ -176,16 +190,7 @@ const Main = ({ className }) => {
               Options
             </h1>
             <div className="section-content">
-              <Options
-                setRoute={setRoute}
-                setCheckpoints={setCheckpoints}
-                setSections={setSections}
-                setCurrentSectionIndex={setCurrentSectionIndex}
-                setCurrentLocation={setCurrentLocation}
-                setCurrentLocationIndex={setCurrentLocationIndex}
-                setProgression={setProgression}
-                setLocations={setLocations}
-              />
+              <Options clearData={clearData} />
             </div>
           </div>
         </section>
@@ -273,6 +278,8 @@ const Main = ({ className }) => {
             </h1>
             <div className="section-content">
               <Home
+                name={name}
+                setName={setName}
                 route={route}
                 checkpoints={checkpoints}
                 setRoute={setRoute}
