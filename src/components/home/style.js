@@ -117,7 +117,7 @@ export default (Component) => styled(Component)`
     flex-direction: column;
     width: 100%;
     height: 100%;
-    font-family: roboto;
+    font-family: fira sans;
     font-size: ${(props) => props.theme.space[4]}px;
     > p {
       writing-mode: vertical-rl;

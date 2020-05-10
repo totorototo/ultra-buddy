@@ -209,6 +209,8 @@ const Main = ({ className }) => {
                 <Progression
                   routeAnalytics={routeAnalytics}
                   progression={progression}
+                  currentSectionIndex={currentSectionIndex}
+                  sections={sections}
                 />
               )}
             </div>
