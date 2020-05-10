@@ -115,6 +115,8 @@ const Main = ({ className }) => {
   useEffect(() => {
     if (!checkpoints || !locations || !helper) return;
 
+    debugger;
+
     const distances = checkpoints.map((checkpoint) => checkpoint.distance);
     const locationsIndices = helper.getLocationIndexAt(...distances);
 
@@ -122,7 +124,7 @@ const Main = ({ className }) => {
     const sectionsIndices = locationsIndices.reduce(
       (accu, locationIndex, index, array) => {
         if (index > 0) {
-          return [...accu, [array[index - 1] - 1, locationIndex]];
+          return [...accu, [array[index - 1], locationIndex - 1]];
         } else return accu;
       },
       []
