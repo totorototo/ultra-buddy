@@ -8,6 +8,7 @@ import Map from "../map/Map";
 import Options from "../options/Options";
 import Sections from "../sections/Sections";
 import Progression from "../progression/Progression";
+import Loader from "../loader/Loader";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
 
@@ -205,13 +206,15 @@ const Main = ({ className }) => {
               Progression
             </h1>
             <div className="section-content">
-              {progression && (
+              {progression ? (
                 <Progression
                   routeAnalytics={routeAnalytics}
                   progression={progression}
                   currentSectionIndex={currentSectionIndex}
                   sections={sections}
                 />
+              ) : (
+                <Loader />
               )}
             </div>
           </div>
@@ -227,7 +230,7 @@ const Main = ({ className }) => {
               Sections
             </h1>
             <div className="section-content">
-              {route && sections && (
+              {route && sections ? (
                 <Sections
                   setCurrentLocation={setCurrentLocation}
                   setCurrentLocationIndex={setCurrentLocationIndex}
@@ -238,6 +241,8 @@ const Main = ({ className }) => {
                   locations={locations}
                   domain={domain}
                 />
+              ) : (
+                <Loader />
               )}
             </div>
           </div>

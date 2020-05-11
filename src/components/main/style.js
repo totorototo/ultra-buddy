@@ -11,6 +11,8 @@ export default (Component) => styled(Component)`
     display: flex;
     flex: 1 1 auto;
     width: 100%;
+    align-items: center;
+    justify-content: center;
   }
 
   .sections-wrapper .container {
