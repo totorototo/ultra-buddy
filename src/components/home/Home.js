@@ -128,8 +128,6 @@ const Home = ({
             locations.length > 0 && (
               <>
                 <p>
-                  {name && name}
-                  <br />
                   {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
                     addSuffix: true,
                   })}

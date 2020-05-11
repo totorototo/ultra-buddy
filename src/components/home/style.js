@@ -120,9 +120,6 @@ export default (Component) => styled(Component)`
     font-family: fira sans;
     font-size: ${(props) => props.theme.space[4]}px;
     > p {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      margin-right: auto;
       margin-top: auto;
       margin-bottom: auto;
       font-size: 32px;

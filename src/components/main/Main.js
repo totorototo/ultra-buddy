@@ -276,7 +276,7 @@ const Main = ({ className }) => {
                 setToggle(!toggle);
               }}
             >
-              Home
+              {name ? name : "Home"}
             </h1>
             <div className="section-content">
               <Home
