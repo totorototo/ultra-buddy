@@ -59,12 +59,18 @@ const Progression = ({
     <div className={className}>
       <RadialProgessBar data={data} />
       <div className="analytics">
-        <div className="item distance">{`${progression[0].toFixed(2)} km`}</div>
-        <div className="item gain">{`${progression[1].toFixed(0)} m`}</div>
-        <div className="item loss">{`${progression[2].toFixed(0)} m`}</div>
         <div className="item checkpoint">{`${NextCheckpointDistance.toFixed(
           2
-        )} km`}</div>
+        )} km to ${sections[currentSectionIndex].arrivalLocation}`}</div>
+        <div className="item distance">{`${progression[0].toFixed(
+          2
+        )} km ran`}</div>
+        <div className="item gain">{`${progression[1].toFixed(
+          0
+        )} m climbed`}</div>
+        <div className="item loss">{`${progression[2].toFixed(
+          0
+        )} m descended`}</div>
       </div>
     </div>
   );

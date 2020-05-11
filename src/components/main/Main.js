@@ -115,8 +115,6 @@ const Main = ({ className }) => {
   useEffect(() => {
     if (!checkpoints || !locations || !helper) return;
 
-    debugger;
-
     const distances = checkpoints.map((checkpoint) => checkpoint.distance);
     const locationsIndices = helper.getLocationIndexAt(...distances);
 
