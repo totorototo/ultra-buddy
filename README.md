@@ -28,8 +28,10 @@ Final thoughts:
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 
+
 # continous integration
 ![Deploy to Now](https://badgen.net/badge/%E2%96%B2%20Deploy%20to%20Now/$%20now%20totorototo%2Fstack-menu/black)
+
 
 
 # requirements
@@ -55,11 +57,16 @@ cd stack-menu
 yarn install                           # Install project dependencies
 ```
 
+
 # Ignition
 
 ```bash
 yarn start                     # Compile and launch packager
 ```
+
+sample data could be found in /src/data 
+* gpx: /src/data/echappee_belle_2020.gpx
+* csv: /src/data/echappee_belle2020.csv
 
 # Links:
 
