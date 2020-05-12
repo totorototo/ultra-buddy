@@ -1,8 +1,8 @@
-# Trail-Buddy
+# Trail-Buddy - next section
 
-Trail-Buddy/stack-menu is a free web service dedicated for trail runner.
+Trail-Buddy is a free web service dedicated for trail runner.
 
-Worflow is quite simple: easy as 1,2,3! 
+Onboarding worflow is quite simple: easy as 1,2,3! 
 
 1. Load trace file (gpx, kml, ...),
 2. Load roadbook file (csv),
@@ -20,8 +20,8 @@ Final thoughts:
 
    - works on phone, tablet or computer,
    - free,
-   - had offline support,
-   - ...
+   - offline supported.
+  
    
  # Style
 
