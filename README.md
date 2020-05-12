@@ -1,6 +1,6 @@
 # Trail-Buddy
 
-Trail-Buddy is a free web service dedicated for trail runner.
+Trail-Buddy/stack-menu is a free web service dedicated for trail runner.
 
 Worflow is quite simple: easy as 1,2,3! 
 
@@ -21,11 +21,16 @@ Final thoughts:
    - works on phone, tablet or computer,
    - free,
    - had offline support,
-   - still under construction.
+   - ...
    
  # Style
 
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
+
+# continous integration
+![Deploy to Now](https://badgen.net/badge/%E2%96%B2%20Deploy%20to%20Now/$%20now%20totorototo%2Fstack-menu/black)
+
 
 # requirements
 
