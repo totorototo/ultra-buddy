@@ -1,4 +1,4 @@
-# Ultra-Buddy
+# <img src="./public/logo192.png" width="24"> Ultra-Buddy
 
 Ultra-Buddy is a free web service dedicated for trail runner.
 
@@ -62,6 +62,16 @@ sample data could be found in /src/data
 
 - gpx: /src/data/echappee_belle_2020.gpx
 - csv: /src/data/echappee_belle2020.csv
+
+# screen shots
+
+<img src="./screenshots/wizard.png" width="200">
+<img src="./screenshots/main.png" width="200">
+<img src="./screenshots/map.png" width="200">
+<img src="./screenshots/sections.png" width="200">
+<img src="./screenshots/progression.png" width="200">
+<img src="./screenshots/options.png" width="200">
+<img src="./screenshots/stack-menu.png" width="200">
 
 # Links:
 
