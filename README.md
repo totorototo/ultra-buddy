@@ -2,13 +2,13 @@
 
 Trail-Buddy is a free web service dedicated for trail runner.
 
-worflow is quite simple: easy as 1,2,3! 
+Worflow is quite simple: easy as 1,2,3! 
 
 1. Load trace file (gpx, kml, ...),
 2. Load roadbook file (csv),
 3. enjoy the race!
 
-then you will be able to:
+Then you will be able to:
 
    - spot you on track (map),
    - spot you on elevation profile,    
@@ -16,8 +16,7 @@ then you will be able to:
     - display current section on which you are,
    - display your progression.
   
-
-3. final thoughts:
+Final thoughts:
 
    - works on phone, tablet or computer,
    - free,
@@ -26,7 +25,7 @@ then you will be able to:
 
 
 
-4. some useful links:
+Links:
 
    - [Trail-Buddy](https://stack-menu.now.sh/)
 
