@@ -1,4 +1,4 @@
-# Trail-Buddy - next section
+# Trail-Buddy - Lybitos
 
 Trail-Buddy is a free web service dedicated for trail runner.
 
