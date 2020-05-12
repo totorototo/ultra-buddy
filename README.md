@@ -48,7 +48,7 @@ After confirming that your development environment meets the specified [requirem
 
 ```bash
 git clone https://github.com/totorototo/ultra-buddy.git
-cd stack-menu
+cd ultra-buddy
 yarn install                           # Install project dependencies
 ```
 
