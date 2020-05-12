@@ -1,6 +1,6 @@
-# Trail-Buddy - Lybitos
+# Ultra-Buddy
 
-Trail-Buddy is a free web service dedicated for trail runner.
+Ultra-Buddy is a free web service dedicated for trail runner.
 
 Onboarding worflow is quite simple: easy as 1,2,3!
 
@@ -28,7 +28,7 @@ Final thoughts:
 
 # Continous integration
 
-![Deploy to Now](https://badgen.net/badge/%E2%96%B2%20Deploy%20to%20Now/$%20now%20totorototo%2Fstack-menu/black)
+![Deploy to Now](https://badgen.net/badge/%E2%96%B2%20Deploy%20to%20Now/$%20now%20totorototo%2Fultra-buddy/black)
 
 # Requirements
 
@@ -47,7 +47,7 @@ REACT_APP_MAPBOX_KEY=[AAA]
 After confirming that your development environment meets the specified [requirements](#requirements), you can follow these steps to get the project up and running:
 
 ```bash
-git clone https://github.com/totorototo/stack-menu.git
+git clone https://github.com/totorototo/ultra-buddy.git
 cd stack-menu
 yarn install                           # Install project dependencies
 ```
@@ -65,5 +65,5 @@ sample data could be found in /src/data
 
 # Links:
 
-- [Trail-Buddy](https://stack-menu.now.sh/)
+- [Trail-Buddy](https://ultra-buddy.now.sh/)
 - [Twiter](https://twitter.com/LLogicielle)
