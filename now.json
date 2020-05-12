@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "name": "stack-menu",
-  "alias": "stack-menu.now.sh",
+  "name": "ultra-buddy",
+  "alias": "ultra-buddy.now.sh",
   "build": {
     "env": {
       "REACT_APP_MAPBOX_KEY": "@mapbox-key"
