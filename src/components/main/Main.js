@@ -8,9 +8,11 @@ import Map from "../map/Map";
 import Options from "../options/Options";
 import Sections from "../sections/Sections";
 import Progression from "../progression/Progression";
-import Loader from "../loader/Loader";
+import Message from "../message/Message";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
+import { ReactComponent as Compass } from "../../assets/compass.svg";
+import { ReactComponent as Direction } from "../../assets/direction.svg";
 
 const Main = ({ className }) => {
   const [route, setRoute] = usePresistedState("route", null);
@@ -214,7 +216,9 @@ const Main = ({ className }) => {
                   sections={sections}
                 />
               ) : (
-                <Loader />
+                <Message message="get current location ?">
+                  <Compass width={100} />
+                </Message>
               )}
             </div>
           </div>
@@ -242,7 +246,9 @@ const Main = ({ className }) => {
                   domain={domain}
                 />
               ) : (
-                <Loader />
+                <Message message="roadbook not loaded yet!">
+                  <Direction width={100} />
+                </Message>
               )}
             </div>
           </div>
