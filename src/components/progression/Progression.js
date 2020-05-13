@@ -11,13 +11,13 @@ const Progression = ({
   currentSectionIndex,
 }) => {
   const [data, setData] = useState();
-  const [NextCheckpointDistance, setNextCheckpointDistance] = useState(0);
+  const [distanceToNextCheckpoint, setDistanceToNextCheckpoint] = useState(0);
 
   useEffect(() => {
     if (currentSectionIndex < 0 || !progression || !sections) return;
 
     const remaining = sections[currentSectionIndex].toKm - progression[0];
-    setNextCheckpointDistance(remaining);
+    setDistanceToNextCheckpoint(remaining);
   }, [currentSectionIndex, sections, progression]);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const Progression = ({
     <div className={className}>
       <RadialProgessBar data={data} />
       <div className="analytics">
-        <div className="item checkpoint">{`${NextCheckpointDistance.toFixed(
+        <div className="item checkpoint">{`${distanceToNextCheckpoint.toFixed(
           2
         )} km to ${sections[currentSectionIndex].arrivalLocation}`}</div>
         <div className="item distance">{`${progression[0].toFixed(

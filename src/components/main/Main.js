@@ -103,6 +103,7 @@ const Main = ({ className }) => {
 
     // set current section
     if (!sections) return;
+
     const sectionIndex = sections.findIndex((section) => {
       return index >= section.indices[0] && index <= section.indices[1];
     });
@@ -208,7 +209,7 @@ const Main = ({ className }) => {
               Progression
             </h1>
             <div className="section-content">
-              {progression ? (
+              {progression && sections ? (
                 <Progression
                   routeAnalytics={routeAnalytics}
                   progression={progression}
