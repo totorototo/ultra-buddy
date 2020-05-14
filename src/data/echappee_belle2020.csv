@@ -1,4 +1,4 @@
-location,comment,refueling,timeBarrier,altitude,distance,cumulativeElevationGain,cumulativeElevationLoss,sectionDistance,sectionElevationGain,sectionElevationLoss,
+location,comment,refueling,cutOffTime,altitude,distance,cumulativeElevationGain,cumulativeElevationLoss,sectionDistance,sectionElevationGain,sectionElevationLoss,
 Départ,Vizille,,2020-08-21 06:00:00,282,0,0,0,0,0,0,
 Mont - Sec,,,,1103,6.25,843,22,6.25,843,22,
 Col de la madeleine,,,,1165,7.77,922,39,1.52,79,17,

@@ -8,6 +8,7 @@ import Map from "../map/Map";
 import Options from "../options/Options";
 import Sections from "../sections/Sections";
 import Progression from "../progression/Progression";
+import TimeTable from "../timeTable/TimeTable";
 import Message from "../message/Message";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
@@ -158,8 +159,8 @@ const Main = ({ className }) => {
     const sectionsDetails = checkpoints.reduce(
       (accu, checkpoint, index, array) => {
         if (index > 0) {
-          const endingDate = new Date(checkpoint.timeBarrier);
-          const startingDate = new Date(array[index - 1].timeBarrier);
+          const endingDate = new Date(checkpoint.cutOffTime);
+          const startingDate = new Date(array[index - 1].cutOffTime);
           const duration = differenceInMilliseconds(endingDate, startingDate);
           return [
             ...accu,
@@ -169,7 +170,7 @@ const Main = ({ className }) => {
               depatureLocation: array[index - 1].location,
               arrivalLocation: checkpoint.location,
               duration,
-              timeBarrier: checkpoint.timeBarrier,
+              cutOffTime: checkpoint.cutOffTime,
               ...sectionsStats[index - 1],
               fromKm: helper.getProgression(sectionsIndices[index - 1][0])[0],
               toKm: helper.getProgression(sectionsIndices[index - 1][1])[0],
@@ -201,6 +202,7 @@ const Main = ({ className }) => {
             </h1>
             <div className="section-content">
               <Options clearData={clearData} />
+              <TimeTable checkpoints={checkpoints} />
             </div>
           </div>
         </section>

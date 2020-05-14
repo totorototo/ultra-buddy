@@ -58,7 +58,7 @@ const Home = ({
         const { columns, ...rest } = csv;
         const checkpoints = Object.values(rest).filter(
           (location) =>
-            location.timeBarrier || !/^\s*$/.test(location.timeBarrier)
+            location.cutOffTime || !/^\s*$/.test(location.cutOffTime)
           // ||
           // location.refueling ||
           // !/^\s*$/.test(location.refueling)
@@ -128,7 +128,7 @@ const Home = ({
             locations.length > 0 && (
               <>
                 <p>
-                  {formatDistanceToNow(new Date(checkpoints[0].timeBarrier), {
+                  {formatDistanceToNow(new Date(checkpoints[0].cutOffTime), {
                     addSuffix: true,
                   })}
                 </p>

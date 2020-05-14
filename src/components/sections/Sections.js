@@ -126,7 +126,7 @@ const Sections = ({
             </div>
             <div className="item">
               <div>
-                {format(new Date(sections[section].timeBarrier), "dd-MM HH:mm")}
+                {format(new Date(sections[section].cutOffTime), "dd-MM HH:mm")}
               </div>
               <div>time barrier</div>
             </div>
