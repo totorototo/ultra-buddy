@@ -202,7 +202,7 @@ const Main = ({ className }) => {
             </h1>
             <div className="section-content">
               <Options clearData={clearData} />
-              <TimeTable checkpoints={checkpoints} />
+              <TimeTable width={200} height={100} checkpoints={checkpoints} />
             </div>
           </div>
         </section>
