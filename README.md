@@ -5,7 +5,7 @@ Ultra-Buddy is a free web service dedicated for trail runner.
 Onboarding worflow is quite simple: easy as 1,2,3!
 
 1. Load trace file (gpx, kml, ...),
-2. Load roadbook file (csv),
+2. Load timetable (csv),
 3. enjoy the race!
 
 Then you will be able to:

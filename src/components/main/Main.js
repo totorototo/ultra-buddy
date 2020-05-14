@@ -253,7 +253,7 @@ const Main = ({ className }) => {
                   domain={domain}
                 />
               ) : (
-                <Message message="roadbook not loaded yet!">
+                <Message message="timetable not loaded yet!">
                   <Direction width={100} />
                 </Message>
               )}

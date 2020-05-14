@@ -91,7 +91,7 @@ const Home = ({
               <div className="index">
                 {step > 1 ? <Check size="40" /> : "2"}
               </div>
-              <div className="label">roadbook</div>
+              <div className="label">timetable</div>
             </div>
             <div className={`connecting-line ${step > 1 ? "done" : ""}`} />
             <div className={`item ${step > 2 ? "done" : ""}`}>
