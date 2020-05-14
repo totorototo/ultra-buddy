@@ -59,6 +59,7 @@ const Main = ({ className }) => {
     setRouteAnalytics(null);
   };
 
+  // get trace stats
   useEffect(() => {
     if (!helper) return;
     const distance = helper.computeDistance();
@@ -66,11 +67,13 @@ const Main = ({ className }) => {
     setRouteAnalytics({ distance, elevation });
   }, [helper, setRouteAnalytics]);
 
+  // get route
   useEffect(() => {
     if (!route) return;
     setLocations(route.features[0].geometry.coordinates);
   }, [route, setLocations]);
 
+  // set domain
   useEffect(() => {
     if (!locations) return;
     const altitudes = locations.map((location) => location[2]);
@@ -83,25 +86,27 @@ const Main = ({ className }) => {
     }));
   }, [locations]);
 
+  // get trailer progression
   useEffect(() => {
     if (currentLocationIndex === -1 || !helper) return;
     const progression = helper.getProgression(currentLocationIndex);
     setProgression(progression);
   }, [currentLocationIndex, helper, setProgression]);
 
+  // set route helper
   useEffect(() => {
     if (!locations) return;
     const helper = trace(...locations);
     setHelper(helper);
   }, [locations]);
 
+  // set current location and sections indices
   useEffect(() => {
     if (!helper || !currentLocation) return;
 
     const index = helper.getLocationIndex(currentLocation);
     setCurrentLocationIndex(index);
 
-    // set current section
     if (!sections) return;
 
     const sectionIndex = sections.findIndex((section) => {
@@ -116,6 +121,7 @@ const Main = ({ className }) => {
     setCurrentSectionIndex,
   ]);
 
+  // set trail sections
   useEffect(() => {
     if (!checkpoints || !locations || !helper) return;
 

@@ -117,7 +117,7 @@ const trace = (...locations) => {
   const findClosestIndex = (map, distance) => {
     return map.reduce((accu, item) => {
       if (accu === null) return item;
-      if (Math.abs(distance - item[1]) > Math.abs(distance - accu[1])) {
+      if (Math.abs(distance - item[1]) >= Math.abs(distance - accu[1])) {
         return accu;
       }
       return item;
