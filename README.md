@@ -1,25 +1,25 @@
 # <img src="./public/logo192.png" width="24"> Ultra-Buddy
 
-Ultra-Buddy is a free web service dedicated for trail runner.
+Ultra-Buddy is a progrossive web application dedicated for trail runner.
 
 Onboarding worflow is quite simple: easy as 1,2,3!
 
-1. Load trace file (gpx, kml, ...),
+1. Load trace (gpx, kml, ...),
 2. Load timetable (csv),
-3. enjoy the race!
+3. enjoy!
 
 Then you will be able to:
 
-- spot trail runner on track (map),
-- spot trail runner on elevation profile,
+- spot runner on track (map),
+- spot runner on elevation profile,
 - display sections details,
 - display current section details,
 - follow trail runner progression.
 
 Final thoughts:
 
-- works on phone, tablet or computer,
-- free,
+- either works on phone, tablet or computer,
+- totaly free,
 - offline supported.
 
 # Style
@@ -34,13 +34,8 @@ Final thoughts:
 
 - node `^6.9.1`
 - npm `^3.10.8`
-- have a valid Mapbox account and copy your public API key
-- create an .env file into project root directory
-- paste your MAPBOX public key inside your .env file and make sure to replace [AAA] with your key.
+- have a valid Mapbox account
 
-```bash
-REACT_APP_MAPBOX_KEY=[AAA]
-```
 
 # Getting Started
 
@@ -51,6 +46,15 @@ git clone https://github.com/totorototo/ultra-buddy.git
 cd ultra-buddy
 yarn install                           # Install project dependencies
 ```
+
+# Mapbox configuration
+- create an .env file into project root directory
+- paste your MAPBOX public key inside your .env file and make sure to replace [AAA] with your key.
+
+```bash
+REACT_APP_MAPBOX_KEY=[AAA]
+```
+
 
 # Ignition
 
