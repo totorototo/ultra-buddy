@@ -34,7 +34,7 @@ export const createYScale = (
 export const getArea = (points, scaleX, scaleY, domainMin) => {
   const areaShape = d3.shape
     .area()
-    .x((d) => scaleX(points.indexOf(d)))
+    .x((_, i) => scaleX(i))
     .y1((d) => scaleY(d[2]))
     .y0(scaleY(domainMin))
     .defined((d) => !d.fake)

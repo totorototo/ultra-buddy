@@ -10,6 +10,7 @@ import Sections from "../sections/Sections";
 import Progression from "../progression/Progression";
 import TimeTable from "../timeTable/TimeTable";
 import Message from "../message/Message";
+import AutoSizer from "../autoSizer/AutoSizer";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
 import { ReactComponent as Compass } from "../../assets/compass.svg";
@@ -41,7 +42,7 @@ const Main = ({ className }) => {
 
   const [helper, setHelper] = useState();
   const [toggle, setToggle] = useState(false);
-  const [pageIndex, setPageIndex] = useState(4);
+  const [pageIndex, setPageIndex] = useState(5);
   const [domain, setDomain] = useState({
     x: { min: 0, max: 0 },
     y: { min: 0, max: 0 },
@@ -202,7 +203,6 @@ const Main = ({ className }) => {
             </h1>
             <div className="section-content">
               <Options clearData={clearData} />
-              <TimeTable width={200} height={100} checkpoints={checkpoints} />
             </div>
           </div>
         </section>
@@ -270,11 +270,41 @@ const Main = ({ className }) => {
                 setToggle(!toggle);
               }}
             >
+              TimeTable
+            </h1>
+            <div className="section-content">
+              {progression && sections && checkpoints ? (
+                <AutoSizer>
+                  {(width, height) => (
+                    <TimeTable
+                      sections={sections}
+                      checkpoints={checkpoints}
+                      width={width}
+                      height={height}
+                    />
+                  )}
+                </AutoSizer>
+              ) : (
+                <Message message="timetable not loaded yet!">
+                  <Direction width={100} />
+                </Message>
+              )}
+            </div>
+          </div>
+        </section>
+        <section className={`five ${pageIndex < 4 && "after"}`}>
+          <div className="container">
+            <h1
+              onClick={() => {
+                setPageIndex(4);
+                setToggle(!toggle);
+              }}
+            >
               Map
             </h1>
             <div className="section-content">
               <Map
-                enableGPS={pageIndex === 3}
+                enableGPS={pageIndex === 4}
                 sections={sections}
                 setCurrentSectionIndex={setCurrentSectionIndex}
                 currentSectionIndex={currentSectionIndex}
@@ -288,11 +318,11 @@ const Main = ({ className }) => {
             </div>
           </div>
         </section>
-        <section className={`five ${pageIndex < 4 && "after"}`}>
+        <section className={`six ${pageIndex < 5 && "after"}`}>
           <div className="container">
             <h1
               onClick={() => {
-                setPageIndex(4);
+                setPageIndex(5);
                 setToggle(!toggle);
               }}
             >
