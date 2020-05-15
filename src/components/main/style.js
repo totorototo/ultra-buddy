@@ -79,6 +79,11 @@ export default (Component) => styled(Component)`
       transition-delay: 0.2s;
     }
 
+    &.six {
+      background: ${(props) => props.theme.colors.six};
+      transition-delay: 0.25s;
+    }
+
     &.after {
       transform: translateY(100%);
     }
@@ -137,6 +142,14 @@ export default (Component) => styled(Component)`
         transition-delay: 0s;
         &:active {
           background: lighten(${(props) => props.theme.colors.five}, 3%);
+        }
+      }
+
+      &.six {
+        transform: translateY(${OFFSET * 6}px);
+        transition-delay: 0s;
+        &:active {
+          background: lighten(${(props) => props.theme.colors.six}, 3%);
         }
       }
     }

@@ -6,12 +6,13 @@ import Main from "./components/main/Main";
 
 const THEME = {
   colors: {
-    background: "#292929",
-    one: "#323232",
-    two: "#383838",
-    three: "#3e3e3e",
-    four: "#444444",
-    five: "#555555",
+    background: "#212121",
+    one: "#292929",
+    two: "#323232",
+    three: "#383838",
+    four: "#3e3e3e",
+    five: "#444444",
+    six: "#555555",
     text: "#E0E2DB",
     mustard: "#D5A021",
     dark: "#313131",

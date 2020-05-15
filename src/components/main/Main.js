@@ -8,7 +8,9 @@ import Map from "../map/Map";
 import Options from "../options/Options";
 import Sections from "../sections/Sections";
 import Progression from "../progression/Progression";
+import TimeTable from "../timeTable/TimeTable";
 import Message from "../message/Message";
+import AutoSizer from "../autoSizer/AutoSizer";
 import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
 import { ReactComponent as Compass } from "../../assets/compass.svg";
@@ -40,7 +42,7 @@ const Main = ({ className }) => {
 
   const [helper, setHelper] = useState();
   const [toggle, setToggle] = useState(false);
-  const [pageIndex, setPageIndex] = useState(4);
+  const [pageIndex, setPageIndex] = useState(5);
   const [domain, setDomain] = useState({
     x: { min: 0, max: 0 },
     y: { min: 0, max: 0 },
@@ -158,8 +160,8 @@ const Main = ({ className }) => {
     const sectionsDetails = checkpoints.reduce(
       (accu, checkpoint, index, array) => {
         if (index > 0) {
-          const endingDate = new Date(checkpoint.timeBarrier);
-          const startingDate = new Date(array[index - 1].timeBarrier);
+          const endingDate = new Date(checkpoint.cutOffTime);
+          const startingDate = new Date(array[index - 1].cutOffTime);
           const duration = differenceInMilliseconds(endingDate, startingDate);
           return [
             ...accu,
@@ -169,7 +171,7 @@ const Main = ({ className }) => {
               depatureLocation: array[index - 1].location,
               arrivalLocation: checkpoint.location,
               duration,
-              timeBarrier: checkpoint.timeBarrier,
+              cutOffTime: checkpoint.cutOffTime,
               ...sectionsStats[index - 1],
               fromKm: helper.getProgression(sectionsIndices[index - 1][0])[0],
               toKm: helper.getProgression(sectionsIndices[index - 1][1])[0],
@@ -268,11 +270,41 @@ const Main = ({ className }) => {
                 setToggle(!toggle);
               }}
             >
+              TimeTable
+            </h1>
+            <div className="section-content">
+              {progression && sections && checkpoints ? (
+                <AutoSizer>
+                  {(width, height) => (
+                    <TimeTable
+                      sections={sections}
+                      checkpoints={checkpoints}
+                      width={width}
+                      height={height}
+                    />
+                  )}
+                </AutoSizer>
+              ) : (
+                <Message message="timetable not loaded yet!">
+                  <Direction width={100} />
+                </Message>
+              )}
+            </div>
+          </div>
+        </section>
+        <section className={`five ${pageIndex < 4 && "after"}`}>
+          <div className="container">
+            <h1
+              onClick={() => {
+                setPageIndex(4);
+                setToggle(!toggle);
+              }}
+            >
               Map
             </h1>
             <div className="section-content">
               <Map
-                enableGPS={pageIndex === 3}
+                enableGPS={pageIndex === 4}
                 sections={sections}
                 setCurrentSectionIndex={setCurrentSectionIndex}
                 currentSectionIndex={currentSectionIndex}
@@ -286,11 +318,11 @@ const Main = ({ className }) => {
             </div>
           </div>
         </section>
-        <section className={`five ${pageIndex < 4 && "after"}`}>
+        <section className={`six ${pageIndex < 5 && "after"}`}>
           <div className="container">
             <h1
               onClick={() => {
-                setPageIndex(4);
+                setPageIndex(5);
                 setToggle(!toggle);
               }}
             >
