@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export default (Component) => styled(Component)`
   postion: relative;
+  font-family: roboto;
 
   .intervals {
     .area {
@@ -10,6 +11,15 @@ export default (Component) => styled(Component)`
       }
       :nth-of-type(odd) {
         fill: #cecece;
+      }
+    }
+    .label {
+      font-weight: bolder;
+      :nth-of-type(even) {
+        fill: #cecece;
+      }
+      :nth-of-type(odd) {
+        fill: #aeaeae;
       }
     }
     .line {
