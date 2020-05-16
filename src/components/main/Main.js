@@ -7,8 +7,8 @@ import Home from "../home/Home";
 import Map from "../map/Map";
 import Options from "../options/Options";
 import Sections from "../sections/Sections";
-import Progression from "../progression/Progression";
-import TimeTable from "../timeTable/TimeTable";
+import Analytics from "../analytics/Analytics";
+import Live from "../live/Live";
 import Message from "../message/Message";
 import AutoSizer from "../autoSizer/AutoSizer";
 import usePresistedState from "../../hooks/usePersistedState";
@@ -34,7 +34,10 @@ const Main = ({ className }) => {
     "current-location-index",
     -1
   );
-  const [progression, setProgression] = usePresistedState("progression", null);
+  const [runnerAnalytics, setRunnerAnalytics] = usePresistedState(
+    "runnerAnalytics",
+    null
+  );
   const [routeAnalytics, setRouteAnalytics] = usePresistedState(
     "route-analytics",
     null
@@ -55,7 +58,7 @@ const Main = ({ className }) => {
     setCurrentSectionIndex(-1);
     setCurrentLocationIndex(-1);
     setCurrentLocation(null);
-    setProgression(null);
+    setRunnerAnalytics(null);
     setLocations(null);
     setName(null);
     setRouteAnalytics(null);
@@ -88,12 +91,12 @@ const Main = ({ className }) => {
     }));
   }, [locations]);
 
-  // get trailer progression
+  // get trailer runnerAnalytics
   useEffect(() => {
     if (currentLocationIndex === -1 || !helper) return;
-    const progression = helper.getProgression(currentLocationIndex);
-    setProgression(progression);
-  }, [currentLocationIndex, helper, setProgression]);
+    const runnerAnalytics = helper.getProgression(currentLocationIndex);
+    setRunnerAnalytics(runnerAnalytics);
+  }, [currentLocationIndex, helper, setRunnerAnalytics]);
 
   // set route helper
   useEffect(() => {
@@ -214,13 +217,13 @@ const Main = ({ className }) => {
                 setToggle(!toggle);
               }}
             >
-              Progression
+              Analytics
             </h1>
             <div className="section-content">
-              {progression && sections ? (
-                <Progression
+              {runnerAnalytics && sections ? (
+                <Analytics
                   routeAnalytics={routeAnalytics}
-                  progression={progression}
+                  runnerAnalytics={runnerAnalytics}
                   currentSectionIndex={currentSectionIndex}
                   sections={sections}
                 />
@@ -240,20 +243,20 @@ const Main = ({ className }) => {
                 setToggle(!toggle);
               }}
             >
-              Sections
+              Live
             </h1>
             <div className="section-content">
-              {route && sections ? (
-                <Sections
-                  setCurrentLocation={setCurrentLocation}
-                  setCurrentLocationIndex={setCurrentLocationIndex}
-                  currentSectionIndex={currentSectionIndex}
-                  currentLocation={currentLocation}
-                  currentLocationIndex={currentLocationIndex}
-                  sections={sections}
-                  locations={locations}
-                  domain={domain}
-                />
+              {runnerAnalytics && sections && checkpoints ? (
+                <AutoSizer>
+                  {(width, height) => (
+                    <Live
+                      sections={sections}
+                      checkpoints={checkpoints}
+                      width={width}
+                      height={height}
+                    />
+                  )}
+                </AutoSizer>
               ) : (
                 <Message message="timetable not loaded yet!">
                   <Direction width={100} />
@@ -270,20 +273,20 @@ const Main = ({ className }) => {
                 setToggle(!toggle);
               }}
             >
-              TimeTable
+              Sections
             </h1>
             <div className="section-content">
-              {progression && sections && checkpoints ? (
-                <AutoSizer>
-                  {(width, height) => (
-                    <TimeTable
-                      sections={sections}
-                      checkpoints={checkpoints}
-                      width={width}
-                      height={height}
-                    />
-                  )}
-                </AutoSizer>
+              {route && sections ? (
+                <Sections
+                  setCurrentLocation={setCurrentLocation}
+                  setCurrentLocationIndex={setCurrentLocationIndex}
+                  currentSectionIndex={currentSectionIndex}
+                  currentLocation={currentLocation}
+                  currentLocationIndex={currentLocationIndex}
+                  sections={sections}
+                  locations={locations}
+                  domain={domain}
+                />
               ) : (
                 <Message message="timetable not loaded yet!">
                   <Direction width={100} />

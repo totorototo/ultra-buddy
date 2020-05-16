@@ -6,10 +6,10 @@ export default (Component) => styled(Component)`
   .intervals {
     .area {
       :nth-of-type(even) {
-        fill: #444444;
+        fill: #aeaeae;
       }
       :nth-of-type(odd) {
-        fill: #333333;
+        fill: #cecece;
       }
     }
     .line {
@@ -20,21 +20,27 @@ export default (Component) => styled(Component)`
       :last-of-type {
         stroke-width: 0;
       }
+      :first-of-type {
+        stroke-width: 0;
+      }
     }
   }
 
   .interval {
     stroke-width: 2;
     opacity: 0.4;
-    stroke: white;
+    stroke: #383838;
   }
 
   .checkpoints {
     .line {
       opacity: 0.4;
-      stroke: white;
+      stroke: #383838;
       stroke-dasharray: 4 4;
       :first-child {
+        stroke-width: 0;
+      }
+      :last-child {
         stroke-width: 0;
       }
     }
