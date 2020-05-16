@@ -3,6 +3,7 @@ import {
   eachDayOfInterval,
   differenceInMilliseconds,
   addMilliseconds,
+  format,
 } from "date-fns";
 import * as scale from "d3-scale";
 import * as shape from "d3-shape";
@@ -127,6 +128,20 @@ const Live = ({ className, checkpoints, width, height }) => {
                   width={width}
                   height={height}
                 />
+                <text
+                  writingMode="tb"
+                  className="label"
+                  x={x + 20}
+                  y={50}
+                  fontSize={28}
+                  transform={
+                    index > 0
+                      ? `translate(0, ${height - 200})`
+                      : "translate(0,0)"
+                  }
+                >
+                  {format(new Date(interval.start), "EEEE")}
+                </text>
                 {/* <line
                   key={`${index}-line`}
                   className="line"
@@ -139,7 +154,7 @@ const Live = ({ className, checkpoints, width, height }) => {
             );
           })}
       </g>
-      {path && <path d={path} strokeWidth="0" fill="#d9a443" opacity="0.8" />}
+      {path && <path d={path} strokeWidth="0" fill="#d9a443" opacity="0.3" />}
       <g className="checkpoints">
         {checkpointsIntervals &&
           checkpointsIntervals.map((d, index) => {
