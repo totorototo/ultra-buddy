@@ -27,7 +27,7 @@ const createYScale = (start, end, rangeMin, rangeMax) => {
     .range([rangeMin, rangeMax]);
 };
 
-const TimeTable = ({ className, checkpoints, width, height }) => {
+const Live = ({ className, checkpoints, width, height }) => {
   const [scales, setScales] = useState();
   const [intervals, setIntervals] = useState();
   const [checkpointsIntervals, setCheckpointsIntervals] = useState();
@@ -45,8 +45,8 @@ const TimeTable = ({ className, checkpoints, width, height }) => {
     );
 
     const y = createYScale(
-      0,
       checkpoints[checkpoints.length - 1].distance,
+      0,
       0,
       height
     );
@@ -139,6 +139,7 @@ const TimeTable = ({ className, checkpoints, width, height }) => {
             );
           })}
       </g>
+      {path && <path d={path} strokeWidth="0" fill="#d9a443" opacity="0.8" />}
       <g className="checkpoints">
         {checkpointsIntervals &&
           checkpointsIntervals.map((d, index) => {
@@ -159,7 +160,8 @@ const TimeTable = ({ className, checkpoints, width, height }) => {
             );
           })}
       </g>
-      {checkpointsIntervals &&
+
+      {/* {checkpointsIntervals &&
         checkpointsIntervals.map((checkpointsInterval, index) => {
           const x1 = scales.x(checkpointsInterval.fast);
           const x2 = scales.x(checkpointsInterval.slow);
@@ -168,19 +170,17 @@ const TimeTable = ({ className, checkpoints, width, height }) => {
           return (
             <line
               className="interval"
-              fill="#d9a443"
+              fill="#357597"
               key={`${index}`}
               x1={x1}
               x2={x2}
               y2={y}
               y1={y}
-              opacity="0.3"
             />
           );
-        })}
-      {path && <path d={path} strokeWidth="0" fill="#D5A021" opacity="0.3" />}
+        })} */}
     </svg>
   );
 };
 
-export default styled(TimeTable);
+export default styled(Live);
