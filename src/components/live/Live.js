@@ -32,7 +32,8 @@ const Live = ({ className, checkpoints, width, height }) => {
   const [scales, setScales] = useState();
   const [intervals, setIntervals] = useState();
   const [checkpointsIntervals, setCheckpointsIntervals] = useState();
-  const [path, setPath] = useState();
+  const [intervalsArea, setIntervalsArea] = useState();
+  const [livePath, setLivePath] = useState();
 
   useEffect(() => {
     if (!height && !width) return;
@@ -88,7 +89,7 @@ const Live = ({ className, checkpoints, width, height }) => {
       .y((d) => scales.y(d.distance))
       .curve(d3.shape.curveNatural);
     const path = sh(checkpointsIntervals);
-    setPath(path);
+    setIntervalsArea(path);
   }, [scales, checkpointsIntervals]);
 
   useEffect(() => {
@@ -106,6 +107,32 @@ const Live = ({ className, checkpoints, width, height }) => {
 
     setCheckpointsIntervals(result);
   }, [checkpoints]);
+
+  // for debug purpose!
+  useEffect(() => {
+    if (!scales || !checkpoints) return;
+
+    const start = new Date(checkpoints[0].cutOffTime);
+
+    const positions = checkpoints.map((checkpoint) => {
+      const slow = new Date(checkpoint.cutOffTime);
+      const duration = differenceInMilliseconds(slow, start);
+      const current = addMilliseconds(
+        start,
+        (duration * (Math.floor(Math.random() * (100 - 80 + 1)) + 80)) / 100
+      );
+      return [checkpoint.distance, current];
+    });
+
+    const getLine = d3.shape
+      .line()
+      .x((d) => scales.x(new Date(d[1])))
+      .y((d) => scales.y(d[0]))
+      .defined((d) => !d.fake);
+
+    const path = getLine(positions);
+    setLivePath(path);
+  }, [scales, checkpoints]);
 
   return (
     <svg width={width} height={height} className={className}>
@@ -154,7 +181,19 @@ const Live = ({ className, checkpoints, width, height }) => {
             );
           })}
       </g>
-      {path && <path d={path} strokeWidth="0" fill="#d9a443" opacity="0.3" />}
+      {intervalsArea && (
+        <path d={intervalsArea} strokeWidth="0" fill="#d9a443" />
+      )}
+      {livePath && (
+        <path
+          d={livePath}
+          fill="none"
+          stroke="red"
+          strokeWidth="2"
+          strokeDasharray="4 4"
+          strokeOpacity="0.6"
+        />
+      )}
       <g className="checkpoints">
         {checkpointsIntervals &&
           checkpointsIntervals.map((d, index) => {
