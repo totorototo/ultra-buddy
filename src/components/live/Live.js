@@ -3,6 +3,7 @@ import {
   eachDayOfInterval,
   differenceInMilliseconds,
   addMilliseconds,
+  addHours,
   format,
 } from "date-fns";
 import * as scale from "d3-scale";
@@ -34,6 +35,39 @@ const Live = ({ className, checkpoints, width, height }) => {
   const [checkpointsIntervals, setCheckpointsIntervals] = useState();
   const [intervalsArea, setIntervalsArea] = useState();
   const [livePath, setLivePath] = useState();
+  const [vertivalTicks, setVerticalTicks] = useState([]);
+  const [horizontalTicks, setHorizontalTicks] = useState([]);
+
+  useEffect(() => {
+    const tickPeriod = 4;
+    let date = new Date(checkpoints[0].cutOffTime);
+
+    const markers = [];
+
+    while (
+      differenceInMilliseconds(
+        date,
+        new Date(checkpoints[checkpoints.length - 1].cutOffTime)
+      ) < 0
+    ) {
+      markers.push(date);
+      date = addHours(date, tickPeriod);
+    }
+
+    setHorizontalTicks(markers);
+  }, [checkpoints]);
+
+  useEffect(() => {
+    const tickPeriod = 10;
+    const distance = checkpoints[checkpoints.length - 1].distance;
+    const times = (distance - (distance % tickPeriod)) / tickPeriod;
+
+    const markers = [];
+    for (let i = 0; i <= times; i++) {
+      markers.push(i * tickPeriod);
+    }
+    setVerticalTicks(markers);
+  }, [checkpoints]);
 
   useEffect(() => {
     if (!height && !width) return;
@@ -42,7 +76,7 @@ const Live = ({ className, checkpoints, width, height }) => {
     const x = createXScale(
       new Date(checkpoints[0].cutOffTime),
       new Date(checkpoints[checkpoints.length - 1].cutOffTime),
-      0,
+      30,
       width
     );
 
@@ -50,7 +84,7 @@ const Live = ({ className, checkpoints, width, height }) => {
       checkpoints[checkpoints.length - 1].distance,
       0,
       0,
-      height
+      height - 60
     );
     setScales({ x, y });
   }, [width, height, checkpoints]);
@@ -148,18 +182,19 @@ const Live = ({ className, checkpoints, width, height }) => {
             return (
               <Fragment key={index}>
                 <rect
+                  opacity="0.9"
                   key={`${index}-area`}
                   className="area"
                   x={x}
                   y={y}
                   width={width}
-                  height={height}
+                  height={height - 60}
                 />
                 <text
                   writingMode="tb"
                   className="label"
                   x={x + 20}
-                  y={50}
+                  y={10}
                   fontSize={28}
                   transform={
                     index > 0
@@ -188,7 +223,7 @@ const Live = ({ className, checkpoints, width, height }) => {
         <path
           d={livePath}
           fill="none"
-          stroke="red"
+          stroke="#357597"
           strokeWidth="2"
           strokeDasharray="4 4"
           strokeOpacity="0.6"
@@ -197,7 +232,7 @@ const Live = ({ className, checkpoints, width, height }) => {
       <g className="checkpoints">
         {checkpointsIntervals &&
           checkpointsIntervals.map((d, index) => {
-            const x1 = 0;
+            const x1 = 30;
             const x2 = width;
             const y1 = scales.y(d.distance);
             const y2 = scales.y(d.distance);
@@ -233,6 +268,53 @@ const Live = ({ className, checkpoints, width, height }) => {
             />
           );
         })} */}
+      <g>
+        {horizontalTicks.map((tick, index) => (
+          <g key={`${index}-group`}>
+            <text
+              writingMode="tb"
+              key={`${index}-text`}
+              fontSize="12"
+              fill="#ffffff94"
+              x={scales.x(new Date(tick))}
+              y={height - 50}
+            >
+              {format(new Date(tick), "HH,mm")}
+            </text>
+            <line
+              stroke="#ffffff94"
+              key={`${index}-tick`}
+              x1={scales.x(new Date(tick))}
+              x2={scales.x(new Date(tick))}
+              y2={height - 55}
+              y1={height - 60}
+            />
+          </g>
+        ))}
+      </g>
+      <g>
+        {vertivalTicks.map((tick, index) => (
+          <g key={`${index}-group`}>
+            <text
+              key={`${index}-text`}
+              fontSize="12"
+              fill="#ffffff94"
+              x={0}
+              y={scales.y(tick)}
+            >
+              {tick}
+            </text>
+            <line
+              stroke="#ffffff94"
+              key={`${index}-tick`}
+              x1={25}
+              x2={30}
+              y2={scales.y(tick)}
+              y1={scales.y(tick)}
+            />
+          </g>
+        ))}
+      </g>
     </svg>
   );
 };
