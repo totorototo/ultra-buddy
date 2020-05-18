@@ -16,10 +16,10 @@ export default (Component) => styled(Component)`
     .label {
       font-weight: bolder;
       :nth-of-type(even) {
-        fill: #cecece;
+        fill: #ffffff94;
       }
       :nth-of-type(odd) {
-        fill: #aeaeae;
+        fill: #ffffff94;
       }
     }
     .line {
@@ -45,7 +45,7 @@ export default (Component) => styled(Component)`
   .checkpoints {
     .line {
       opacity: 0.4;
-      stroke: #383838;
+      stroke: #ffffff94;
       stroke-dasharray: 4 4;
       :first-child {
         stroke-width: 0;
