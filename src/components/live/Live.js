@@ -18,6 +18,9 @@ const d3 = {
   d3Array,
 };
 
+const OFFSET_Y = 60;
+const OFFSET_X = 30;
+
 const createXScale = (start, end, rangeMin, rangeMax) => {
   return d3.scale.scaleTime().domain([start, end]).range([rangeMin, rangeMax]);
 };
@@ -76,7 +79,7 @@ const Live = ({ className, checkpoints, width, height }) => {
     const x = createXScale(
       new Date(checkpoints[0].cutOffTime),
       new Date(checkpoints[checkpoints.length - 1].cutOffTime),
-      30,
+      OFFSET_X,
       width
     );
 
@@ -84,7 +87,7 @@ const Live = ({ className, checkpoints, width, height }) => {
       checkpoints[checkpoints.length - 1].distance,
       0,
       0,
-      height - 60
+      height - OFFSET_Y
     );
     setScales({ x, y });
   }, [width, height, checkpoints]);
@@ -181,43 +184,99 @@ const Live = ({ className, checkpoints, width, height }) => {
 
             return (
               <Fragment key={index}>
-                <rect
-                  opacity="0.9"
-                  key={`${index}-area`}
-                  className="area"
-                  x={x}
-                  y={y}
-                  width={width}
-                  height={height - 60}
-                />
-                <text
-                  writingMode="tb"
-                  className="label"
-                  x={x + 20}
-                  y={10}
-                  fontSize={28}
-                  transform={
-                    index > 0
-                      ? `translate(0, ${height - 200})`
-                      : "translate(0,0)"
-                  }
-                >
-                  {format(new Date(interval.start), "EEEE")}
-                </text>
-                {/* <line
-                  key={`${index}-line`}
-                  className="line"
-                  x1={scales.x(new Date(interval.end))}
-                  x2={scales.x(new Date(interval.end))}
-                  y1={0}
-                  y2={height}
-                /> */}
+                <clipPath id={`clip-${index}`}>
+                  <rect
+                    key={`${index}-area`}
+                    x={x}
+                    y={y}
+                    width={width}
+                    height={height - OFFSET_Y}
+                  />
+                </clipPath>
+                <g className="group-area" clipPath={`url(#${`clip-${index}`})`}>
+                  <rect
+                    opacity="1"
+                    key={`${index}-area`}
+                    className="area"
+                    x={x}
+                    y={y}
+                    width={width}
+                    height={height - OFFSET_Y}
+                  />
+                  <text
+                    writingMode="tb"
+                    className="label"
+                    x={x + 15}
+                    y={10}
+                    fontSize={28}
+                    transform={
+                      index > 0
+                        ? `translate(0, ${height - 350})`
+                        : "translate(0,0)"
+                    }
+                  >
+                    {format(new Date(interval.start), "EEEE")}
+                  </text>
+                </g>
               </Fragment>
             );
           })}
       </g>
+
+      <g className="horizontal-ticks">
+        {horizontalTicks.map((tick, index) => (
+          <g key={`${index}-group`}>
+            <text
+              writingMode="tb"
+              key={`${index}-text`}
+              fontSize="12"
+              fill="#ffffff94"
+              x={scales.x(new Date(tick))}
+              y={height - 50}
+            >
+              {format(new Date(tick), "hh:mm")}
+            </text>
+            <line
+              stroke="#ffffff94"
+              key={`${index}-tick`}
+              x1={scales.x(new Date(tick))}
+              x2={scales.x(new Date(tick))}
+              y2={height - OFFSET_Y - 5}
+              y1={height - OFFSET_Y}
+            />
+          </g>
+        ))}
+      </g>
+      <g className="vertical-ticks">
+        {vertivalTicks.map((tick, index) => (
+          <g key={`${index}-group`}>
+            <text
+              key={`${index}-text`}
+              fontSize="12"
+              fill="#ffffff94"
+              x={0}
+              y={scales.y(tick)}
+            >
+              {tick}
+            </text>
+            <line
+              stroke="#ffffff94"
+              key={`${index}-tick`}
+              x1={OFFSET_X - 5}
+              x2={OFFSET_X}
+              y2={scales.y(tick)}
+              y1={scales.y(tick)}
+            />
+          </g>
+        ))}
+      </g>
       {intervalsArea && (
-        <path d={intervalsArea} strokeWidth="0" fill="#d9a443" />
+        <path
+          fillOpacity="0.8"
+          d={intervalsArea}
+          strokeWidth="0"
+          fill="#d9a443"
+        />
       )}
       {livePath && (
         <path
@@ -232,7 +291,7 @@ const Live = ({ className, checkpoints, width, height }) => {
       <g className="checkpoints">
         {checkpointsIntervals &&
           checkpointsIntervals.map((d, index) => {
-            const x1 = 30;
+            const x1 = OFFSET_X;
             const x2 = width;
             const y1 = scales.y(d.distance);
             const y2 = scales.y(d.distance);
@@ -248,72 +307,6 @@ const Live = ({ className, checkpoints, width, height }) => {
               />
             );
           })}
-      </g>
-
-      {/* {checkpointsIntervals &&
-        checkpointsIntervals.map((checkpointsInterval, index) => {
-          const x1 = scales.x(checkpointsInterval.fast);
-          const x2 = scales.x(checkpointsInterval.slow);
-          const y = scales.y(checkpointsInterval.distance);
-
-          return (
-            <line
-              className="interval"
-              fill="#357597"
-              key={`${index}`}
-              x1={x1}
-              x2={x2}
-              y2={y}
-              y1={y}
-            />
-          );
-        })} */}
-      <g>
-        {horizontalTicks.map((tick, index) => (
-          <g key={`${index}-group`}>
-            <text
-              writingMode="tb"
-              key={`${index}-text`}
-              fontSize="12"
-              fill="#ffffff94"
-              x={scales.x(new Date(tick))}
-              y={height - 50}
-            >
-              {format(new Date(tick), "HH,mm")}
-            </text>
-            <line
-              stroke="#ffffff94"
-              key={`${index}-tick`}
-              x1={scales.x(new Date(tick))}
-              x2={scales.x(new Date(tick))}
-              y2={height - 55}
-              y1={height - 60}
-            />
-          </g>
-        ))}
-      </g>
-      <g>
-        {vertivalTicks.map((tick, index) => (
-          <g key={`${index}-group`}>
-            <text
-              key={`${index}-text`}
-              fontSize="12"
-              fill="#ffffff94"
-              x={0}
-              y={scales.y(tick)}
-            >
-              {tick}
-            </text>
-            <line
-              stroke="#ffffff94"
-              key={`${index}-tick`}
-              x1={25}
-              x2={30}
-              y2={scales.y(tick)}
-              y1={scales.y(tick)}
-            />
-          </g>
-        ))}
       </g>
     </svg>
   );
