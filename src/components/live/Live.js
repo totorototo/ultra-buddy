@@ -222,26 +222,7 @@ const Live = ({ className, checkpoints, width, height }) => {
             );
           })}
       </g>
-      <g className="checkpoints">
-        {checkpointsIntervals &&
-          checkpointsIntervals.map((d, index) => {
-            const x1 = OFFSET_X;
-            const x2 = width;
-            const y1 = scales.y(d.distance);
-            const y2 = scales.y(d.distance);
 
-            return (
-              <line
-                key={index}
-                className="line"
-                x1={x1}
-                x2={x2}
-                y2={y2}
-                y1={y1}
-              />
-            );
-          })}
-      </g>
       <g className="horizontal-ticks">
         {horizontalTicks.map((tick, index) => (
           <g key={`${index}-group`}>
@@ -307,6 +288,26 @@ const Live = ({ className, checkpoints, width, height }) => {
           strokeOpacity="0.6"
         />
       )}
+      <g className="checkpoints">
+        {checkpointsIntervals &&
+          checkpointsIntervals.map((d, index) => {
+            const x1 = OFFSET_X;
+            const x2 = width;
+            const y1 = scales.y(d.distance);
+            const y2 = scales.y(d.distance);
+
+            return (
+              <line
+                key={index}
+                className="line"
+                x1={x1}
+                x2={x2}
+                y2={y2}
+                y1={y1}
+              />
+            );
+          })}
+      </g>
     </svg>
   );
 };
