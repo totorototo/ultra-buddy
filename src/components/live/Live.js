@@ -241,7 +241,7 @@ const Live = ({ className, checkpoints, width, height }) => {
               key={`${index}-tick`}
               x1={scales.x(new Date(tick))}
               x2={scales.x(new Date(tick))}
-              y2={height - OFFSET_Y - 5}
+              y2={height - OFFSET_Y + 5}
               y1={height - OFFSET_Y}
             />
           </g>
@@ -272,7 +272,7 @@ const Live = ({ className, checkpoints, width, height }) => {
       </g>
       {intervalsArea && (
         <path
-          fillOpacity="0.8"
+          fillOpacity="0.9"
           d={intervalsArea}
           strokeWidth="0"
           fill="#d9a443"
@@ -285,7 +285,7 @@ const Live = ({ className, checkpoints, width, height }) => {
           stroke="#357597"
           strokeWidth="2"
           strokeDasharray="4 4"
-          strokeOpacity="0.6"
+          strokeOpacity="0.9"
         />
       )}
       <g className="checkpoints">
