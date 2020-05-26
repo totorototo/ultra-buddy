@@ -234,7 +234,7 @@ const Live = ({ className, checkpoints, width, height }) => {
               x={scales.x(new Date(tick))}
               y={height - 50}
             >
-              {format(new Date(tick), "hh:mm")}
+              {format(new Date(tick), "HH:mm")}
             </text>
             <line
               stroke="#ffffff94"
