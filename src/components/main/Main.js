@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { differenceInMilliseconds } from "date-fns";
 import * as d3Array from "d3-array";
+import { useRecoilState } from "recoil";
 
 import styled from "./style";
 import Home from "../home/Home";
@@ -11,36 +12,41 @@ import Analytics from "../analytics/Analytics";
 import Live from "../live/Live";
 import Message from "../message/Message";
 import AutoSizer from "../autoSizer/AutoSizer";
-import usePresistedState from "../../hooks/usePersistedState";
 import trace from "../../helpers/trace";
 import { ReactComponent as Compass } from "../../assets/compass.svg";
 import { ReactComponent as Direction } from "../../assets/direction.svg";
 
+import currentLocationState from "../../model/currentLocation";
+import routeState from "../../model/route";
+import nameState from "../../model/name";
+import checkpointsState from "../../model/checkpoints";
+import sectionsState from "../../model/sections";
+import locationsState from "../../model/locations";
+import currentSectionIndexState from "../../model/currentSectionIndex";
+import currentLocationIndexState from "../../model/currentLocationIndex";
+import routeAnalyticsState from "../../model/routeAnalytics";
+import runnerAnalyticsState from "../../model/routeAnalytics";
+
 const Main = ({ className }) => {
-  const [route, setRoute] = usePresistedState("route", null);
-  const [name, setName] = usePresistedState("name", null);
-  const [checkpoints, setCheckpoints] = usePresistedState("checkpoints", null);
-  const [sections, setSections] = usePresistedState("sections", null);
-  const [locations, setLocations] = usePresistedState("locations", null);
-  const [currentSectionIndex, setCurrentSectionIndex] = usePresistedState(
-    "current-section",
-    -1
+  const [currentLocation, setCurrentLocation] = useRecoilState(
+    currentLocationState
   );
-  const [currentLocation, setCurrentLocation] = usePresistedState(
-    "current-location",
-    null
+  const [route, setRoute] = useRecoilState(routeState);
+  const [name, setName] = useRecoilState(nameState);
+  const [checkpoints, setCheckpoints] = useRecoilState(checkpointsState);
+  const [sections, setSections] = useRecoilState(sectionsState);
+  const [locations, setLocations] = useRecoilState(locationsState);
+  const [currentSectionIndex, setCurrentSectionIndex] = useRecoilState(
+    currentSectionIndexState
   );
-  const [currentLocationIndex, setCurrentLocationIndex] = usePresistedState(
-    "current-location-index",
-    -1
+  const [currentLocationIndex, setCurrentLocationIndex] = useRecoilState(
+    currentLocationIndexState
   );
-  const [runnerAnalytics, setRunnerAnalytics] = usePresistedState(
-    "runnerAnalytics",
-    null
+  const [runnerAnalytics, setRunnerAnalytics] = useRecoilState(
+    runnerAnalyticsState
   );
-  const [routeAnalytics, setRouteAnalytics] = usePresistedState(
-    "route-analytics",
-    null
+  const [routeAnalytics, setRouteAnalytics] = useRecoilState(
+    routeAnalyticsState
   );
 
   const [helper, setHelper] = useState();

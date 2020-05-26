@@ -1,5 +1,6 @@
 import React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { RecoilRoot, useTransactionObservation_UNSTABLE } from "recoil";
 
 import MarvinFont from "./assets/fonts/MarvinVisionsTrial-Variable.ttf";
 import Main from "./components/main/Main";
@@ -46,12 +47,51 @@ body {
 }
 `;
 
-const App = () => {
+const initializeState = ({ set }) => {
+  const keys = Object.keys(localStorage).filter(
+    (key) => !key.includes("mapbox")
+  );
+
+  const promises = keys.map((key) => localStorage.getItem(key));
+  Promise.all(promises).then((values) => {
+    for (let i = 0; i < promises.length; i++) {
+      const key = keys[i];
+      const value = JSON.parse(values[i]).value;
+      set({ key }, value);
+    }
+  });
+};
+
+const Inner = () => {
+  useTransactionObservation_UNSTABLE(
+    ({
+      atomValues,
+      previousAtomValues,
+      atomInfo,
+      modifiedAtoms,
+      transactionMetadata,
+    }) => {
+      for (const modifiedAtom of modifiedAtoms) {
+        localStorage.setItem(
+          modifiedAtom,
+          JSON.stringify({ value: atomValues.get(modifiedAtom) })
+        );
+      }
+    }
+  );
   return (
     <ThemeProvider theme={THEME}>
       <Main />
       <GlobalStyle />
     </ThemeProvider>
+  );
+};
+
+const App = () => {
+  return (
+    <RecoilRoot initializeState={initializeState}>
+      <Inner />
+    </RecoilRoot>
   );
 };
 
