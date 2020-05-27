@@ -4,25 +4,28 @@ import { gpx } from "@mapbox/togeojson";
 import { UploadCloud, Check } from "@styled-icons/feather";
 import { csvParse } from "d3-dsv";
 import { formatDistanceToNow } from "date-fns";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import styled from "./style";
 import FileUpload from "../fileUpload/FileUpload";
 import { fileType } from "../fileReader/FileReader";
 import useResizeObserver from "../../hooks/useResizeObserver";
 import Graph from "../graph/Graph";
+import {
+  checkpointsState,
+  sectionsState,
+  locationsState,
+  nameState,
+  routeState,
+} from "../../model";
 
-const Home = ({
-  className,
-  setRoute,
-  setCheckpoints,
-  setSections,
-  route,
-  checkpoints,
-  domain,
-  locations,
-  setName,
-  name,
-}) => {
+const Home = ({ className, domain }) => {
+  const [route, setRoute] = useRecoilState(routeState);
+  const [checkpoints, setCheckpoints] = useRecoilState(checkpointsState);
+  const setName = useSetRecoilState(nameState);
+  const locations = useRecoilValue(locationsState);
+  const setSections = useSetRecoilState(sectionsState);
+
   const [step, setStep] = useState(0);
   const [ref, { contentRect }] = useResizeObserver();
 

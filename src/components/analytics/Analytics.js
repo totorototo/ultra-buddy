@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 import styled from "./style";
 import RadialProgessBar from "../radialProgressBar/RadialProgressBar";
+import {
+  sectionsState,
+  currentSectionIndexState,
+  runnerAnalyticsState,
+  routeAnalyticsState,
+} from "../../model";
 
-const Analytics = ({
-  className,
-  runnerAnalytics,
-  routeAnalytics,
-  sections,
-  currentSectionIndex,
-}) => {
+const Analytics = ({ className }) => {
+  const runnerAnalytics = useRecoilValue(runnerAnalyticsState);
+  const routeAnalytics = useRecoilValue(routeAnalyticsState);
+  const sections = useRecoilValue(sectionsState);
+  const currentSectionIndex = useRecoilValue(currentSectionIndexState);
+
   const [data, setData] = useState();
   const [distanceToNextCheckpoint, setDistanceToNextCheckpoint] = useState(0);
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { differenceInMilliseconds } from "date-fns";
 import * as d3Array from "d3-array";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 
 import styled from "./style";
 import Home from "../home/Home";
@@ -15,39 +15,34 @@ import AutoSizer from "../autoSizer/AutoSizer";
 import trace from "../../helpers/trace";
 import { ReactComponent as Compass } from "../../assets/compass.svg";
 import { ReactComponent as Direction } from "../../assets/direction.svg";
-
-import currentLocationState from "../../model/currentLocation";
-import routeState from "../../model/route";
-import nameState from "../../model/name";
-import checkpointsState from "../../model/checkpoints";
-import sectionsState from "../../model/sections";
-import locationsState from "../../model/locations";
-import currentSectionIndexState from "../../model/currentSectionIndex";
-import currentLocationIndexState from "../../model/currentLocationIndex";
-import routeAnalyticsState from "../../model/routeAnalytics";
-import runnerAnalyticsState from "../../model/runnerAnalytics";
+import {
+  currentLocationState,
+  routeState,
+  nameState,
+  checkpointsState,
+  sectionsState,
+  locationsState,
+  currentSectionIndexState,
+  currentLocationIndexState,
+  routeAnalyticsState,
+  runnerAnalyticsState,
+} from "../../model";
 
 const Main = ({ className }) => {
-  const [currentLocation, setCurrentLocation] = useRecoilState(
-    currentLocationState
-  );
-  const [route, setRoute] = useRecoilState(routeState);
-  const [name, setName] = useRecoilState(nameState);
-  const [checkpoints, setCheckpoints] = useRecoilState(checkpointsState);
+  const currentLocation = useRecoilValue(currentLocationState);
+  const route = useRecoilValue(routeState);
+  const name = useRecoilValue(nameState);
+  const checkpoints = useRecoilValue(checkpointsState);
   const [sections, setSections] = useRecoilState(sectionsState);
   const [locations, setLocations] = useRecoilState(locationsState);
-  const [currentSectionIndex, setCurrentSectionIndex] = useRecoilState(
-    currentSectionIndexState
-  );
+  const setCurrentSectionIndex = useSetRecoilState(currentSectionIndexState);
   const [currentLocationIndex, setCurrentLocationIndex] = useRecoilState(
     currentLocationIndexState
   );
   const [runnerAnalytics, setRunnerAnalytics] = useRecoilState(
     runnerAnalyticsState
   );
-  const [routeAnalytics, setRouteAnalytics] = useRecoilState(
-    routeAnalyticsState
-  );
+  const setRouteAnalytics = useSetRecoilState(routeAnalyticsState);
 
   const [helper, setHelper] = useState();
   const [toggle, setToggle] = useState(false);
@@ -56,19 +51,6 @@ const Main = ({ className }) => {
     x: { min: 0, max: 0 },
     y: { min: 0, max: 0 },
   });
-
-  const clearData = () => {
-    setRoute([]);
-    setCheckpoints([]);
-    setSections([]);
-    setCurrentSectionIndex(-1);
-    setCurrentLocationIndex(-1);
-    setCurrentLocation([]);
-    setRunnerAnalytics([]);
-    setLocations([]);
-    setName([]);
-    setRouteAnalytics({});
-  };
 
   // get trace stats
   useEffect(() => {
@@ -211,7 +193,7 @@ const Main = ({ className }) => {
               Options
             </h1>
             <div className="section-content">
-              <Options clearData={clearData} />
+              <Options />
             </div>
           </div>
         </section>
@@ -227,12 +209,7 @@ const Main = ({ className }) => {
             </h1>
             <div className="section-content">
               {runnerAnalytics.length > 0 && sections.length > 0 ? (
-                <Analytics
-                  routeAnalytics={routeAnalytics}
-                  runnerAnalytics={runnerAnalytics}
-                  currentSectionIndex={currentSectionIndex}
-                  sections={sections}
-                />
+                <Analytics />
               ) : (
                 <Message message="get current location ?">
                   <Compass width={100} />
@@ -256,14 +233,7 @@ const Main = ({ className }) => {
               sections.length > 0 &&
               checkpoints.length > 0 ? (
                 <AutoSizer>
-                  {(width, height) => (
-                    <Live
-                      sections={sections}
-                      checkpoints={checkpoints}
-                      width={width}
-                      height={height}
-                    />
-                  )}
+                  {(width, height) => <Live width={width} height={height} />}
                 </AutoSizer>
               ) : (
                 <Message message="timetable not loaded yet!">
@@ -285,16 +255,7 @@ const Main = ({ className }) => {
             </h1>
             <div className="section-content">
               {Object.keys(route).length > 0 && sections.length > 0 ? (
-                <Sections
-                  setCurrentLocation={setCurrentLocation}
-                  setCurrentLocationIndex={setCurrentLocationIndex}
-                  currentSectionIndex={currentSectionIndex}
-                  currentLocation={currentLocation}
-                  currentLocationIndex={currentLocationIndex}
-                  sections={sections}
-                  locations={locations}
-                  domain={domain}
-                />
+                <Sections domain={domain} />
               ) : (
                 <Message message="timetable not loaded yet!">
                   <Direction width={100} />
@@ -314,18 +275,7 @@ const Main = ({ className }) => {
               Map
             </h1>
             <div className="section-content">
-              <Map
-                enableGPS={pageIndex === 4}
-                sections={sections}
-                setCurrentSectionIndex={setCurrentSectionIndex}
-                currentSectionIndex={currentSectionIndex}
-                currentLocation={currentLocation}
-                setCurrentLocation={setCurrentLocation}
-                currentLocationIndex={currentLocationIndex}
-                setCurrentLocationIndex={setCurrentLocationIndex}
-                route={route}
-                checkpoints={checkpoints}
-              />
+              <Map enableGPS={pageIndex === 4} />
             </div>
           </div>
         </section>
@@ -337,20 +287,10 @@ const Main = ({ className }) => {
                 setToggle(!toggle);
               }}
             >
-              {name ? name : "Home"}
+              {name !== "" ? name : "Home"}
             </h1>
             <div className="section-content">
-              <Home
-                name={name}
-                setName={setName}
-                route={route}
-                checkpoints={checkpoints}
-                setRoute={setRoute}
-                setCheckpoints={setCheckpoints}
-                setSections={setSections}
-                domain={domain}
-                locations={locations}
-              />
+              <Home domain={domain} />
             </div>
           </div>
         </section>

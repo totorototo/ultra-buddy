@@ -3,22 +3,29 @@ import React, { useState, useEffect } from "react";
 import MapGL, { Source, Layer } from "react-map-gl";
 import DeckGL, { IconLayer } from "deck.gl";
 import { Location } from "@styled-icons/octicons";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 import styled from "./style";
 import mapStyle from "./style.json";
 import trace from "../../helpers/trace";
 import placeIcon from "../../assets/icon-atlas.png";
+import {
+  sectionsState,
+  currentSectionIndexState,
+  currentLocationState,
+  checkpointsState,
+  routeState,
+} from "../../model";
 
-const Map = ({
-  className,
-  route,
-  checkpoints,
-  currentSectionIndex,
-  sections,
-  enableGPS,
-  currentLocation,
-  setCurrentLocation,
-}) => {
+const Map = ({ className, enableGPS }) => {
+  const route = useRecoilValue(routeState);
+  const [currentLocation, setCurrentLocation] = useRecoilState(
+    currentLocationState
+  );
+  const sections = useRecoilValue(sectionsState);
+  const checkpoints = useRecoilValue(checkpointsState);
+  const currentSectionIndex = useRecoilValue(currentSectionIndexState);
+
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
     longitude: 0.32715,

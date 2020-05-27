@@ -9,8 +9,10 @@ import {
 import * as scale from "d3-scale";
 import * as shape from "d3-shape";
 import * as d3Array from "d3-array";
+import { useRecoilValue } from "recoil";
 
 import styled from "./style";
+import { checkpointsState } from "../../model";
 
 const d3 = {
   scale,
@@ -32,7 +34,9 @@ const createYScale = (start, end, rangeMin, rangeMax) => {
     .range([rangeMin, rangeMax]);
 };
 
-const Live = ({ className, checkpoints, width, height }) => {
+const Live = ({ className, width, height }) => {
+  const checkpoints = useRecoilValue(checkpointsState);
+
   const [scales, setScales] = useState();
   const [intervals, setIntervals] = useState();
   const [checkpointsIntervals, setCheckpointsIntervals] = useState();
