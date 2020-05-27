@@ -40,8 +40,8 @@ const Home = ({
       handleFileRead: (filename, data) => {
         const xml = new xmldom.DOMParser().parseFromString(data);
         const geoJSON = gpx(xml);
-        setCheckpoints(null);
-        setSections(null);
+        setCheckpoints([]);
+        setSections([]);
         setRoute(geoJSON);
         const name = filename
           .substr(0, filename.lastIndexOf("."))
@@ -70,9 +70,9 @@ const Home = ({
   ];
 
   useEffect(() => {
-    if (!route && !checkpoints) setStep(0);
-    if (route && !checkpoints) setStep(1);
-    if (route && checkpoints) setStep(2);
+    if (Object.keys(route).length === 0 && checkpoints.length === 0) setStep(0);
+    if (Object.keys(route).length > 0 && checkpoints.length === 0) setStep(1);
+    if (Object.keys(route).length > 0 && checkpoints.length > 0) setStep(2);
   }, [checkpoints, route, setStep]);
 
   return (

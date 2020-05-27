@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 const locations = atom({
   key: "locations",
-  default: null,
+  default: [],
 });
 
 export default locations;

@@ -28,7 +28,7 @@ const Map = ({
   });
 
   const getCurrentLocation = () => {
-    if (!route) return;
+    if (Object.keys(route).length === 0) return;
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const helper = trace(...route.features[0].geometry.coordinates);
@@ -51,7 +51,7 @@ const Map = ({
   const [checkpointsLocations, setCheckpointsLocations] = useState([]);
 
   useEffect(() => {
-    if (!route) return;
+    if (Object.keys(route).length === 0) return;
     const helper = trace(...route.features[0].geometry.coordinates);
     const region = helper.computeRegion();
     const latitude = (region.minLatitude + region.maxLatitude) / 2;
@@ -64,7 +64,7 @@ const Map = ({
   }, [route]);
 
   useEffect(() => {
-    if (!checkpoints || !route) {
+    if (checkpoints.length === 0 || Object.keys(route).length === 0) {
       setCheckpointsLocations([]);
       return;
     }
@@ -107,7 +107,7 @@ const Map = ({
             size="16"
             color="#007EA7"
           />
-          {route && (
+          {Object.keys(route).length > 0 && (
             <Source id="my-data" type="geojson" data={route}>
               <Layer
                 id="route"

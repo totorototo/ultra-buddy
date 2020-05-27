@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 const route = atom({
   key: "route",
-  default: null,
+  default: {},
 });
 
 export default route;

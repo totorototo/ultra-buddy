@@ -14,14 +14,24 @@ const Analytics = ({
   const [distanceToNextCheckpoint, setDistanceToNextCheckpoint] = useState(0);
 
   useEffect(() => {
-    if (currentSectionIndex < 0 || !runnerAnalytics || !sections) return;
+    if (
+      currentSectionIndex < 0 ||
+      runnerAnalytics.length === 0 ||
+      sections.length === 0
+    )
+      return;
 
     const remaining = sections[currentSectionIndex].toKm - runnerAnalytics[0];
     setDistanceToNextCheckpoint(remaining);
   }, [currentSectionIndex, sections, runnerAnalytics]);
 
   useEffect(() => {
-    if (!routeAnalytics || !runnerAnalytics) return;
+    if (
+      Object.keys(routeAnalytics).length === 0 ||
+      runnerAnalytics.length === 0
+    ) {
+      return;
+    }
 
     const updatedData = [
       {

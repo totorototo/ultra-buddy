@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 const currentLocation = atom({
   key: "current-location",
-  default: null,
+  default: [],
 });
 
 export default currentLocation;

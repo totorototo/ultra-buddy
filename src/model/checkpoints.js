@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 const checkpoints = atom({
   key: "checkpoints",
-  default: null,
+  default: [],
 });
 
 export default checkpoints;

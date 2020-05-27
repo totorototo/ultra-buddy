@@ -25,7 +25,7 @@ import locationsState from "../../model/locations";
 import currentSectionIndexState from "../../model/currentSectionIndex";
 import currentLocationIndexState from "../../model/currentLocationIndex";
 import routeAnalyticsState from "../../model/routeAnalytics";
-import runnerAnalyticsState from "../../model/routeAnalytics";
+import runnerAnalyticsState from "../../model/runnerAnalytics";
 
 const Main = ({ className }) => {
   const [currentLocation, setCurrentLocation] = useRecoilState(
@@ -58,16 +58,16 @@ const Main = ({ className }) => {
   });
 
   const clearData = () => {
-    setRoute(null);
-    setCheckpoints(null);
-    setSections(null);
+    setRoute([]);
+    setCheckpoints([]);
+    setSections([]);
     setCurrentSectionIndex(-1);
     setCurrentLocationIndex(-1);
-    setCurrentLocation(null);
-    setRunnerAnalytics(null);
-    setLocations(null);
-    setName(null);
-    setRouteAnalytics(null);
+    setCurrentLocation([]);
+    setRunnerAnalytics([]);
+    setLocations([]);
+    setName([]);
+    setRouteAnalytics({});
   };
 
   // get trace stats
@@ -80,13 +80,13 @@ const Main = ({ className }) => {
 
   // get route
   useEffect(() => {
-    if (!route) return;
+    if (Object.keys(route).length === 0) return;
     setLocations(route.features[0].geometry.coordinates);
   }, [route, setLocations]);
 
   // set domain
   useEffect(() => {
-    if (!locations) return;
+    if (locations.length === 0) return;
     const altitudes = locations.map((location) => location[2]);
     const extentY = d3Array.extent(altitudes);
     const lowerFullHundred = Math.floor(extentY[0] / 100) * 100;
@@ -106,19 +106,19 @@ const Main = ({ className }) => {
 
   // set route helper
   useEffect(() => {
-    if (!locations) return;
+    if (locations.length === 0) return;
     const helper = trace(...locations);
     setHelper(helper);
   }, [locations]);
 
   // set current location and sections indices
   useEffect(() => {
-    if (!helper || !currentLocation) return;
+    if (!helper || !currentLocation.length === 0) return;
 
     const index = helper.getLocationIndex(currentLocation);
     setCurrentLocationIndex(index);
 
-    if (!sections) return;
+    if (sections.length === 0) return;
 
     const sectionIndex = sections.findIndex((section) => {
       return index >= section.indices[0] && index <= section.indices[1];
@@ -134,7 +134,7 @@ const Main = ({ className }) => {
 
   // set trail sections
   useEffect(() => {
-    if (!checkpoints || !locations || !helper) return;
+    if (checkpoints.length === 0 || locations.length === 0 || !helper) return;
 
     const distances = checkpoints.map((checkpoint) => checkpoint.distance);
     const locationsIndices = helper.getLocationIndexAt(...distances);
@@ -226,7 +226,7 @@ const Main = ({ className }) => {
               Analytics
             </h1>
             <div className="section-content">
-              {runnerAnalytics && sections ? (
+              {runnerAnalytics.length > 0 && sections.length > 0 ? (
                 <Analytics
                   routeAnalytics={routeAnalytics}
                   runnerAnalytics={runnerAnalytics}
@@ -252,7 +252,9 @@ const Main = ({ className }) => {
               Live
             </h1>
             <div className="section-content">
-              {runnerAnalytics && sections && checkpoints ? (
+              {Object.keys(runnerAnalytics).length > 0 &&
+              sections.length > 0 &&
+              checkpoints.length > 0 ? (
                 <AutoSizer>
                   {(width, height) => (
                     <Live
@@ -282,7 +284,7 @@ const Main = ({ className }) => {
               Sections
             </h1>
             <div className="section-content">
-              {route && sections ? (
+              {Object.keys(route).length > 0 && sections.length > 0 ? (
                 <Sections
                   setCurrentLocation={setCurrentLocation}
                   setCurrentLocationIndex={setCurrentLocationIndex}
