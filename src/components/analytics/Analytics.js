@@ -1,27 +1,43 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 import styled from "./style";
 import RadialProgessBar from "../radialProgressBar/RadialProgressBar";
+import {
+  sectionsState,
+  currentSectionIndexState,
+  runnerAnalyticsState,
+  routeAnalyticsState,
+} from "../../model";
 
-const Analytics = ({
-  className,
-  runnerAnalytics,
-  routeAnalytics,
-  sections,
-  currentSectionIndex,
-}) => {
+const Analytics = ({ className }) => {
+  const runnerAnalytics = useRecoilValue(runnerAnalyticsState);
+  const routeAnalytics = useRecoilValue(routeAnalyticsState);
+  const sections = useRecoilValue(sectionsState);
+  const currentSectionIndex = useRecoilValue(currentSectionIndexState);
+
   const [data, setData] = useState();
   const [distanceToNextCheckpoint, setDistanceToNextCheckpoint] = useState(0);
 
   useEffect(() => {
-    if (currentSectionIndex < 0 || !runnerAnalytics || !sections) return;
+    if (
+      currentSectionIndex < 0 ||
+      runnerAnalytics.length === 0 ||
+      sections.length === 0
+    )
+      return;
 
     const remaining = sections[currentSectionIndex].toKm - runnerAnalytics[0];
     setDistanceToNextCheckpoint(remaining);
   }, [currentSectionIndex, sections, runnerAnalytics]);
 
   useEffect(() => {
-    if (!routeAnalytics || !runnerAnalytics) return;
+    if (
+      Object.keys(routeAnalytics).length === 0 ||
+      runnerAnalytics.length === 0
+    ) {
+      return;
+    }
 
     const updatedData = [
       {
@@ -43,7 +59,7 @@ const Analytics = ({
       },
       {
         label: "elevation loss",
-        color: "#DC0073",
+        color: "#bb3439",
         total: routeAnalytics.elevation.negative,
         runnerAnalytics: runnerAnalytics[2],
         percent:

@@ -1,12 +1,20 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { formatDistance, format } from "date-fns";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import styled from "./style";
 import useResizeObserver from "../../hooks/useResizeObserver";
 import useIntersect from "../../hooks/useIntersect";
 import Graph from "../graph/Graph";
-
 import customStyled from "styled-components";
+import {
+  sectionsState,
+  currentSectionIndexState,
+  currentLocationIndexState,
+  currentLocationState,
+  locationsState,
+  domainState,
+} from "../../model";
 
 const Container = customStyled.div`
   align-self: center;
@@ -61,7 +69,7 @@ const IntersectSection = ({
     <Container ref={ref}>
       <Graph
         markers={markers}
-        color={current ? "#d9a443" : "#d9a443"}
+        color={current ? "#D5A021" : "#D5A021"}
         {...rest}
         offsetMax={500}
       />
@@ -69,15 +77,14 @@ const IntersectSection = ({
   );
 };
 
-const Sections = ({
-  className,
-  sections,
-  currentSectionIndex,
-  currentLocationIndex,
-  setCurrentLocation,
-  locations,
-  domain,
-}) => {
+const Sections = ({ className }) => {
+  const locations = useRecoilValue(locationsState);
+  const sections = useRecoilValue(sectionsState);
+  const currentSectionIndex = useRecoilValue(currentSectionIndexState);
+  const domain = useRecoilValue(domainState);
+  const currentLocationIndex = useRecoilValue(currentLocationIndexState);
+  const setCurrentLocation = useSetRecoilState(currentLocationState);
+
   const [ref, { contentRect }] = useResizeObserver();
 
   const getContentRect = useCallback(

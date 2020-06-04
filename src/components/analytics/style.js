@@ -51,7 +51,7 @@ export default (Component) => styled(Component)`
       &.loss {
         margin-left: ${(props) => props.theme.space[3] * 3}px;
         ::before {
-          background-color: #dc0073;
+          background-color: #bb3439;
         }
       }
       &.checkpoint {

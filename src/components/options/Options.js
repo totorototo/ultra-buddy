@@ -1,4 +1,5 @@
 import React from "react";
+import { useSetRecoilState } from "recoil";
 
 import styled from "./style";
 import { ReactComponent as Beer } from "../../assets/beer.svg";
@@ -10,8 +11,44 @@ import { ReactComponent as Carrot } from "../../assets/carrot.svg";
 import { ReactComponent as Mushroom } from "../../assets/mushroom.svg";
 import { ReactComponent as Monster } from "../../assets/monster.svg";
 import { ReactComponent as Wrench } from "../../assets/wrench.svg";
+import {
+  checkpointsState,
+  sectionsState,
+  currentSectionIndexState,
+  currentLocationIndexState,
+  currentLocationState,
+  runnerAnalyticsState,
+  locationsState,
+  nameState,
+  routeAnalyticsState,
+  routeState,
+} from "../../model";
 
-const Options = ({ className, clearData }) => {
+const Options = ({ className }) => {
+  const setCheckpoints = useSetRecoilState(checkpointsState);
+  const setSections = useSetRecoilState(sectionsState);
+  const setCurrentSectionIndex = useSetRecoilState(currentSectionIndexState);
+  const setCurrentLocationIndex = useSetRecoilState(currentLocationIndexState);
+  const setCurrentLocation = useSetRecoilState(currentLocationState);
+  const setRunnerAnalytics = useSetRecoilState(runnerAnalyticsState);
+  const setLocations = useSetRecoilState(locationsState);
+  const setName = useSetRecoilState(nameState);
+  const setRouteAnalytics = useSetRecoilState(routeAnalyticsState);
+  const setRoute = useSetRecoilState(routeState);
+
+  const flush = () => {
+    setRoute([]);
+    setCheckpoints([]);
+    setSections([]);
+    setCurrentSectionIndex(-1);
+    setCurrentLocationIndex(-1);
+    setCurrentLocation([]);
+    setRunnerAnalytics([]);
+    setLocations([]);
+    setName("");
+    setRouteAnalytics({});
+  };
+
   return (
     <div className={className}>
       <Beer width={80} height={80} />
@@ -23,7 +60,7 @@ const Options = ({ className, clearData }) => {
       <Mushroom width={80} height={80} />
       <Monster
         onClick={() => {
-          clearData();
+          flush();
         }}
         width={80}
         height={80}
