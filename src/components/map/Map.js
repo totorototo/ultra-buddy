@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import MapGL, { Source, Layer } from "react-map-gl";
 import DeckGL, { IconLayer } from "deck.gl";
 import { Location } from "@styled-icons/octicons";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
 import styled from "./style";
 import mapStyle from "./style.json";
@@ -15,6 +15,9 @@ import {
   currentLocationState,
   checkpointsState,
   routeState,
+  locationsState,
+  currentLocationIndexState,
+  runnerAnalyticsState,
 } from "../../model";
 
 const Map = ({ className, enableGPS }) => {
@@ -22,10 +25,18 @@ const Map = ({ className, enableGPS }) => {
   const [currentLocation, setCurrentLocation] = useRecoilState(
     currentLocationState
   );
+  const [currentLocationIndex, setCurrentLocationIndex] = useRecoilState(
+    currentLocationIndexState
+  );
+  const [currentSectionIndex, setCurrentSectionIndex] = useRecoilState(
+    currentSectionIndexState
+  );
+  const locations = useRecoilValue(locationsState);
   const sections = useRecoilValue(sectionsState);
   const checkpoints = useRecoilValue(checkpointsState);
-  const currentSectionIndex = useRecoilValue(currentSectionIndexState);
+  const setRunnerAnalytics = useSetRecoilState(runnerAnalyticsState);
 
+  const [helper, setHelper] = useState();
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
     longitude: 0.32715,
@@ -56,6 +67,41 @@ const Map = ({ className, enableGPS }) => {
   };
 
   const [checkpointsLocations, setCheckpointsLocations] = useState([]);
+
+  // get trailer runnerAnalytics
+  useEffect(() => {
+    if (currentLocationIndex === -1 || !helper) return;
+    const runnerAnalytics = helper.getProgression(currentLocationIndex);
+    setRunnerAnalytics(runnerAnalytics);
+  }, [currentLocationIndex, helper, setRunnerAnalytics]);
+
+  // set current location and sections indices
+  useEffect(() => {
+    if (!helper || !currentLocation.length === 0) return;
+
+    const index = helper.getLocationIndex(currentLocation);
+    setCurrentLocationIndex(index);
+
+    if (sections.length === 0) return;
+
+    const sectionIndex = sections.findIndex((section) => {
+      return index >= section.indices[0] && index <= section.indices[1];
+    });
+    setCurrentSectionIndex(sectionIndex);
+  }, [
+    currentLocation,
+    helper,
+    sections,
+    setCurrentLocationIndex,
+    setCurrentSectionIndex,
+  ]);
+
+  // set route helper
+  useEffect(() => {
+    if (locations.length === 0) return;
+    const helper = trace(...locations);
+    setHelper(helper);
+  }, [locations]);
 
   useEffect(() => {
     if (Object.keys(route).length === 0) return;

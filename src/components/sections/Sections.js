@@ -13,6 +13,7 @@ import {
   currentLocationIndexState,
   currentLocationState,
   locationsState,
+  domainState,
 } from "../../model";
 
 const Container = customStyled.div`
@@ -76,14 +77,11 @@ const IntersectSection = ({
   );
 };
 
-const Sections = ({
-  className,
-
-  domain,
-}) => {
+const Sections = ({ className }) => {
   const locations = useRecoilValue(locationsState);
   const sections = useRecoilValue(sectionsState);
   const currentSectionIndex = useRecoilValue(currentSectionIndexState);
+  const domain = useRecoilValue(domainState);
   const currentLocationIndex = useRecoilValue(currentLocationIndexState);
   const setCurrentLocation = useSetRecoilState(currentLocationState);
 
