@@ -44,28 +44,6 @@ const Map = ({ className, enableGPS }) => {
     bearing: 0,
     pitch: 0,
   });
-
-  const getCurrentLocation = () => {
-    if (Object.keys(route).length === 0) return;
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const helper = trace(...route.features[0].geometry.coordinates);
-        const closestLocation = helper.findClosestLocation([
-          position.coords.longitude,
-          position.coords.latitude,
-        ]);
-
-        setCurrentLocation(closestLocation);
-      },
-      (error) => console.log(error),
-      {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-      }
-    );
-  };
-
   const [checkpointsLocations, setCheckpointsLocations] = useState([]);
 
   // get trailer runnerAnalytics
@@ -127,6 +105,27 @@ const Map = ({ className, enableGPS }) => {
 
     setCheckpointsLocations(locations);
   }, [checkpoints, route]);
+
+  const getCurrentLocation = () => {
+    if (Object.keys(route).length === 0) return;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const helper = trace(...route.features[0].geometry.coordinates);
+        const closestLocation = helper.findClosestLocation([
+          position.coords.longitude,
+          position.coords.latitude,
+        ]);
+
+        setCurrentLocation(closestLocation);
+      },
+      (error) => console.log(error),
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      }
+    );
+  };
 
   return (
     <div className={className}>
