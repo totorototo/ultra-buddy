@@ -73,6 +73,7 @@ const Home = ({ className }) => {
       return {
         distance: helper.computeDistance(),
         elevation: helper.computeElevation(),
+        region: helper.computeRegion(),
         coordinates: section,
       };
     });

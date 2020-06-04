@@ -1,9 +1,10 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useState, useEffect } from "react";
-import MapGL, { Source, Layer } from "react-map-gl";
+import MapGL, { Source, Layer, FlyToInterpolator } from "react-map-gl";
 import DeckGL, { IconLayer } from "deck.gl";
 import { Location } from "@styled-icons/octicons";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { easeCubic } from "d3-ease";
 
 import styled from "./style";
 import mapStyle from "./style.json";
@@ -40,7 +41,7 @@ const Map = ({ className, enableGPS }) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
     longitude: 0.32715,
-    zoom: 4,
+    zoom: 8,
     bearing: 0,
     pitch: 0,
   });
@@ -65,7 +66,26 @@ const Map = ({ className, enableGPS }) => {
     const sectionIndex = sections.findIndex((section) => {
       return index >= section.indices[0] && index <= section.indices[1];
     });
+
     setCurrentSectionIndex(sectionIndex);
+    if (sectionIndex < 0) return;
+    setViewport((viewport) => ({
+      ...viewport,
+      latitude:
+        (sections[sectionIndex].region.minLatitude +
+          sections[sectionIndex].region.maxLatitude) /
+        2,
+      longitude:
+        (sections[sectionIndex].region.minLongitude +
+          sections[sectionIndex].region.maxLongitude) /
+        2,
+      zoom: 8,
+      bearing: 0,
+      pitch: 0,
+      transitionDuration: 5000,
+      transitionInterpolator: new FlyToInterpolator(),
+      transitionEasing: easeCubic,
+    }));
   }, [
     currentLocation,
     helper,
