@@ -69,7 +69,7 @@ const IntersectSection = ({
     <Container ref={ref}>
       <Graph
         markers={markers}
-        color={current ? "#d9a443" : "#d9a443"}
+        color={current ? "#D5A021" : "#D5A021"}
         {...rest}
         offsetMax={500}
       />

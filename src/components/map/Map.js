@@ -170,7 +170,7 @@ const Map = ({ className, enableGPS }) => {
                   "line-cap": "round",
                 }}
                 paint={{
-                  "line-color": "#ebb11a",
+                  "line-color": "#D49E21",
                   "line-width": 2,
                 }}
               />
