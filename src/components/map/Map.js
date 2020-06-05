@@ -54,9 +54,9 @@ const Map = ({ className, enableGPS }) => {
     setRunnerAnalytics(runnerAnalytics);
   }, [currentLocationIndex, helper, setRunnerAnalytics]);
 
-  // set current location and sections indices
+  // set current location index and sections indices
   useEffect(() => {
-    if (!helper || !currentLocation.length === 0) return;
+    if (!helper || currentLocation.length !== 3) return;
 
     const index = helper.getLocationIndex(currentLocation);
     setCurrentLocationIndex(index);
@@ -68,24 +68,6 @@ const Map = ({ className, enableGPS }) => {
     });
 
     setCurrentSectionIndex(sectionIndex);
-    if (sectionIndex < 0) return;
-    setViewport((viewport) => ({
-      ...viewport,
-      latitude:
-        (sections[sectionIndex].region.minLatitude +
-          sections[sectionIndex].region.maxLatitude) /
-        2,
-      longitude:
-        (sections[sectionIndex].region.minLongitude +
-          sections[sectionIndex].region.maxLongitude) /
-        2,
-      zoom: 8,
-      bearing: 0,
-      pitch: 0,
-      transitionDuration: 5000,
-      transitionInterpolator: new FlyToInterpolator(),
-      transitionEasing: easeCubic,
-    }));
   }, [
     currentLocation,
     helper,
@@ -93,6 +75,29 @@ const Map = ({ className, enableGPS }) => {
     setCurrentLocationIndex,
     setCurrentSectionIndex,
   ]);
+
+  // set viewport - runner centric
+  useEffect(() => {
+    if (!sections || currentSectionIndex < 0) return;
+
+    const longitude =
+      (sections[currentSectionIndex].region.minLongitude +
+        sections[currentSectionIndex].region.maxLongitude) /
+      2;
+    const latitude =
+      (sections[currentSectionIndex].region.minLatitude +
+        sections[currentSectionIndex].region.maxLatitude) /
+      2;
+
+    setViewport((viewport) => ({
+      ...viewport,
+      longitude,
+      latitude,
+      transitionDuration: 2000,
+      transitionInterpolator: new FlyToInterpolator(),
+      transitionEasing: easeCubic,
+    }));
+  }, [sections, currentSectionIndex]);
 
   // set route helper
   useEffect(() => {
