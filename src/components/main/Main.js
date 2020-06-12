@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { differenceInMilliseconds } from "date-fns";
+import { createPathAnalyst } from "positic";
 import * as d3Array from "d3-array";
 
 import styled from "./style";
@@ -12,7 +13,6 @@ import Live from "../live/Live";
 import Message from "../message/Message";
 import AutoSizer from "../autoSizer/AutoSizer";
 import usePresistedState from "../../hooks/usePersistedState";
-import trace from "../../helpers/trace";
 import { ReactComponent as Compass } from "../../assets/compass.svg";
 import { ReactComponent as Direction } from "../../assets/direction.svg";
 
@@ -67,8 +67,8 @@ const Main = ({ className }) => {
   // get trace stats
   useEffect(() => {
     if (!helper) return;
-    const distance = helper.computeDistance();
-    const elevation = helper.computeElevation();
+    const distance = helper.calculatePathLength();
+    const elevation = helper.calculatePathElevation();
     setRouteAnalytics({ distance, elevation });
   }, [helper, setRouteAnalytics]);
 
@@ -94,22 +94,25 @@ const Main = ({ className }) => {
   // get trailer runnerAnalytics
   useEffect(() => {
     if (currentLocationIndex === -1 || !helper) return;
-    const runnerAnalytics = helper.getProgression(currentLocationIndex);
+    const runnerAnalytics = helper.getProgressionStatistics(
+      currentLocationIndex
+    );
     setRunnerAnalytics(runnerAnalytics);
   }, [currentLocationIndex, helper, setRunnerAnalytics]);
 
   // set route helper
   useEffect(() => {
     if (!locations) return;
-    const helper = trace(...locations);
-    setHelper(helper);
+    // const helper = trace(...locations);
+    const analyst = createPathAnalyst(locations);
+    setHelper(analyst);
   }, [locations]);
 
   // set current location and sections indices
   useEffect(() => {
     if (!helper || !currentLocation) return;
 
-    const index = helper.getLocationIndex(currentLocation);
+    const index = helper.getPositionIndex(currentLocation);
     setCurrentLocationIndex(index);
 
     if (!sections) return;
@@ -130,8 +133,10 @@ const Main = ({ className }) => {
   useEffect(() => {
     if (!checkpoints || !locations || !helper) return;
 
-    const distances = checkpoints.map((checkpoint) => checkpoint.distance);
-    const locationsIndices = helper.getLocationIndexAt(...distances);
+    const distances = checkpoints.map(
+      (checkpoint) => checkpoint.distance * 1000
+    );
+    const locationsIndices = helper.getPositionsIndicesAlongPath(...distances);
 
     // compute section indices (start - stop)
     const sectionsIndices = locationsIndices.reduce(
@@ -151,10 +156,10 @@ const Main = ({ className }) => {
 
     // compute section stats
     const sectionsStats = sectionsLocations.map((section) => {
-      const helper = trace(...section);
+      const analyst = createPathAnalyst(section);
       return {
-        distance: helper.computeDistance(),
-        elevation: helper.computeElevation(),
+        distance: analyst.calculatePathLength(),
+        elevation: analyst.calculatePathElevation(),
         coordinates: section,
       };
     });
@@ -176,8 +181,12 @@ const Main = ({ className }) => {
               duration,
               cutOffTime: checkpoint.cutOffTime,
               ...sectionsStats[index - 1],
-              fromKm: helper.getProgression(sectionsIndices[index - 1][0])[0],
-              toKm: helper.getProgression(sectionsIndices[index - 1][1])[0],
+              fromKm: helper.getProgressionStatistics(
+                sectionsIndices[index - 1][0]
+              )[0],
+              toKm: helper.getProgressionStatistics(
+                sectionsIndices[index - 1][1]
+              )[0],
               indices: sectionsIndices[index - 1],
             },
           ];
