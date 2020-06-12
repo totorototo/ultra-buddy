@@ -101,9 +101,9 @@ const Sections = ({
               {`${sections[section].depatureLocation} - ${sections[section].arrivalLocation}`}
             </div>
             <div className="item">
-              <div>{`${sections[section].distance.toFixed(2)} km - ${sections[
-                section
-              ].fromKm.toFixed(2)} km - ${sections[section].toKm.toFixed(
+              <div>{`${(sections[section].distance / 1000).toFixed(2)} km - ${(
+                sections[section].fromKm / 1000
+              ).toFixed(2)} km - ${(sections[section].toKm / 1000).toFixed(
                 2
               )} km`}</div>
               <div>distance - from - to</div>
