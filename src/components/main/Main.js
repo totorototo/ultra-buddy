@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { differenceInMilliseconds } from "date-fns";
-import { createPathAnalyst } from "positic";
+import { createPathHelper } from "positic";
 import * as d3Array from "d3-array";
 
 import styled from "./style";
@@ -104,8 +104,8 @@ const Main = ({ className }) => {
   useEffect(() => {
     if (!locations) return;
     // const helper = trace(...locations);
-    const analyst = createPathAnalyst(locations);
-    setHelper(analyst);
+    const helper = createPathHelper(locations);
+    setHelper(helper);
   }, [locations]);
 
   // set current location and sections indices
@@ -156,10 +156,10 @@ const Main = ({ className }) => {
 
     // compute section stats
     const sectionsStats = sectionsLocations.map((section) => {
-      const analyst = createPathAnalyst(section);
+      const helper = createPathHelper(section);
       return {
-        distance: analyst.calculatePathLength(),
-        elevation: analyst.calculatePathElevation(),
+        distance: helper.calculatePathLength(),
+        elevation: helper.calculatePathElevation(),
         coordinates: section,
       };
     });

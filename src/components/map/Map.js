@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import MapGL, { Source, Layer } from "react-map-gl";
 import DeckGL, { IconLayer } from "deck.gl";
 import { Location } from "@styled-icons/octicons";
-import { createPathAnalyst } from "positic";
+import { createPathHelper } from "positic";
 
 import styled from "./style";
 import mapStyle from "./style.json";
@@ -31,10 +31,8 @@ const Map = ({
     if (!route) return;
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const analyst = createPathAnalyst(
-          route.features[0].geometry.coordinates
-        );
-        const closestLocation = analyst.findClosestPosition([
+        const helper = createPathHelper(route.features[0].geometry.coordinates);
+        const closestLocation = helper.findClosestPosition([
           position.coords.longitude,
           position.coords.latitude,
         ]);
@@ -54,8 +52,8 @@ const Map = ({
 
   useEffect(() => {
     if (!route) return;
-    const analyst = createPathAnalyst(route.features[0].geometry.coordinates);
-    const region = analyst.calculatePathBoundingBox();
+    const helper = createPathHelper(route.features[0].geometry.coordinates);
+    const region = helper.calculatePathBoundingBox();
     const latitude = (region.minLatitude + region.maxLatitude) / 2;
     const longitude = (region.minLongitude + region.maxLongitude) / 2;
     setViewport((viewport) => ({
@@ -71,11 +69,11 @@ const Map = ({
       return;
     }
 
-    const analyst = createPathAnalyst(route.features[0].geometry.coordinates);
+    const helper = createPathHelper(route.features[0].geometry.coordinates);
     const distances = checkpoints.map(
       (checkpoint) => checkpoint.distance * 1000
     );
-    const locations = analyst.getPositionsAlongPath(...distances);
+    const locations = helper.getPositionsAlongPath(...distances);
 
     setCheckpointsLocations(locations);
   }, [checkpoints, route]);
