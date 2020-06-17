@@ -11,8 +11,7 @@ import customStyled from "styled-components";
 const Container = customStyled.div`  
   height: 100%;
   position: relative;
-  scroll-snap-align: center;   
-
+  scroll-snap-align: center; 
 `;
 
 const IntersectSection = ({
@@ -63,7 +62,7 @@ const IntersectSection = ({
     >
       <Graph
         markers={markers}
-        color={selectedSectionIndex === id ? "#BB8725" : "#D59D34"}
+        color={selectedSectionIndex === id ? "#CB932A" : "#D59D34"}
         {...rest}
         offsetMax={500}
       />

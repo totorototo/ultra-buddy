@@ -26,7 +26,7 @@ const Marker = ({ width, height, x, y }) => (
 );
 
 const Gradient = ({
-  from = "#FFFFFF94",
+  from = "#FFFFFF30",
   to = "#FFFFFF00",
   toOffset = "50%",
   ...restProps
@@ -105,8 +105,8 @@ const Graph = ({
         <Gradient id="gradient" />
         <path
           d={profile.path}
-          // stroke={color ? color : "#ffffff94"}
-          strokeWidth="0"
+          stroke={color ? color : "#ffffff94"}
+          strokeWidth="1"
           fill={color ? color : "#ffffff94"}
         />
         {progression && (
