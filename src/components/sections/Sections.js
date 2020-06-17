@@ -34,19 +34,22 @@ const IntersectSection = ({
 
   useEffect(() => {
     if (currentLocationIndex === -1) return;
+
     if (
-      currentLocationIndex > section.indices[0] &&
+      currentLocationIndex >= section.indices[0] &&
       currentLocationIndex < section.indices[1]
     ) {
       const index = currentLocationIndex - section.indices[0];
       const currentLocation = section.coordinates[index];
       const marker = { x: index, y: currentLocation[2] };
 
+      setSelectedSectionIndex(id);
+
       setMarkers([marker]);
     } else {
       setMarkers([]);
     }
-  }, [currentLocationIndex, section]);
+  }, [currentLocationIndex, section, setSelectedSectionIndex, id]);
 
   useEffect(() => {
     // console.log(id, entry.intersectionRatio);
