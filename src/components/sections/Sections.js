@@ -11,7 +11,7 @@ import customStyled from "styled-components";
 const Container = customStyled.div`  
   height: 100%;
   position: relative;
-  scroll-snap-align: center; 
+  scroll-snap-align: center;   
 
 `;
 
@@ -148,6 +148,7 @@ const Sections = ({
           width={getContentRect("width") || 200}
           height={300}
           locations={locations}
+          color="#357597"
           currentLocationIndex={currentLocationIndex}
           domain={domain}
           offsetMin={5000}
