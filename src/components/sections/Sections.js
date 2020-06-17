@@ -8,21 +8,16 @@ import Graph from "../graph/Graph";
 
 import customStyled from "styled-components";
 
-const Container = customStyled.div`
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex: 1 1 auto;
+const Container = customStyled.div`  
   height: 100%;
   position: relative;
-  scroll-snap-align: center;
-  flex: none;
+  scroll-snap-align: center; 
 `;
 
 const IntersectSection = ({
   root,
-  setSection,
+  setSelectedSectionIndex,
+  selectedSectionIndex,
   current,
   id,
   section,
@@ -30,38 +25,47 @@ const IntersectSection = ({
   ...rest
 }) => {
   const [ref, entry] = useIntersect({
-    threshold: 0.5,
+    threshold: 0.8,
     root: root.current,
-    rootMargin: "10px",
+    rootMargin: "0px 50px 0px 50px",
   });
 
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     if (currentLocationIndex === -1) return;
+
     if (
-      currentLocationIndex > section.indices[0] &&
+      currentLocationIndex >= section.indices[0] &&
       currentLocationIndex < section.indices[1]
     ) {
       const index = currentLocationIndex - section.indices[0];
       const currentLocation = section.coordinates[index];
       const marker = { x: index, y: currentLocation[2] };
 
+      setSelectedSectionIndex(id);
+
       setMarkers([marker]);
     } else {
       setMarkers([]);
     }
-  }, [currentLocationIndex, section]);
+  }, [currentLocationIndex, section, setSelectedSectionIndex, id]);
 
   useEffect(() => {
-    if (entry.intersectionRatio > 0.5) setSection(id);
-  }, [entry.intersectionRatio, setSection, id]);
+    // console.log(id, entry.intersectionRatio);
+    // if (entry.intersectionRatio > 0.8) setSection(id);
+  }, [entry.intersectionRatio, setSelectedSectionIndex, id]);
 
   return (
-    <Container ref={ref}>
+    <Container
+      onClick={() => {
+        setSelectedSectionIndex(id);
+      }}
+      ref={ref}
+    >
       <Graph
         markers={markers}
-        color={current ? "#d9a443" : "#d9a443"}
+        color={selectedSectionIndex === id ? "#CB932A" : "#D59D34"}
         {...rest}
         offsetMax={500}
       />
@@ -89,36 +93,40 @@ const Sections = ({
 
   const root = useRef(null);
 
-  const [section, setSection] = useState(0);
+  const [selectedSectionIndex, setSelectedSectionIndex] = useState(0);
 
   return (
     <div ref={ref} className={className}>
       <div className="analytics">
         <div className="data">
-          <div className="index">{section + 1}</div>
+          <div className="index">{selectedSectionIndex + 1}</div>
           <div className="stats">
             <div className="title">
-              {`${sections[section].depatureLocation} - ${sections[section].arrivalLocation}`}
+              {`${sections[selectedSectionIndex].depatureLocation} - ${sections[selectedSectionIndex].arrivalLocation}`}
             </div>
             <div className="item">
-              <div>{`${(sections[section].distance / 1000).toFixed(2)} km - ${(
-                sections[section].fromKm / 1000
-              ).toFixed(2)} km - ${(sections[section].toKm / 1000).toFixed(
+              <div>{`${(sections[selectedSectionIndex].distance / 1000).toFixed(
+                2
+              )} km - ${(sections[selectedSectionIndex].fromKm / 1000).toFixed(
+                2
+              )} km - ${(sections[selectedSectionIndex].toKm / 1000).toFixed(
                 2
               )} km`}</div>
               <div>distance - from - to</div>
             </div>
             <div className="item">
               <div>
-                {`${sections[section].elevation.positive.toFixed(
+                {`${sections[selectedSectionIndex].elevation.positive.toFixed(
                   0
-                )} m - ${sections[section].elevation.negative.toFixed(0)} m`}
+                )} m - ${sections[
+                  selectedSectionIndex
+                ].elevation.negative.toFixed(0)} m`}
               </div>
               <div>elevation D+/D-</div>
             </div>
             <div className="item">
               <div>
-                {formatDistance(0, sections[section].duration, {
+                {formatDistance(0, sections[selectedSectionIndex].duration, {
                   includeSeconds: true,
                 })}
               </div>
@@ -126,7 +134,10 @@ const Sections = ({
             </div>
             <div className="item">
               <div>
-                {format(new Date(sections[section].cutOffTime), "dd-MM HH:mm")}
+                {format(
+                  new Date(sections[selectedSectionIndex].cutOffTime),
+                  "dd-MM HH:mm"
+                )}
               </div>
               <div>time barrier</div>
             </div>
@@ -139,6 +150,7 @@ const Sections = ({
           width={getContentRect("width") || 200}
           height={300}
           locations={locations}
+          color="#357597"
           currentLocationIndex={currentLocationIndex}
           domain={domain}
           offsetMin={5000}
@@ -151,12 +163,15 @@ const Sections = ({
             section={section}
             currentLocationIndex={currentLocationIndex}
             current={currentSectionIndex === index}
-            setSection={setSection}
+            setSelectedSectionIndex={setSelectedSectionIndex}
+            selectedSectionIndex={selectedSectionIndex}
             id={index}
             root={root}
             key={index}
             locations={section.coordinates}
-            width={getContentRect("width") || 200}
+            width={
+              (getContentRect("width") * section.distance) / 1000 / 38 || 200
+            }
             height={200}
             domain={domain}
           />
