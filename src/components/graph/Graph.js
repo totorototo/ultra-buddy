@@ -86,7 +86,7 @@ const Graph = ({
     const x = createXScale(
       {
         min: 0,
-        max: locations.length,
+        max: locations.length - 1,
       },
       { min: 0, max: width }
     );
@@ -101,7 +101,12 @@ const Graph = ({
 
   return locations.length > 0 && profile ? (
     <div className={className} style={{ width, height }}>
-      <svg onClick={handleClick} height={height} width={width}>
+      <svg
+        onClick={handleClick}
+        height={height}
+        width={width}
+        viewBox={`0 0 ${width} ${height}`}
+      >
         <Gradient id="gradient" />
         <path
           d={profile.path}
@@ -131,9 +136,7 @@ const Graph = ({
           ))}
       </svg>
     </div>
-  ) : (
-    <div>loading</div>
-  );
+  ) : null;
 };
 
 export default styled(Graph);

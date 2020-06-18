@@ -170,7 +170,9 @@ const Sections = ({
             key={index}
             locations={section.coordinates}
             width={
-              (getContentRect("width") * section.distance) / 1000 / 38 || 200
+              Math.trunc(
+                (getContentRect("width") * section.distance) / 1000 / 40
+              ) || 200
             }
             height={200}
             domain={domain}
