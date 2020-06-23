@@ -57,6 +57,7 @@ const initializeState = ({ set }) => {
     for (let i = 0; i < promises.length; i++) {
       const key = keys[i];
       const value = JSON.parse(values[i]).value;
+
       set({ key }, value);
     }
   });
