@@ -59,7 +59,7 @@ const Analytics = ({ className }) => {
       },
       {
         label: "elevation loss",
-        color: "#DC0073",
+        color: "#bb3439",
         total: routeAnalytics.elevation.negative,
         runnerAnalytics: runnerAnalytics[2],
         percent:
