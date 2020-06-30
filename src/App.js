@@ -40,7 +40,7 @@ body {
  background: #1f252d; 
  margin:0;
  font-family: MyFont;
- font-weight: 170;
+ font-weight: 200;
  font-variation-settings: "opsz" 99;
  font-feature-settings: "ss02" 0,"ss03" 0,"ss06" 0;
 }

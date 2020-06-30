@@ -102,7 +102,7 @@ const Sections = ({
           <div className="index">{selectedSectionIndex + 1}</div>
           <div className="stats">
             <div className="title">
-              {`${sections[selectedSectionIndex].depatureLocation} - ${sections[selectedSectionIndex].arrivalLocation}`}
+              {`${sections[selectedSectionIndex].departureLocation} - ${sections[selectedSectionIndex].arrivalLocation}`}
             </div>
             <div className="item">
               <div>{`${(sections[selectedSectionIndex].distance / 1000).toFixed(

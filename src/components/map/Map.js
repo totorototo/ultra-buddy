@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import MapGL, { Source, Layer } from "react-map-gl";
 import DeckGL, { IconLayer } from "deck.gl";
 import { Location } from "@styled-icons/octicons";
-import { createPathHelper } from "positic";
+import { createPathHelper, calculateDistance } from "positic";
 
 import styled from "./style";
 import mapStyle from "./style.json";
@@ -18,6 +18,8 @@ const Map = ({
   enableGPS,
   currentLocation,
   setCurrentLocation,
+  setRunnerLocations,
+  runnerLocations,
 }) => {
   const [viewport, setViewport] = useState({
     latitude: 42.82985,
@@ -38,6 +40,22 @@ const Map = ({
         ]);
 
         setCurrentLocation(closestLocation);
+
+        setRunnerLocations([
+          ...runnerLocations,
+          {
+            location: closestLocation,
+            timestamp: position.timestamp,
+            distance:
+              helper.getProgressionStatistics(
+                helper.getPositionIndex(closestLocation)
+              )[0] || 0,
+            delta: calculateDistance(closestLocation, [
+              position.coords.longitude,
+              position.coords.latitude,
+            ]),
+          },
+        ]);
       },
       (error) => console.log(error),
       {
@@ -89,7 +107,7 @@ const Map = ({
               </div>
               <div className="divider" />
               <div className="departure">
-                {sections[currentSectionIndex].depatureLocation}
+                {sections[currentSectionIndex].departureLocation}
               </div>
             </>
           )}
