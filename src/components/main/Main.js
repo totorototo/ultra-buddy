@@ -12,35 +12,40 @@ import Analytics from "../analytics/Analytics";
 import Live from "../live/Live";
 import Message from "../message/Message";
 import AutoSizer from "../autoSizer/AutoSizer";
-import usePresistedState from "../../hooks/usePersistedState";
+import usePersistedState from "../../hooks/usePersistedState";
 import { ReactComponent as Compass } from "../../assets/compass.svg";
 import { ReactComponent as Direction } from "../../assets/direction.svg";
 
 const Main = ({ className }) => {
-  const [route, setRoute] = usePresistedState("route", null);
-  const [name, setName] = usePresistedState("name", null);
-  const [checkpoints, setCheckpoints] = usePresistedState("checkpoints", null);
-  const [sections, setSections] = usePresistedState("sections", null);
-  const [locations, setLocations] = usePresistedState("locations", null);
-  const [currentSectionIndex, setCurrentSectionIndex] = usePresistedState(
+  const [route, setRoute] = usePersistedState("route", null);
+  const [name, setName] = usePersistedState("name", null);
+  const [checkpoints, setCheckpoints] = usePersistedState("checkpoints", null);
+  const [sections, setSections] = usePersistedState("sections", null);
+  const [locations, setLocations] = usePersistedState("locations", null);
+  const [currentSectionIndex, setCurrentSectionIndex] = usePersistedState(
     "current-section",
     -1
   );
-  const [currentLocation, setCurrentLocation] = usePresistedState(
+  const [currentLocation, setCurrentLocation] = usePersistedState(
     "current-location",
     null
   );
-  const [currentLocationIndex, setCurrentLocationIndex] = usePresistedState(
+  const [currentLocationIndex, setCurrentLocationIndex] = usePersistedState(
     "current-location-index",
     -1
   );
-  const [runnerAnalytics, setRunnerAnalytics] = usePresistedState(
+  const [runnerAnalytics, setRunnerAnalytics] = usePersistedState(
     "runnerAnalytics",
     null
   );
-  const [routeAnalytics, setRouteAnalytics] = usePresistedState(
+  const [routeAnalytics, setRouteAnalytics] = usePersistedState(
     "route-analytics",
     null
+  );
+
+  const [runnerLocations, setRunnerLocations] = usePersistedState(
+    "runner-locations",
+    []
   );
 
   const [helper, setHelper] = useState();
@@ -62,6 +67,7 @@ const Main = ({ className }) => {
     setLocations(null);
     setName(null);
     setRouteAnalytics(null);
+    setRunnerLocations([]);
   };
 
   // get trace stats
@@ -176,7 +182,7 @@ const Main = ({ className }) => {
             {
               startingDate,
               endingDate,
-              depatureLocation: array[index - 1].location,
+              departureLocation: array[index - 1].location,
               arrivalLocation: checkpoint.location,
               duration,
               cutOffTime: checkpoint.cutOffTime,
@@ -263,6 +269,7 @@ const Main = ({ className }) => {
                       checkpoints={checkpoints}
                       width={width}
                       height={height}
+                      runnerLocations={runnerLocations}
                     />
                   )}
                 </AutoSizer>
@@ -326,6 +333,8 @@ const Main = ({ className }) => {
                 setCurrentLocationIndex={setCurrentLocationIndex}
                 route={route}
                 checkpoints={checkpoints}
+                runnerLocations={runnerLocations}
+                setRunnerLocations={setRunnerLocations}
               />
             </div>
           </div>

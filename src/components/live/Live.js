@@ -5,6 +5,8 @@ import {
   addMilliseconds,
   addHours,
   format,
+  isBefore,
+  isAfter,
 } from "date-fns";
 import * as scale from "d3-scale";
 import * as shape from "d3-shape";
@@ -32,13 +34,13 @@ const createYScale = (start, end, rangeMin, rangeMax) => {
     .range([rangeMin, rangeMax]);
 };
 
-const Live = ({ className, checkpoints, width, height }) => {
+const Live = ({ className, checkpoints, runnerLocations, width, height }) => {
   const [scales, setScales] = useState();
   const [intervals, setIntervals] = useState();
   const [checkpointsIntervals, setCheckpointsIntervals] = useState();
   const [intervalsArea, setIntervalsArea] = useState();
   const [livePath, setLivePath] = useState();
-  const [vertivalTicks, setVerticalTicks] = useState([]);
+  const [verticalTicks, setVerticalTicks] = useState([]);
   const [horizontalTicks, setHorizontalTicks] = useState([]);
 
   useEffect(() => {
@@ -104,7 +106,7 @@ const Live = ({ className, checkpoints, width, height }) => {
     days.shift();
     // add race start time -> start date to 00-PM
     days.unshift(new Date(checkpoints[0].cutOffTime));
-    //add race finish time -> OO-AM to finsih date
+    //add race finish time -> OO-AM to finish date
     days.push(new Date(checkpoints[checkpoints.length - 1].cutOffTime));
 
     const intervals = days.reduce((intervals, day, index, array) => {
@@ -145,21 +147,26 @@ const Live = ({ className, checkpoints, width, height }) => {
     setCheckpointsIntervals(result);
   }, [checkpoints]);
 
-  // for debug purpose!
   useEffect(() => {
-    if (!scales || !checkpoints) return;
+    if (!scales || runnerLocations.length <= 0 || !checkpoints) return;
 
     const start = new Date(checkpoints[0].cutOffTime);
+    const end = new Date(checkpoints[checkpoints.length - 1].cutOffTime);
+    const raceDistance = checkpoints[checkpoints.length - 1].distance;
 
-    const positions = checkpoints.map((checkpoint) => {
-      const slow = new Date(checkpoint.cutOffTime);
-      const duration = differenceInMilliseconds(slow, start);
-      const current = addMilliseconds(
-        start,
-        (duration * (Math.floor(Math.random() * (100 - 80 + 1)) + 80)) / 100
-      );
-      return [checkpoint.distance, current];
-    });
+    const positions = runnerLocations
+      .filter((location) => {
+        const current = new Date(location.timestamp);
+        return (
+          isAfter(current, start) &&
+          isBefore(current, end) &&
+          location.distance <= raceDistance
+        );
+      })
+      .map((location) => [
+        location.distance / 1000,
+        new Date(location.timestamp),
+      ]);
 
     const getLine = d3.shape
       .line()
@@ -169,7 +176,7 @@ const Live = ({ className, checkpoints, width, height }) => {
 
     const path = getLine(positions);
     setLivePath(path);
-  }, [scales, checkpoints]);
+  }, [runnerLocations, scales, checkpoints]);
 
   return (
     <svg width={width} height={height} className={className}>
@@ -248,7 +255,7 @@ const Live = ({ className, checkpoints, width, height }) => {
         ))}
       </g>
       <g className="vertical-ticks">
-        {vertivalTicks.map((tick, index) => (
+        {verticalTicks.map((tick, index) => (
           <g key={`${index}-group`}>
             <text
               key={`${index}-text`}
