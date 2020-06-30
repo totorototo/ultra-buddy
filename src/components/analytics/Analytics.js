@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import styled from "./style";
-import RadialProgessBar from "../radialProgressBar/RadialProgressBar";
+import RadialProgressBar from "../radialProgressBar/RadialProgressBar";
 import {
   sectionsState,
   currentSectionIndexState,
@@ -73,7 +73,7 @@ const Analytics = ({ className }) => {
 
   return (
     <div className={className}>
-      <RadialProgessBar data={data} />
+      <RadialProgressBar data={data} />
       {currentSectionIndex >= 0 && (
         <div className="analytics">
           <div className="item checkpoint">{`${distanceToNextCheckpoint.toFixed(

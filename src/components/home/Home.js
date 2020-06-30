@@ -53,10 +53,10 @@ const Home = ({ className }) => {
 
     // compute section indices (start - stop)
     const sectionsIndices = locationsIndices.reduce(
-      (accu, locationIndex, index, array) => {
+      (accum, locationIndex, index, array) => {
         if (index > 0) {
-          return [...accu, [array[index - 1], locationIndex - 1]];
-        } else return accu;
+          return [...accum, [array[index - 1], locationIndex - 1]];
+        } else return accum;
       },
       []
     );

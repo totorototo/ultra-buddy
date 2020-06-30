@@ -167,12 +167,10 @@ const trace = (...locations) => {
 
   const splitTrace = (start = 0, end = 0) => {
     const locationsIndices = getLocationIndexAt(start, end);
-    const splitTrace = locations.slice(
-      locationsIndices[0],
-      locationsIndices[1]
+    return locations.slice(
+        locationsIndices[0],
+        locationsIndices[1]
     );
-
-    return splitTrace;
   };
 
   const findClosestLocation = (currentLocation) => {

@@ -42,7 +42,7 @@ const Live = ({ className, width, height }) => {
   const [checkpointsIntervals, setCheckpointsIntervals] = useState();
   const [intervalsArea, setIntervalsArea] = useState();
   const [livePath, setLivePath] = useState();
-  const [vertivalTicks, setVerticalTicks] = useState([]);
+  const [verticalTicks, setVerticalTicks] = useState([]);
   const [horizontalTicks, setHorizontalTicks] = useState([]);
 
   useEffect(() => {
@@ -108,7 +108,7 @@ const Live = ({ className, width, height }) => {
     days.shift();
     // add race start time -> start date to 00-PM
     days.unshift(new Date(checkpoints[0].cutOffTime));
-    //add race finish time -> OO-AM to finsih date
+    //add race finish time -> OO-AM to finish date
     days.push(new Date(checkpoints[checkpoints.length - 1].cutOffTime));
 
     const intervals = days.reduce((intervals, day, index, array) => {
@@ -252,7 +252,7 @@ const Live = ({ className, width, height }) => {
         ))}
       </g>
       <g className="vertical-ticks">
-        {vertivalTicks.map((tick, index) => (
+        {verticalTicks.map((tick, index) => (
           <g key={`${index}-group`}>
             <text
               key={`${index}-text`}
