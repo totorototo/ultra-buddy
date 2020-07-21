@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LinearGradient } from "@vx/gradient";
 
 import styled from "./style";
-import { getArea, createXScale, createYScale } from "../../helpers/d3";
+import { createXScale, createYScale, getArea } from "../../helpers/d3";
 
 const MARKER_WIDTH = 30;
 
@@ -48,6 +48,8 @@ const Graph = ({
   setCurrentLocation = () => {},
   offsetMin = 0,
   offsetMax = 0,
+  displayPeaks = false,
+  peaks = [],
 }) => {
   const [profile, setProfile] = useState();
   const [progression, setProgression] = useState();
@@ -79,6 +81,7 @@ const Graph = ({
       scales.y,
       domain.y.min - offsetMin
     );
+
     setProfile(area);
   }, [scales, locations, domain, offsetMin]);
 
@@ -133,6 +136,17 @@ const Graph = ({
               width={MARKER_WIDTH}
               height={MARKER_WIDTH}
             />
+          ))}
+        {displayPeaks &&
+          peaks.length > 0 &&
+          peaks.map((peak, index) => (
+            <text
+              x={scales.x(peak)}
+              y={scales.y(locations[peak][2]) - 10}
+              key={index}
+            >
+              {locations[peak][2].toFixed(0)}
+            </text>
           ))}
       </svg>
     </div>

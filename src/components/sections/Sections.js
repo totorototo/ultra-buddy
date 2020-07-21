@@ -20,6 +20,7 @@ const IntersectSection = ({
   selectedSectionIndex,
   current,
   id,
+  peaks,
   section,
   currentLocationIndex,
   ...rest
@@ -64,6 +65,8 @@ const IntersectSection = ({
       ref={ref}
     >
       <Graph
+        displayPeaks
+        peaks={peaks}
         markers={markers}
         color={selectedSectionIndex === id ? "#CB932A" : "#D59D34"}
         {...rest}
@@ -169,6 +172,7 @@ const Sections = ({
             root={root}
             key={index}
             locations={section.coordinates}
+            peaks={section.peaks}
             width={
               Math.trunc(
                 (getContentRect("width") * section.distance) / 1000 / 40
