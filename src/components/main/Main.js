@@ -15,6 +15,7 @@ import AutoSizer from "../autoSizer/AutoSizer";
 import usePersistedState from "../../hooks/usePersistedState";
 import { ReactComponent as Compass } from "../../assets/compass.svg";
 import { ReactComponent as Direction } from "../../assets/direction.svg";
+import detectPeaks from "../../helpers/peak";
 
 const Main = ({ className }) => {
   const [route, setRoute] = usePersistedState("route", null);
@@ -48,6 +49,7 @@ const Main = ({ className }) => {
     []
   );
 
+  const [peaks, setPeaks] = useState([]);
   const [helper, setHelper] = useState();
   const [toggle, setToggle] = useState(false);
   const [pageIndex, setPageIndex] = useState(5);
@@ -97,6 +99,18 @@ const Main = ({ className }) => {
     }));
   }, [locations]);
 
+  // get route peaks
+  useEffect(() => {
+    if (!locations || locations.length < 1) return;
+    const peaks = detectPeaks(locations, (d) => d[2], {
+      lookaround: 20,
+      sensitivity: 1.4,
+      coalesce: 16,
+      full: false,
+    });
+    setPeaks(peaks);
+  }, [locations]);
+
   // get trailer runnerAnalytics
   useEffect(() => {
     if (currentLocationIndex === -1 || !helper) return;
@@ -137,7 +151,7 @@ const Main = ({ className }) => {
 
   // set trail sections
   useEffect(() => {
-    if (!checkpoints || !locations || !helper) return;
+    if (!checkpoints || !locations || !helper || !peaks) return;
 
     const distances = checkpoints.map(
       (checkpoint) => checkpoint.distance * 1000
@@ -180,6 +194,13 @@ const Main = ({ className }) => {
           return [
             ...accu,
             {
+              peaks: peaks
+                .filter(
+                  (peak) =>
+                    sectionsIndices[index - 1][0] < peak &&
+                    sectionsIndices[index - 1][1] > peak
+                )
+                .map((peak) => peak - sectionsIndices[index - 1][0]),
               startingDate,
               endingDate,
               departureLocation: array[index - 1].location,
@@ -201,9 +222,16 @@ const Main = ({ className }) => {
       },
       []
     );
-
+    debugger;
     setSections(sectionsDetails);
-  }, [checkpoints, locations, helper, setSections, setCurrentSectionIndex]);
+  }, [
+    checkpoints,
+    locations,
+    helper,
+    setSections,
+    setCurrentSectionIndex,
+    peaks,
+  ]);
 
   return (
     <div className={className}>
