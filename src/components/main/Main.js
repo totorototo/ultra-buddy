@@ -103,8 +103,8 @@ const Main = ({ className }) => {
   useEffect(() => {
     if (!locations || locations.length < 1) return;
     const peaks = detectPeaks(locations, (d) => d[2], {
-      lookaround: 20,
-      sensitivity: 1.4,
+      lookaround: 90,
+      sensitivity: 1,
       coalesce: 16,
       full: false,
     });
@@ -222,7 +222,7 @@ const Main = ({ className }) => {
       },
       []
     );
-    debugger;
+
     setSections(sectionsDetails);
   }, [
     checkpoints,

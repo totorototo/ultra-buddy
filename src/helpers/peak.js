@@ -1,5 +1,6 @@
 import { max, scan, mean, range, pairs, min, deviation } from "d3-array";
 
+// see https://observablehq.com/@yurivish/peak-detection for explanations!
 const detectPeaks = (
   data,
   accessor,
@@ -10,14 +11,14 @@ const detectPeaks = (
     full: false,
   }
 ) => {
-  let values = typeof accessor === "function" ? data.map(accessor) : data;
+  const values = typeof accessor === "function" ? data.map(accessor) : data;
 
   // Compute a peakiness score for every sample value in `data`
   // We normalize the scale of the scores by mean-centering and dividing by the standard deviation
   // to get a dimensionless quantity such that can be used as a sensitivity parameter
   // across different scales of data (s. t. normalize(x) == normalize(k*x))
 
-  let scores = normalize(
+  const scores = normalize(
     values.map((value, index) =>
       peakiness(
         values.slice(Math.max(0, index - options.lookaround), index),
@@ -28,12 +29,12 @@ const detectPeaks = (
   );
 
   // Candidate peaks are indices whose score is above the sensitivity threshold
-  let candidates = range(scores.length).filter(
+  const candidates = range(scores.length).filter(
     (index) => scores[index] > options.sensitivity
   );
 
   // If we have multiple peaks, coalesce those that are close together
-  let groups = candidates.length ? [[candidates[0]]] : [];
+  const groups = candidates.length ? [[candidates[0]]] : [];
   pairs(candidates).forEach(([a, b]) => {
     if (b - a < options.coalesce) {
       groups[groups.length - 1].push(b);
@@ -43,7 +44,7 @@ const detectPeaks = (
   });
 
   // Represent every group of peaks by the highest peak in the group
-  let peaks = groups.map(
+  const peaks = groups.map(
     (group) => group[scan(group, (a, b) => values[b] - values[a])]
   );
 
@@ -59,8 +60,8 @@ const peakiness = (left, value, right) => {
 };
 
 const normalize = (xs) => {
-  let meanb = mean(xs);
-  let stdev = deviation(xs);
+  const meanb = mean(xs);
+  const stdev = deviation(xs);
   return xs.map((x) => (x - meanb) / stdev);
 };
 
