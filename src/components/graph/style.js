@@ -8,6 +8,7 @@ export default (Component) => styled(Component)`
   opacity: ${(props) => props.opacity || 1};
   > svg {
     > text {
+      font-weight: bolder;
       fill: #ffffff94;
       text-anchor: middle; /* align center */
       dominant-baseline: middle; /* vertical alignment fix */
