@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export default (Component) => styled(Component)`
-  postion: relative;
+  position: relative;
   font-family: roboto;
 
   .intervals {

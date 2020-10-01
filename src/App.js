@@ -1,6 +1,6 @@
 import React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { RecoilRoot, useTransactionObservation_UNSTABLE } from "recoil";
+import { RecoilRoot, useRecoilTransactionObserver_UNSTABLE } from "recoil";
 
 import MarvinFont from "./assets/fonts/MarvinVisionsTrial-Variable.ttf";
 import Main from "./components/main/Main";
@@ -48,38 +48,28 @@ body {
 `;
 
 const initializeState = ({ set }) => {
-  const keys = Object.keys(localStorage).filter(
-    (key) => !key.includes("mapbox")
-  );
-
-  const promises = keys.map((key) => localStorage.getItem(key));
-  Promise.all(promises).then((values) => {
-    for (let i = 0; i < promises.length; i++) {
-      const key = keys[i];
-      const value = JSON.parse(values[i]).value;
-
-      set({ key }, value);
+  Object.entries(localStorage).forEach(([key, value]) => {
+    if (!key.includes("mapbox")) {
+      const parsedValue = JSON.parse(value).value;
+      set({ key }, parsedValue);
     }
   });
 };
 
 const Inner = () => {
-  useTransactionObservation_UNSTABLE(
-    ({
-      atomValues,
-      previousAtomValues,
-      atomInfo,
-      modifiedAtoms,
-      transactionMetadata,
-    }) => {
-      for (const modifiedAtom of modifiedAtoms) {
+  useRecoilTransactionObserver_UNSTABLE(({ snapshot }) => {
+    for (const modifiedAtom of snapshot.getNodes_UNSTABLE({
+      isModified: true,
+    })) {
+      const atomLoadable = snapshot.getLoadable(modifiedAtom);
+      if (atomLoadable.state === "hasValue") {
         localStorage.setItem(
-          modifiedAtom,
-          JSON.stringify({ value: atomValues.get(modifiedAtom) })
+          modifiedAtom.key,
+          JSON.stringify({ value: atomLoadable.contents })
         );
       }
     }
-  );
+  });
   return (
     <ThemeProvider theme={THEME}>
       <Main />
