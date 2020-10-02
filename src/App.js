@@ -63,6 +63,7 @@ const Inner = () => {
     })) {
       const atomLoadable = snapshot.getLoadable(modifiedAtom);
       if (atomLoadable.state === "hasValue") {
+
         localStorage.setItem(
           modifiedAtom.key,
           JSON.stringify({ value: atomLoadable.contents })

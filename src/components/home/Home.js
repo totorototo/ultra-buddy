@@ -7,6 +7,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { differenceInMilliseconds } from "date-fns";
 import * as d3Array from "d3-array";
+import { createPathHelper } from "positic";
 
 import styled from "./style";
 import FileUpload from "../fileUpload/FileUpload";
@@ -22,7 +23,7 @@ import {
   domainState,
   routeAnalyticsState,
 } from "../../model";
-import trace from "../../helpers/trace";
+import detectPeaks from "../../helpers/peak";
 
 const Home = ({ className }) => {
   const [route, setRoute] = useRecoilState(routeState);
@@ -35,6 +36,7 @@ const Home = ({ className }) => {
 
   const [step, setStep] = useState(0);
   const [helper, setHelper] = useState();
+  const [peaks, setPeaks] = useState([]);
   const [ref, { contentRect }] = useResizeObserver();
 
   const getContentRect = useCallback(
@@ -46,10 +48,13 @@ const Home = ({ className }) => {
 
   // set trail sections
   useEffect(() => {
-    if (checkpoints.length === 0 || locations.length === 0 || !helper) return;
+    if (checkpoints.length === 0 || locations.length === 0 || !helper || !peaks)
+      return;
 
-    const distances = checkpoints.map((checkpoint) => checkpoint.distance);
-    const locationsIndices = helper.getLocationIndexAt(...distances);
+    const distances = checkpoints.map(
+      (checkpoint) => checkpoint.distance * 1000
+    );
+    const locationsIndices = helper.getPositionsIndicesAlongPath(...distances);
 
     // compute section indices (start - stop)
     const sectionsIndices = locationsIndices.reduce(
@@ -69,11 +74,11 @@ const Home = ({ className }) => {
 
     // compute section stats
     const sectionsStats = sectionsLocations.map((section) => {
-      const helper = trace(...section);
+      const helper = createPathHelper(section);
       return {
-        distance: helper.computeDistance(),
-        elevation: helper.computeElevation(),
-        region: helper.computeRegion(),
+        distance: helper.calculatePathLength(),
+        elevation: helper.calculatePathElevation(),
+        region: helper.calculatePathBoundingBox(),
         coordinates: section,
       };
     });
@@ -88,15 +93,26 @@ const Home = ({ className }) => {
           return [
             ...accu,
             {
+              peaks: peaks
+                .filter(
+                  (peak) =>
+                    sectionsIndices[index - 1][0] < peak &&
+                    sectionsIndices[index - 1][1] > peak
+                )
+                .map((peak) => peak - sectionsIndices[index - 1][0]),
               startingDate,
               endingDate,
-              depatureLocation: array[index - 1].location,
+              departureLocation: array[index - 1].location,
               arrivalLocation: checkpoint.location,
               duration,
               cutOffTime: checkpoint.cutOffTime,
               ...sectionsStats[index - 1],
-              fromKm: helper.getProgression(sectionsIndices[index - 1][0])[0],
-              toKm: helper.getProgression(sectionsIndices[index - 1][1])[0],
+              fromKm: helper.getProgressionStatistics(
+                sectionsIndices[index - 1][0]
+              )[0],
+              toKm: helper.getProgressionStatistics(
+                sectionsIndices[index - 1][1]
+              )[0],
               indices: sectionsIndices[index - 1],
             },
           ];
@@ -107,20 +123,20 @@ const Home = ({ className }) => {
     );
 
     setSections(sectionsDetails);
-  }, [checkpoints, locations, helper, setSections]);
+  }, [checkpoints, locations, helper, setSections, peaks]);
 
   // get trace stats
   useEffect(() => {
     if (!helper) return;
-    const distance = helper.computeDistance();
-    const elevation = helper.computeElevation();
+    const distance = helper.calculatePathLength();
+    const elevation = helper.calculatePathElevation();
     setRouteAnalytics({ distance, elevation });
   }, [helper, setRouteAnalytics]);
 
   // set route helper
   useEffect(() => {
     if (locations.length === 0) return;
-    const helper = trace(...locations);
+    const helper = createPathHelper(locations);
     setHelper(helper);
   }, [locations]);
 
@@ -142,6 +158,18 @@ const Home = ({ className }) => {
     if (Object.keys(route).length === 0) return;
     setLocations(route.features[0].geometry.coordinates);
   }, [route, setLocations]);
+
+  // get route peaks
+  useEffect(() => {
+    if (!locations || locations.length < 1) return;
+    const peaks = detectPeaks(locations, (d) => d[2], {
+      lookaround: 90,
+      sensitivity: 1,
+      coalesce: 16,
+      full: false,
+    });
+    setPeaks(peaks);
+  }, [locations]);
 
   const CONFIGURATIONS = [
     {

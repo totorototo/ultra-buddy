@@ -10,7 +10,7 @@ const Input = styled.input`
 `;
 
 const Container = styled.div`
-  display: relative;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -5,6 +5,8 @@ import {
   addMilliseconds,
   addHours,
   format,
+  isBefore,
+  isAfter,
 } from "date-fns";
 import * as scale from "d3-scale";
 import * as shape from "d3-shape";
@@ -12,7 +14,7 @@ import * as d3Array from "d3-array";
 import { useRecoilValue } from "recoil";
 
 import styled from "./style";
-import { checkpointsState } from "../../model";
+import { checkpointsState, runnerLocationsState } from "../../model";
 
 const d3 = {
   scale,
@@ -34,8 +36,13 @@ const createYScale = (start, end, rangeMin, rangeMax) => {
     .range([rangeMin, rangeMax]);
 };
 
-const Live = ({ className, width, height }) => {
+
+
+const Live = ({ className,  width, height }) => {
+
+
   const checkpoints = useRecoilValue(checkpointsState);
+  const runnerLocations = useRecoilValue(runnerLocationsState);
 
   const [scales, setScales] = useState();
   const [intervals, setIntervals] = useState();
@@ -149,21 +156,26 @@ const Live = ({ className, width, height }) => {
     setCheckpointsIntervals(result);
   }, [checkpoints]);
 
-  // for debug purpose!
   useEffect(() => {
-    if (!scales || !checkpoints) return;
+    if (!scales || runnerLocations.length <= 0 || !checkpoints) return;
 
     const start = new Date(checkpoints[0].cutOffTime);
+    const end = new Date(checkpoints[checkpoints.length - 1].cutOffTime);
+    const raceDistance = checkpoints[checkpoints.length - 1].distance;
 
-    const positions = checkpoints.map((checkpoint) => {
-      const slow = new Date(checkpoint.cutOffTime);
-      const duration = differenceInMilliseconds(slow, start);
-      const current = addMilliseconds(
-        start,
-        (duration * (Math.floor(Math.random() * (100 - 80 + 1)) + 80)) / 100
-      );
-      return [checkpoint.distance, current];
-    });
+    const positions = runnerLocations
+      .filter((location) => {
+        const current = new Date(location.timestamp);
+        return (
+          isAfter(current, start) &&
+          isBefore(current, end) &&
+          location.distance <= raceDistance
+        );
+      })
+      .map((location) => [
+        location.distance / 1000,
+        new Date(location.timestamp),
+      ]);
 
     const getLine = d3.shape
       .line()
@@ -173,7 +185,7 @@ const Live = ({ className, width, height }) => {
 
     const path = getLine(positions);
     setLivePath(path);
-  }, [scales, checkpoints]);
+  }, [runnerLocations, scales, checkpoints]);
 
   return (
     <svg width={width} height={height} className={className}>

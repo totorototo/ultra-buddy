@@ -3,12 +3,12 @@ import React, { useState, useEffect } from "react";
 import MapGL, { Source, Layer, FlyToInterpolator } from "react-map-gl";
 import DeckGL, { IconLayer } from "deck.gl";
 import { Location } from "@styled-icons/octicons";
+import { createPathHelper, calculateDistance } from "positic";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { easeCubic } from "d3-ease";
 
 import styled from "./style";
 import mapStyle from "./style.json";
-import trace from "../../helpers/trace";
 import placeIcon from "../../assets/icon-atlas.png";
 import {
   sectionsState,
@@ -16,9 +16,10 @@ import {
   currentLocationState,
   checkpointsState,
   routeState,
-  locationsState,
+  // locationsState,
   currentLocationIndexState,
   runnerAnalyticsState,
+  runnerLocationsState,
 } from "../../model";
 
 const Map = ({ className, enableGPS }) => {
@@ -32,10 +33,14 @@ const Map = ({ className, enableGPS }) => {
   const [currentSectionIndex, setCurrentSectionIndex] = useRecoilState(
     currentSectionIndexState
   );
-  const locations = useRecoilValue(locationsState);
+
   const sections = useRecoilValue(sectionsState);
   const checkpoints = useRecoilValue(checkpointsState);
   const setRunnerAnalytics = useSetRecoilState(runnerAnalyticsState);
+  // TODO: runner location to be added
+  const [runnerLocations, setRunnerLocations] = useRecoilState(
+    runnerLocationsState
+  );
 
   const [helper, setHelper] = useState();
   const [viewport, setViewport] = useState({
@@ -45,12 +50,52 @@ const Map = ({ className, enableGPS }) => {
     bearing: 0,
     pitch: 0,
   });
+
+  const getCurrentLocation = () => {
+    if (Object.keys(route).length === 0) return;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const helper = createPathHelper(route.features[0].geometry.coordinates);
+        const closestLocation = helper.findClosestPosition([
+          position.coords.longitude,
+          position.coords.latitude,
+        ]);
+
+        setCurrentLocation(closestLocation);
+
+        setRunnerLocations([
+          ...runnerLocations,
+          {
+            location: closestLocation,
+            timestamp: position.timestamp,
+            distance:
+              helper.getProgressionStatistics(
+                helper.getPositionIndex(closestLocation)
+              )[0] || 0,
+            delta: calculateDistance(closestLocation, [
+              position.coords.longitude,
+              position.coords.latitude,
+            ]),
+          },
+        ]);
+      },
+      (error) => console.log(error),
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      }
+    );
+  };
+
   const [checkpointsLocations, setCheckpointsLocations] = useState([]);
 
   // get trailer runnerAnalytics
   useEffect(() => {
     if (currentLocationIndex === -1 || !helper) return;
-    const runnerAnalytics = helper.getProgression(currentLocationIndex);
+    const runnerAnalytics = helper.getProgressionStatistics(
+      currentLocationIndex
+    );
     setRunnerAnalytics(runnerAnalytics);
   }, [currentLocationIndex, helper, setRunnerAnalytics]);
 
@@ -58,7 +103,7 @@ const Map = ({ className, enableGPS }) => {
   useEffect(() => {
     if (!helper || currentLocation.length !== 3) return;
 
-    const index = helper.getLocationIndex(currentLocation);
+    const index = helper.getPositionIndex(currentLocation);
     setCurrentLocationIndex(index);
 
     if (sections.length === 0) return;
@@ -99,17 +144,12 @@ const Map = ({ className, enableGPS }) => {
     }));
   }, [sections, currentSectionIndex]);
 
-  // set route helper
-  useEffect(() => {
-    if (locations.length === 0) return;
-    const helper = trace(...locations);
-    setHelper(helper);
-  }, [locations]);
-
   useEffect(() => {
     if (Object.keys(route).length === 0) return;
-    const helper = trace(...route.features[0].geometry.coordinates);
-    const region = helper.computeRegion();
+
+    const helper = createPathHelper(route.features[0].geometry.coordinates);
+    setHelper(helper);
+    const region = helper.calculatePathBoundingBox();
     const latitude = (region.minLatitude + region.maxLatitude) / 2;
     const longitude = (region.minLongitude + region.maxLongitude) / 2;
     setViewport((viewport) => ({
@@ -120,37 +160,22 @@ const Map = ({ className, enableGPS }) => {
   }, [route]);
 
   useEffect(() => {
-    if (checkpoints.length === 0 || Object.keys(route).length === 0) {
+    if (
+      checkpoints.length === 0 ||
+      Object.keys(route).length === 0 ||
+      !helper
+    ) {
       setCheckpointsLocations([]);
       return;
     }
-    const helper = trace(...route.features[0].geometry.coordinates);
-    const distances = checkpoints.map((checkpoint) => checkpoint.distance);
-    const locations = helper.getLocationAt(...distances);
+
+    const distances = checkpoints.map(
+      (checkpoint) => checkpoint.distance * 1000
+    );
+    const locations = helper.getPositionsAlongPath(...distances);
 
     setCheckpointsLocations(locations);
-  }, [checkpoints, route]);
-
-  const getCurrentLocation = () => {
-    if (Object.keys(route).length === 0) return;
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const helper = trace(...route.features[0].geometry.coordinates);
-        const closestLocation = helper.findClosestLocation([
-          position.coords.longitude,
-          position.coords.latitude,
-        ]);
-
-        setCurrentLocation(closestLocation);
-      },
-      (error) => console.log(error),
-      {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-      }
-    );
-  };
+  }, [checkpoints, route, helper]);
 
   return (
     <div className={className}>
@@ -163,7 +188,7 @@ const Map = ({ className, enableGPS }) => {
               </div>
               <div className="divider" />
               <div className="departure">
-                {sections[currentSectionIndex].depatureLocation}
+                {sections[currentSectionIndex].departureLocation}
               </div>
             </>
           )}

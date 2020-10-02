@@ -9,6 +9,7 @@ import routeAnalyticsState from "./routeAnalytics";
 import runnerAnalyticsState from "./runnerAnalytics";
 import sectionsState from "./sections";
 import domainState from "./domain";
+import runnerLocationsState from "./runnerLocations";
 
 export {
   nameState,
@@ -22,4 +23,5 @@ export {
   runnerAnalyticsState,
   sectionsState,
   domainState,
+  runnerLocationsState,
 };

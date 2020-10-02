@@ -76,12 +76,14 @@ const Analytics = ({ className }) => {
       <RadialProgressBar data={data} />
       {currentSectionIndex >= 0 && (
         <div className="analytics">
-          <div className="item checkpoint">{`${distanceToNextCheckpoint.toFixed(
-            2
-          )} km to ${sections[currentSectionIndex].arrivalLocation}`}</div>
-          <div className="item distance">{`${runnerAnalytics[0].toFixed(
-            2
-          )} km ran`}</div>
+          <div className="item checkpoint">{`${(
+            distanceToNextCheckpoint / 1000
+          ).toFixed(2)} km to ${
+            sections[currentSectionIndex].arrivalLocation
+          }`}</div>
+          <div className="item distance">{`${(
+            runnerAnalytics[0] / 1000
+          ).toFixed(2)} km ran`}</div>
           <div className="item gain">{`${runnerAnalytics[1].toFixed(
             0
           )} m climbed`}</div>
