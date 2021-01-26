@@ -302,8 +302,8 @@ const Live = ({ className, width, height }) => {
           checkpointsIntervals.map((d, index) => {
             const x1 = OFFSET_X;
             const x2 = width;
-            const y1 = scales.y(d.km);
-            const y2 = scales.y(d.km);
+            const y1 = scales.y(d.distance);
+            const y2 = scales.y(d.distance);
 
             return (
               <line
