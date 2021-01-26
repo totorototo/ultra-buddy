@@ -130,7 +130,7 @@ const Live = ({ className, width, height }) => {
       .area()
       .x0((d) => scales.x(new Date(d.fast)))
       .x1((d) => scales.x(new Date(d.slow)))
-      .y((d) => scales.y(d.km))
+      .y((d) => scales.y(d.distance))
       .curve(d3.shape.curveNatural);
     const path = sh(checkpointsIntervals);
     setIntervalsArea(path);
