@@ -27,7 +27,7 @@ export default (Component) => styled(Component)`
     justify-content: center;
   }
   .steps {
-    font-family: roboto;
+    font-family: roboto, sans-serif;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -88,7 +88,7 @@ export default (Component) => styled(Component)`
     height: 50%;
 
     .commands {
-      font-family: roboto;
+      font-family: roboto, sans-serif;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -117,7 +117,7 @@ export default (Component) => styled(Component)`
     flex-direction: column;
     width: 100%;
     height: 100%;
-    font-family: fira sans;
+    font-family: fira sans, sans-serif;
     font-size: ${(props) => props.theme.space[4]}px;
     > p {
       margin-top: auto;

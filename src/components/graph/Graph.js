@@ -126,16 +126,16 @@ const Graph = ({
           />
         )}
         {displayPeaks &&
-        peaks.length > 0 &&
-        peaks.map((peak, index) => (
+          peaks.length > 0 &&
+          peaks.map((peak, index) => (
             <text
-                x={scales.x(peak)}
-                y={scales.y(locations[peak][2]) - 10}
-                key={index}
+              x={scales.x(peak)}
+              y={scales.y(locations[peak][2]) - 10}
+              key={index}
             >
               {locations[peak][2].toFixed(0)}
             </text>
-        ))}
+          ))}
         {markers &&
           scales &&
           markers.length > 0 &&
@@ -148,7 +148,6 @@ const Graph = ({
               height={MARKER_WIDTH}
             />
           ))}
-
       </svg>
     </div>
   ) : null;

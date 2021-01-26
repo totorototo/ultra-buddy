@@ -36,7 +36,7 @@ const RadialProgressBar = ({ className, width = 250, height = 250, data }) => {
               style={{
                 fontSize: 60,
                 letterSpacing: 1,
-                fontWeight: "lighter",
+                // fontWeight: "lighter",
                 fill: "white",
               }}
             >
@@ -71,7 +71,7 @@ const RadialProgressBar = ({ className, width = 250, height = 250, data }) => {
                 style={{
                   fontSize: 60,
                   letterSpacing: 1,
-                  fontWeight: "lighter",
+                  // fontWeight: "lighter",
                   fill: "white",
                 }}
                 href={`#${index}-progress`}

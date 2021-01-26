@@ -32,7 +32,9 @@ const Home = ({ className }) => {
   const [locations, setLocations] = useRecoilState(locationsState);
   const setSections = useSetRecoilState(sectionsState);
   const [domain, setDomain] = useRecoilState(domainState);
-  const setRouteAnalytics = useSetRecoilState(routeAnalyticsState);
+  const [routeAnalytics, setRouteAnalytics] = useRecoilState(
+    routeAnalyticsState
+  );
 
   const [step, setStep] = useState(0);
   const [helper, setHelper] = useState();
@@ -48,12 +50,23 @@ const Home = ({ className }) => {
 
   // set trail sections
   useEffect(() => {
-    if (checkpoints.length === 0 || locations.length === 0 || !helper || !peaks)
+    if (
+      checkpoints.length === 0 ||
+      locations.length === 0 ||
+      !helper ||
+      !peaks ||
+      !routeAnalytics
+    )
       return;
 
+    const computedDistance = routeAnalytics.distance;
+    const refDistance = checkpoints[checkpoints.length - 1].km * 1000;
+    const error = computedDistance / refDistance;
+
     const distances = checkpoints.map(
-      (checkpoint) => checkpoint.distance * 1000
+      (checkpoint) => checkpoint.km * error * 1000
     );
+
     const locationsIndices = helper.getPositionsIndicesAlongPath(...distances);
 
     // compute section indices (start - stop)
@@ -73,15 +86,23 @@ const Home = ({ className }) => {
     }, []);
 
     // compute section stats
-    const sectionsStats = sectionsLocations.map((section) => {
-      const helper = createPathHelper(section);
-      return {
-        distance: helper.calculatePathLength(),
-        elevation: helper.calculatePathElevation(),
-        region: helper.calculatePathBoundingBox(),
-        coordinates: section,
-      };
-    });
+    const sectionsStats = sectionsLocations
+      //.filter((section) => section.length > 0)
+      .map((section) => {
+        const helper = createPathHelper(section);
+        return section.length > 0
+          ? {
+              distance: helper.calculatePathLength(),
+              elevation: helper.calculatePathElevation(),
+              region: helper.calculatePathBoundingBox(),
+              coordinates: section,
+            }
+          : {
+              distance: 0,
+              elevation: { positive: 0, negative: 0 },
+              coordinates: [],
+            };
+      });
 
     // aggregate sections details
     const sectionsDetails = checkpoints.reduce(
@@ -102,8 +123,8 @@ const Home = ({ className }) => {
                 .map((peak) => peak - sectionsIndices[index - 1][0]),
               startingDate,
               endingDate,
-              departureLocation: array[index - 1].location,
-              arrivalLocation: checkpoint.location,
+              departureLocation: array[index - 1].site,
+              arrivalLocation: checkpoint.site,
               duration,
               cutOffTime: checkpoint.cutOffTime,
               ...sectionsStats[index - 1],
@@ -180,6 +201,7 @@ const Home = ({ className }) => {
         const geoJSON = gpx(xml);
         setCheckpoints([]);
         setSections([]);
+
         setRoute(geoJSON);
         const name = filename
           .substr(0, filename.lastIndexOf("."))
@@ -193,6 +215,7 @@ const Home = ({ className }) => {
       type: fileType.text,
       handleFileRead: (_, data) => {
         const csv = csvParse(data);
+
         const { columns, ...rest } = csv;
         const checkpoints = Object.values(rest).filter(
           (location) =>

@@ -1,28 +1,29 @@
 import "mapbox-gl/dist/mapbox-gl.css";
-import React, { useState, useEffect } from "react";
-import MapGL, { Source, Layer, FlyToInterpolator } from "react-map-gl";
+import React, { useEffect, useState } from "react";
+import MapGL, { FlyToInterpolator, Layer, Source } from "react-map-gl";
 import DeckGL, { IconLayer } from "deck.gl";
 import { Location } from "@styled-icons/octicons";
-import { createPathHelper, calculateDistance } from "positic";
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { calculateDistance, createPathHelper } from "positic";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { easeCubic } from "d3-ease";
 
 import styled from "./style";
 import mapStyle from "./style.json";
 import placeIcon from "../../assets/icon-atlas.png";
 import {
-  sectionsState,
-  currentSectionIndexState,
-  currentLocationState,
   checkpointsState,
-  routeState,
-  // locationsState,
   currentLocationIndexState,
+  currentLocationState,
+  currentSectionIndexState,
+  routeAnalyticsState,
+  routeState,
   runnerAnalyticsState,
   runnerLocationsState,
+  sectionsState,
 } from "../../model";
 
 const Map = ({ className, enableGPS }) => {
+  const routeAnalytics = useRecoilValue(routeAnalyticsState);
   const route = useRecoilValue(routeState);
   const [currentLocation, setCurrentLocation] = useRecoilState(
     currentLocationState
@@ -163,14 +164,19 @@ const Map = ({ className, enableGPS }) => {
     if (
       checkpoints.length === 0 ||
       Object.keys(route).length === 0 ||
-      !helper
+      !helper ||
+      !routeAnalytics
     ) {
       setCheckpointsLocations([]);
       return;
     }
 
+    const computedDistance = routeAnalytics.distance;
+    const refDistance = checkpoints[checkpoints.length - 1].km * 1000;
+    const error = computedDistance / refDistance;
+
     const distances = checkpoints.map(
-      (checkpoint) => checkpoint.distance * 1000
+      (checkpoint) => checkpoint.km * error * 1000
     );
     const locations = helper.getPositionsAlongPath(...distances);
 
@@ -220,7 +226,7 @@ const Map = ({ className, enableGPS }) => {
                   "line-cap": "round",
                 }}
                 paint={{
-                  "line-color": "#D49E21",
+                  "line-color": "#FFAD05",
                   "line-width": 2,
                 }}
               />

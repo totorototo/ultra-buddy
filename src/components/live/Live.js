@@ -36,11 +36,7 @@ const createYScale = (start, end, rangeMin, rangeMax) => {
     .range([rangeMin, rangeMax]);
 };
 
-
-
-const Live = ({ className,  width, height }) => {
-
-
+const Live = ({ className, width, height }) => {
   const checkpoints = useRecoilValue(checkpointsState);
   const runnerLocations = useRecoilValue(runnerLocationsState);
 
@@ -73,7 +69,7 @@ const Live = ({ className,  width, height }) => {
 
   useEffect(() => {
     const tickPeriod = 10;
-    const distance = checkpoints[checkpoints.length - 1].distance;
+    const distance = checkpoints[checkpoints.length - 1].km;
     const times = (distance - (distance % tickPeriod)) / tickPeriod;
 
     const markers = [];
@@ -95,7 +91,7 @@ const Live = ({ className,  width, height }) => {
     );
 
     const y = createYScale(
-      checkpoints[checkpoints.length - 1].distance,
+      checkpoints[checkpoints.length - 1].km,
       0,
       0,
       height - OFFSET_Y
@@ -134,7 +130,7 @@ const Live = ({ className,  width, height }) => {
       .area()
       .x0((d) => scales.x(new Date(d.fast)))
       .x1((d) => scales.x(new Date(d.slow)))
-      .y((d) => scales.y(d.distance))
+      .y((d) => scales.y(d.km))
       .curve(d3.shape.curveNatural);
     const path = sh(checkpointsIntervals);
     setIntervalsArea(path);
@@ -149,7 +145,7 @@ const Live = ({ className,  width, height }) => {
       const slow = new Date(checkpoint.cutOffTime);
       const duration = differenceInMilliseconds(slow, start);
       const fast = addMilliseconds(start, duration / 2);
-      const distance = checkpoint.distance;
+      const distance = checkpoint.km;
       return [...checkpointsIntervals, { fast, slow, distance }];
     }, []);
 
@@ -161,7 +157,7 @@ const Live = ({ className,  width, height }) => {
 
     const start = new Date(checkpoints[0].cutOffTime);
     const end = new Date(checkpoints[checkpoints.length - 1].cutOffTime);
-    const raceDistance = checkpoints[checkpoints.length - 1].distance;
+    const raceDistance = checkpoints[checkpoints.length - 1].km;
 
     const positions = runnerLocations
       .filter((location) => {
@@ -169,13 +165,10 @@ const Live = ({ className,  width, height }) => {
         return (
           isAfter(current, start) &&
           isBefore(current, end) &&
-          location.distance <= raceDistance
+          location.km <= raceDistance
         );
       })
-      .map((location) => [
-        location.distance / 1000,
-        new Date(location.timestamp),
-      ]);
+      .map((location) => [location.km / 1000, new Date(location.timestamp)]);
 
     const getLine = d3.shape
       .line()
@@ -309,8 +302,8 @@ const Live = ({ className,  width, height }) => {
           checkpointsIntervals.map((d, index) => {
             const x1 = OFFSET_X;
             const x2 = width;
-            const y1 = scales.y(d.distance);
-            const y2 = scales.y(d.distance);
+            const y1 = scales.y(d.km);
+            const y2 = scales.y(d.km);
 
             return (
               <line
