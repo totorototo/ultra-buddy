@@ -69,15 +69,17 @@ Sample data can be found in `/src/data`:
 - gpx: /src/data/echappee_belle_2020.gpx
 - csv: /src/data/echappee_belle2020.csv
 
-# screen shots
+# Screenshots
 
-<img src="./screenshots/wizard.png" width="200">
-<img src="./screenshots/main.png" width="200">
-<img src="./screenshots/map.png" width="200">
-<img src="./screenshots/sections.png" width="200">
-<img src="./screenshots/progression.png" width="200">
-<img src="./screenshots/options.png" width="200">
-<img src="./screenshots/stack-menu.png" width="200">
+| Feature | Preview |
+|---------|---------|
+| **Wizard** - Upload your GPX trace and CSV timetable in 2 easy steps | ![Wizard step](./screenshots/wizard.png) |
+| **Map View** - Track runner location on interactive map with real-time updates | ![Map view](./screenshots/map.png) |
+| **Elevation Profile** - Monitor altitude changes throughout the race | ![Elevation profile](./screenshots/main.png) |
+| **Sections** - View detailed information for each race section | ![Sections detail](./screenshots/sections.png) |
+| **Progression** - Follow runner progress and time remaining | ![Runner progression](./screenshots/progression.png) |
+| **Options** - Configure display settings and preferences | ![Options menu](./screenshots/options.png) |
+| **Menu** - Quick access to all features and controls | ![Menu](./screenshots/stack-menu.png) |
 
 # Links:
 
