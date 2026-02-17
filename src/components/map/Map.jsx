@@ -118,7 +118,7 @@ const Map = ({
           height="100%"
           mapStyle={mapStyle}
           onViewportChange={setViewport}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
+          mapboxApiAccessToken={import.meta.env.VITE_MAPBOX_KEY}
         >
           <Location
             onClick={() => {
