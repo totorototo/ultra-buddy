@@ -1,7 +1,7 @@
 import React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
-import MarvinFont from "./assets/fonts/MarvinVisionsTrial-Variable.ttf";
+import MarvinFont from "./assets/fonts/MarvinVisionsTrial-Variable.ttf?url";
 import Main from "./components/main/Main";
 
 const THEME = {

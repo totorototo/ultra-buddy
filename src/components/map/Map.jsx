@@ -1,15 +1,17 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useState, useEffect } from "react";
-import MapGL, { Source, Layer } from "react-map-gl";
-import DeckGL, { IconLayer } from "deck.gl";
+import Map, { Source, Layer, Marker } from "react-map-gl";
+import mapboxgl from "mapbox-gl";
 import { Location } from "@styled-icons/octicons";
 import { createPathHelper, calculateDistance } from "positic";
 
 import styled from "./style";
 import mapStyle from "./style.json";
-import placeIcon from "../../assets/icon-atlas.png";
 
-const Map = ({
+// Set Mapbox access token globally
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY;
+
+const MapComponent = ({
   className,
   route,
   checkpoints,
@@ -22,12 +24,11 @@ const Map = ({
   runnerLocations,
 }) => {
   const [viewport, setViewport] = useState({
-    latitude: 42.82985,
     longitude: 0.32715,
+    latitude: 42.82985,
     zoom: 4,
-    bearing: 0,
-    pitch: 0,
   });
+
 
   const getCurrentLocation = () => {
     if (!route) return;
@@ -112,13 +113,13 @@ const Map = ({
             </>
           )}
         </div>
-        <MapGL
+        <Map
           {...viewport}
-          width="100%"
-          height="100%"
+          style={{ width: '100%', height: '100%' }}
           mapStyle={mapStyle}
-          onViewportChange={setViewport}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
+          onMove={(evt) => setViewport(evt.viewState)}
+          mapboxAccessToken={import.meta.env.VITE_MAPBOX_KEY}
+          interactiveLayerIds={[]}
         >
           <Location
             onClick={() => {
@@ -145,57 +146,47 @@ const Map = ({
               />
             </Source>
           )}
-          <DeckGL
-            viewState={viewport}
-            layers={[
-              new IconLayer({
-                id: "route-layer",
-                data: checkpointsLocations,
-                pickable: true,
-                iconAtlas: placeIcon,
-                iconMapping: {
-                  marker: {
-                    x: 0,
-                    y: 0,
-                    width: 128,
-                    height: 128,
-                    anchorY: 128,
-                    mask: true,
-                  },
-                },
-                sizeScale: 8,
-                getPosition: (d) => [d[0], d[1]],
-                getIcon: (d) => "marker",
-                getSize: (d) => 3,
-                getColor: (d) => [187, 52, 57],
-              }),
-              new IconLayer({
-                id: "location-layer",
-                data: currentLocation && [currentLocation],
-                pickable: true,
-                iconAtlas: placeIcon,
-                iconMapping: {
-                  marker: {
-                    x: 0,
-                    y: 0,
-                    width: 128,
-                    height: 128,
-                    anchorY: 128,
-                    mask: true,
-                  },
-                },
-                sizeScale: 8,
-                getPosition: (d) => [d[0], d[1]],
-                getIcon: (d) => "marker",
-                getSize: (d) => 3,
-                getColor: (d) => [53, 117, 151],
-              }),
-            ]}
-          />
-        </MapGL>
+          {checkpointsLocations.map((checkpoint, index) => (
+            <Marker
+              key={`checkpoint-${index}`}
+              longitude={checkpoint[0]}
+              latitude={checkpoint[1]}
+              anchor="bottom"
+            >
+              <div
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50% 50% 50% 0',
+                  background: '#bb3439',
+                  transform: 'rotate(-45deg)',
+                  border: '2px solid white',
+                }}
+              />
+            </Marker>
+          ))}
+          {currentLocation && (
+            <Marker
+              longitude={currentLocation[0]}
+              latitude={currentLocation[1]}
+              anchor="bottom"
+            >
+              <div
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50% 50% 50% 0',
+                  background: '#357597',
+                  transform: 'rotate(-45deg)',
+                  border: '2px solid white',
+                }}
+              />
+            </Marker>
+          )}
+        </Map>
       </div>
     </div>
   );
 };
 
-export default styled(Map);
+export default styled(MapComponent);

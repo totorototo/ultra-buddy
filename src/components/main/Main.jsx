@@ -13,8 +13,8 @@ import Live from "../live/Live";
 import Message from "../message/Message";
 import AutoSizer from "../autoSizer/AutoSizer";
 import usePersistedState from "../../hooks/usePersistedState";
-import { ReactComponent as Compass } from "../../assets/compass.svg";
-import { ReactComponent as Direction } from "../../assets/direction.svg";
+import Compass from "../../assets/compass.svg?react";
+import Direction from "../../assets/direction.svg?react";
 import detectPeaks from "../../helpers/peak";
 
 const Main = ({ className }) => {

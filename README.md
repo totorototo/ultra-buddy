@@ -36,7 +36,6 @@ Final thoughts:
 - npm `^3.10.8`
 - have a valid Mapbox account
 
-
 # Getting Started
 
 After confirming that your development environment meets the specified [requirements](#requirements), you can follow these steps to get the project up and running:
@@ -48,13 +47,13 @@ yarn install                           # Install project dependencies
 ```
 
 # Mapbox configuration
+
 - create an .env file into project root directory
 - paste your MAPBOX public key inside your .env file and make sure to replace [AAA] with your key.
 
 ```bash
-REACT_APP_MAPBOX_KEY=[AAA]
+VITE_MAPBOX_KEY=[AAA]
 ```
-
 
 # Ignition
 

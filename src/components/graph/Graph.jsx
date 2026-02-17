@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { LinearGradient } from "@vx/gradient";
+import { LinearGradient } from "@visx/gradient";
 
 import styled from "./style";
 import { createXScale, createYScale, getArea } from "../../helpers/d3";
