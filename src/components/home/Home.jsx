@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import xmldom from "xmldom";
+import xmldom from "@xmldom/xmldom";
 import { gpx } from "@mapbox/togeojson";
 import { UploadCloud, Check } from "@styled-icons/feather";
 import { csvParse } from "d3-dsv";
