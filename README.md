@@ -32,36 +32,39 @@ Final thoughts:
 
 # Requirements
 
-- node `^6.9.1`
-- npm `^3.10.8`
-- have a valid Mapbox account
+- Node.js `>=18.0.0`
+- npm `>=9.0.0`
+- Valid Mapbox account
 
 # Getting Started
 
-After confirming that your development environment meets the specified [requirements](#requirements), you can follow these steps to get the project up and running:
+After confirming that your development environment meets the specified [requirements](#requirements), follow these steps:
 
 ```bash
 git clone https://github.com/totorototo/ultra-buddy.git
 cd ultra-buddy
-yarn install                           # Install project dependencies
+npm install                           # Install project dependencies
 ```
 
-# Mapbox configuration
+## Mapbox Configuration
 
-- create an .env file into project root directory
-- paste your MAPBOX public key inside your .env file and make sure to replace [AAA] with your key.
+Create a `.env` file in the project root and add your Mapbox public key:
 
 ```bash
-VITE_MAPBOX_KEY=[AAA]
+VITE_MAPBOX_KEY=<your_mapbox_key>
 ```
 
-# Ignition
+## Development & Build
+
+This project uses **Vite** for fast development and optimized builds:
 
 ```bash
-yarn start                     # Compile and launch packager
+npm start                      # Start development server
+npm run build                  # Build for production
+npm run preview               # Preview production build locally
 ```
 
-sample data could be found in /src/data
+Sample data can be found in `/src/data`:
 
 - gpx: /src/data/echappee_belle_2020.gpx
 - csv: /src/data/echappee_belle2020.csv
