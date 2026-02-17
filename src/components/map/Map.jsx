@@ -1,6 +1,7 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useState, useEffect } from "react";
 import MapGL, { Source, Layer } from "react-map-gl";
+import mapboxgl from "mapbox-gl";
 import DeckGL, { IconLayer } from "deck.gl";
 import { Location } from "@styled-icons/octicons";
 import { createPathHelper, calculateDistance } from "positic";
@@ -8,6 +9,9 @@ import { createPathHelper, calculateDistance } from "positic";
 import styled from "./style";
 import mapStyle from "./style.json";
 import placeIcon from "../../assets/icon-atlas.png";
+
+// Set Mapbox access token globally
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY;
 
 const Map = ({
   className,
@@ -28,6 +32,7 @@ const Map = ({
     bearing: 0,
     pitch: 0,
   });
+
 
   const getCurrentLocation = () => {
     if (!route) return;
